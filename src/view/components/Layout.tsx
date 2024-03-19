@@ -1,46 +1,62 @@
-import React , { ReactNode } from "react";
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "./ui/navigation-menu";
-import { twMerge } from "tailwind-merge";
-import { useLocation, useNavigate, useRoutes } from "react-router-dom";
+import React from "react";
+import { Profile } from "./Profile";
+import { Outlet } from "react-router-dom";
+import { Navbar } from "./Navbar";
 
-
-export function Layout({children}: {children: ReactNode}){
-
-  const navigate = useNavigate()
-  const {pathname} = useLocation()
-
-  const screens = [
-    {name: 'Dashboard', path: '/'},
-    {name: 'Orderns de Serviço', path: '/test'},
-    {name: 'Ações Preventivas', path: ''},
-    {name: 'Admin', path: ''},
-  ]
+export function Layout(){
 
   return (
     <main className="grid grid-rows-[50px_1fr] " >
-      <nav className="text-zinc-800 border-b border-zinc-300 flex items-center px-2 bg-zinc-50" >
-        <h1 className="font-bold text-lg mr-16" >Adler Pelzer Group</h1>
+      <nav className="text-zinc-800 border-b border-zinc-300 flex items-center px-4 bg-zinc-50" >
+        <h1 className="w-56 font-bold text-lg" >Adler Pelzer Group</h1>
+        <div className="w-full ml-4" >
+          <Navbar />
+        </div>
         <div>
-          <NavigationMenu>
-            <NavigationMenuList>
-            {screens.map(({name, path}) => (
-              <button onClick={() => navigate(path)} >
-                <NavigationMenuLink className={twMerge(
-                    navigationMenuTriggerStyle(),
-                    "font-medium text-sm p-2 text-zinc-400 flex gap-4 hover:font-semibold rounded-xl",
-                    pathname === path&& 'text-zinc-800 font-semibold'
-                  )}>
-                  {name}
-                </NavigationMenuLink>
-              </button>
-            ))}
-            </NavigationMenuList>
-          </NavigationMenu>
+          <Profile />
         </div>
       </nav>
       <section>
-        {children}
+        <Outlet/>
       </section>
     </main>
   )
 }
+
+
+/* <NavigationMenu>
+            {screens.map(({name, path, subPaths}) => {
+
+              if(subPaths){
+                return (
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+                    <NavigationMenuContent className="relative" >
+                      <ul className="flex flex-col p-2 gap-3">
+                        {subPaths.map((subPath) => (
+                         <button onClick={() => navigate(path + subPath.path)}  className={twMerge(
+                            pathname === path&& 'text-zinc-800 font-semibold'
+                          )}>
+                            {subPath.name}
+                          </button>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                )
+              }
+
+              return (
+                <button onClick={() => navigate(path)} >
+                  <NavigationMenuLink className={twMerge(
+                      navigationMenuTriggerStyle(),
+                      "font-medium text-sm p-2 text-zinc-400 flex gap-4 hover:font-semibold rounded-xl",
+                      pathname === path&& 'text-zinc-800 font-semibold'
+                    )}>
+                    {name}
+                  </NavigationMenuLink>
+                </button>
+              )
+
+            })}
+          </NavigationMenu> */

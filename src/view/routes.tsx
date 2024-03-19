@@ -10,8 +10,18 @@ export function AppRoutes() {
     <Router
       main={
         <>
-          <Route path="/" element={<Layout><Home /></Layout>} />
-          <Route path="/test" element={<Layout><Test /></Layout>} />
+          <Route path="/" Component={Layout} >
+            <Route path="" element={<Home />} />
+            <Route path="/serviceOrders" element={<Test />} />
+            <Route path="/preventiveActions" element={<>preventiveActions</>} />
+            <Route path="/settings" element={<>config</>} />
+            <Route path="/profile" element={<>profile</>} />
+            <Route path="/admin">
+              <Route path="users" element={<>users</>} />
+              <Route path="machines" element={<>machines</>} />
+            </Route>
+          </Route>
+
         </>
       }
     />
