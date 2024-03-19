@@ -3,7 +3,8 @@ import path from 'path';
 import { createFileRoute, createURLRoute } from 'electron-router-dom';
 import { ipcFactory } from '@/infra/ipcFactory'
 import 'reflect-metadata'
-import { database } from './infra/database';
+import { database } from '@/infra/database';
+
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {

@@ -1,7 +1,8 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { WorkerSpecialtys } from "@/domain/Worker/WorkerSpecialtys";
 import { Worker } from "@/domain/Worker/Worker";
 import { Machine } from "@/domain/Machine/Machine";
+import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
 
 @Entity()
 export class ServiceOrder {
@@ -28,8 +29,12 @@ export class ServiceOrder {
   machine: Machine
 
   @ManyToMany(() => Worker)
-  @JoinTable()
+  @JoinColumn()
   responsible: Worker[]
+
+
+  @OneToMany(() => PreventiveAction, (preventiveAction)=> preventiveAction.serviceOrder)
+  preventiveActions: PreventiveAction[]
 
 
   setWeekCode(value: string){

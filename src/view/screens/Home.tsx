@@ -1,15 +1,15 @@
-import { User } from "@/domain/User/User";
+import { IGetUserResponseDTO } from "@/domain/User/IGetUserResponseDTO";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export function Home(){
 
   const navigate = useNavigate()
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<IGetUserResponseDTO>()
 
   useEffect(()=>{
     (async () => {
-      const a = await window.app.invoke<User, number>('getUserById', 1)
+      const a = await window.app.invoke<IGetUserResponseDTO, number>('getUserById', 1)
       console.log(a)
       setUser(a)
     })();
@@ -18,7 +18,7 @@ export function Home(){
   return (
     <div>
       Home <br />
-      <button onClick={() => navigate('/test')} >To test page</button>
+      <button>To test page</button>
       <div>{user?.firstName}</div> <br/>
     </div>
   )

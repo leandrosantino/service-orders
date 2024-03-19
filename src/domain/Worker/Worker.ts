@@ -27,10 +27,6 @@ export class Worker {
         return this
     }
 
-    getSpecialty(){return this.specialty}
-    getId(){return this.id}
-
-
     static getWorkerSpecialtyValues(){
         const specialtys = ObjectUtils.listNoNumberProperties(WorkerSpecialtys)
         return specialtys

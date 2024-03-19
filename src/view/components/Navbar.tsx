@@ -11,7 +11,7 @@ export function Navbar(){
 
   const menuBarTriggerStyle = (selected:boolean) => twMerge(
     navigationMenuTriggerStyle(),
-    "font-medium text-sm p-2 text-zinc-400 flex gap-4 hover:font-semibold rounded-xl",
+    "font-medium cursor-pointer text-sm p-2 text-zinc-400 flex gap-4 hover:font-semibold rounded-xl",
     selected&& 'text-zinc-800 font-semibold'
   )
 
@@ -36,7 +36,7 @@ export function Navbar(){
                 {subPaths.map((subPath) => (
                   <MenubarItem
                     className={twMerge(
-                      "rounded hover:!bg-zinc-200",
+                      "rounded hover:!bg-zinc-200 cursor-pointer",
                       pathname.split('/').includes(subPath.path.replace('/', ''))&&
                         'text-zinc-800 font-semibold'
                     )}

@@ -50,26 +50,9 @@ export class User {
         return this
     }
 
-
-    getFirstName(){return this.firstName}
-    getLastName(){return this.lastName}
-    getRegister(){return this.register}
-    getPassword(){return this.password}
-    getRoule(){return this.roule}
-
     static getUserRoleValues() {
         const roles = ObjectUtils.listNoNumberProperties(UserRole)
         return roles
-    }
-
-
-    build() {
-        const unsetKeys = ObjectUtils.listUnsetdProperties(this)
-            .filter(key => key != 'id')
-        if(unsetKeys.length > 0){
-            throw new Error(`Required properties undefined: ${unsetKeys}`)
-        }
-        return this
     }
 
 }

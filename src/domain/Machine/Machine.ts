@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ServiceOrder } from "@/domain/ServiceOrder/ServiceOrder";
+import { Technology } from "../Technology/Technology";
 
 @Entity()
 export class Machine {
@@ -13,8 +14,8 @@ export class Machine {
   @Column('nchar')
   ute: string
 
-  @Column('nchar')
-  technology: string
+  @OneToMany(() => Technology, (technology) => technology.machines)
+  technology: Technology
 
   @OneToMany(() => ServiceOrder, (serviceOrder) => serviceOrder.machine)
   serviceOrders: ServiceOrder
@@ -28,7 +29,7 @@ export class Machine {
     this.ute = value
     return this
   }
-  setTechnology(value: string) {
+  setTechnology(value: Technology) {
     this.technology = value
     return this
   }
