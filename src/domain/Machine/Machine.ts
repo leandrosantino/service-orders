@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ServiceOrder } from "@/domain/ServiceOrder/ServiceOrder";
 import { Technology } from "../Technology/Technology";
 
@@ -14,7 +14,7 @@ export class Machine {
   @Column('nchar')
   ute: string
 
-  @OneToMany(() => Technology, (technology) => technology.machines)
+  @ManyToOne(() => Technology, (technology) => technology.machines)
   technology: Technology
 
   @OneToMany(() => ServiceOrder, (serviceOrder) => serviceOrder.machine)
