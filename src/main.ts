@@ -1,9 +1,12 @@
 import { app, BrowserWindow, globalShortcut } from 'electron';
 import path from 'path';
 import { createFileRoute, createURLRoute } from 'electron-router-dom';
-import { ipcFactory } from '@/infra/ipcFactory'
+import { servicesFactory } from '@/infra/servicesFactory'
 import 'reflect-metadata'
 import { database } from '@/infra/database';
+import { User } from '@/domain/User/User';
+import { UserRole } from './domain/User/UserRoules';
+import { UserService } from './services/UserService';
 
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -47,7 +50,21 @@ const createWindow = () => {
 
   mainWindow.once('ready-to-show', async () => {
       await database.initialize()
-      ipcFactory()
+      const services = servicesFactory()
+
+      try{
+        const user = new User()
+          .setFirstName('Leandro')
+          .setLastName('Santino')
+          .setRegister(3254)
+          .setPassword('123456')
+          .setRoule(UserRole.LEADER)
+
+        await services.userService.createUser(user)
+      }catch{
+        null
+      }
+
       mainWindow?.show()
       mainWindow?.maximize()
   });
@@ -78,20 +95,6 @@ app.on('activate', () => {
   }
 });
 
-(async ()=>{
-  // await database.initialize()
-
-  // const user = new User()
-  //   .setFirstName('Teste')
-  //   .setLastName('s')
-  //   .setRegister(598)
-  //   .setPassword('123456')
-  //   .setRoule(UserRole.LEADER)
-  //   .build()
-
-  // database.manager.save(user)
-
-})()
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.

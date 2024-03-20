@@ -30,11 +30,12 @@ export function Navbar(){
       {screens.map(({name, path, subPaths}) => {
         if(subPaths) {
           return (
-            <MenubarMenu>
+            <MenubarMenu key={name} >
               <MenubarTrigger className={menuBarTriggerStyle(pathname.startsWith(path))} >{name}</MenubarTrigger>
               <MenubarContent >
                 {subPaths.map((subPath) => (
                   <MenubarItem
+                    key={subPath.name}
                     className={twMerge(
                       "rounded hover:!bg-zinc-200 cursor-pointer",
                       pathname.split('/').includes(subPath.path.replace('/', ''))&&
@@ -50,7 +51,7 @@ export function Navbar(){
           )
         }
         return (
-          <MenubarMenu>
+          <MenubarMenu  key={name} >
             <MenubarTrigger onClick={() => navigate(path)} className={menuBarTriggerStyle(pathname === path)}>
               {name}
             </MenubarTrigger>

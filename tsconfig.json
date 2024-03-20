@@ -1,7 +1,12 @@
 {
    "compilerOptions": {
      "jsx": "react",
-     "target": "ESNext",
+     "target": "ES2021",
+    //  "lib": [
+    //     "ESNext",
+    //     "DOM",
+    //     "DOM.Iterable"
+    //   ],
      "module": "commonjs",
      "allowJs": true,
      "skipLibCheck": true,

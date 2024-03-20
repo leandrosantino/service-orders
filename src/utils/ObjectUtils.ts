@@ -1,4 +1,5 @@
 export class ObjectUtils {
+
   static listNoNumberProperties(object: object){
     return Object.keys(object).filter((item) => {
       return isNaN(Number(item));
