@@ -1,11 +1,15 @@
 import { useLocation, useNavigate } from "react-router-dom"
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from "./ui/menubar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
+import { useAuth } from "../hooks/useAuth";
+import { getScreensProps, ScreensProps } from "../routes";
+
 
 export function Navbar(){
 
+  const auth = useAuth()
   const navigate = useNavigate()
   const {pathname} = useLocation()
 
@@ -14,26 +18,22 @@ export function Navbar(){
     "font-medium cursor-pointer text-sm p-2 text-zinc-400 flex gap-4 hover:font-semibold rounded-xl",
     selected&& 'text-zinc-800 font-semibold'
   )
+  const [screens, setScreens] = useState<ScreensProps[]>([])
 
-  const screens = [
-    {name: 'Dashboard', path: '/'},
-    {name: 'Orderns de Serviço', path: '/serviceOrders'},
-    {name: 'Ações Preventivas', path: '/preventiveActions'},
-    {name: 'Admin', path: '/admin' , subPaths: [
-      {name: 'Usuários', path: '/users'},
-      {name: 'Máquinas', path: '/machines'},
-    ]},
-  ]
+  useEffect(() => {
+    console.log(auth.user)
+    setScreens(getScreensProps(auth.user?.roule))
+  }, [auth.user])
 
   return (
     <Menubar>
-      {screens.map(({name, path, subPaths}) => {
+      {screens.filter(({show}) => show).map(({name, path, subPaths}) => {
         if(subPaths) {
           return (
             <MenubarMenu key={name} >
               <MenubarTrigger className={menuBarTriggerStyle(pathname.startsWith(path))} >{name}</MenubarTrigger>
               <MenubarContent >
-                {subPaths.map((subPath) => (
+                {subPaths.filter(({show}) => show).map((subPath) => (
                   <MenubarItem
                     key={subPath.name}
                     className={twMerge(

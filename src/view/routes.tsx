@@ -4,6 +4,7 @@ import { Route, Router } from 'electron-router-dom'
 import { Home } from '@/view/screens/Home'
 import { Test } from '@/view/screens/Test'
 import { Layout } from './components/Layout'
+import { UserRole } from '@/domain/User/UserRoules'
 
 export function AppRoutes() {
   return (
@@ -26,4 +27,40 @@ export function AppRoutes() {
       }
     />
   )
+}
+
+export interface ScreensProps {
+  name: string;
+  path: string;
+  show: boolean;
+  subPaths?: ScreensProps[];
+}
+
+export function getScreensProps(userRole: UserRole){
+  return [
+    {
+      name: 'Dashboard',
+      path: '/',
+      show: true
+    },
+    {
+      name: 'Orderns de Serviço',
+      path: '/serviceOrders',
+      show: true
+    },
+    {
+      name: 'Ações Preventivas',
+      path: '/preventiveActions',
+      show: userRole == UserRole.ADMIN
+    },
+    {
+      name: 'Admin',
+      path: '/admin',
+      show: userRole == UserRole.ADMIN,
+      subPaths: [
+        {name: 'Usuários', path: '/users', show: true},
+        {name: 'Máquinas', path: '/machines', show: true},
+      ]
+    },
+  ]
 }

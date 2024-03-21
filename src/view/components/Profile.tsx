@@ -11,10 +11,12 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem
 } from "./ui/dropdown-menu"
+import { useAuth } from "../hooks/useAuth"
 
 export function Profile(){
 
   const navigate = useNavigate()
+  const {signOut} = useAuth()
 
   return (
     <DropdownMenu>
@@ -38,7 +40,7 @@ export function Profile(){
             </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem >
+          <DropdownMenuItem onClick={() => {signOut()} } >
             <LogOut className="mr-2 h-4 w-4 text-red-600" />
             <span className="text-red-600" >Sair</span>
           </DropdownMenuItem>

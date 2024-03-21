@@ -26,7 +26,7 @@ export class AuthService {
       }
     }
 
-    if(this.encryptionService.verify(password, user.password)){
+    if(!this.encryptionService.verify(password, user.password)){
       return {
         error: true,
         message: 'invalid password'

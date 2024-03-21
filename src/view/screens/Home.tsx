@@ -1,17 +1,23 @@
-import { IUserAuthRequestDTO } from "@/domain/User/dto/IUserAuthDTO";
 import { IUserResponseDTO } from "@/domain/User/dto/IUserDTO";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 export function Home(){
 
+  const auth = useAuth()
   const [user, setUser] = useState<IUserResponseDTO[]>()
 
   useEffect(()=>{
     (async () => {
-      console.log(await window.app.invoke<IUserResponseDTO, IUserAuthRequestDTO>('auth', {
-        password: '123456789',
-        register: 91
-      }))
+      try{
+        await auth.signIn(913,'123456789')
+      }catch(err){
+        console.log((err as Error).message)
+      }
+
+      console.log(auth.isAuth)
+      console.log(auth.user)
+
       const a = await window.app.invoke<IUserResponseDTO[]>('getAllUsers')
       console.log(a)
       setUser(a)
