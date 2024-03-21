@@ -4,7 +4,5 @@ import './styles/global.css'
 import { AppRoutes } from './routes'
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <AppRoutes/>
-  </React.StrictMode>
+ <AppRoutes/>
 )

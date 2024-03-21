@@ -1,4 +1,4 @@
-export interface IUserAuthRequestDTO {
+export type IUserAuthRequestDTO =  {
   register: number
   password: string
 }

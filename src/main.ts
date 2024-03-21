@@ -56,11 +56,11 @@ const createWindow = () => {
         const user = new User()
           .setFirstName('Leandro')
           .setLastName('Santino')
-          .setRegister(3254)
-          .setPassword('123456')
+          .setRegister(913)
+          .setPassword('123456789')
           .setRoule(UserRole.LEADER)
 
-        await services.userService.createUser(user)
+        await services.userService.create(user)
       }catch{
         null
       }

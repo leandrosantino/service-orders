@@ -1,5 +1,5 @@
 import { IUserRequestDTO , IUserResponseDTO} from "@/domain/User/dto/IUserDTO";
-import { IUserService } from "@/domain/User/dto/IUserService";
+import { IUserService } from "@/domain/User/IUserService";
 import { userRepository } from "@/domain/User/UserRepository";
 import { IpcChannel , Autowired } from "@/utils/decorators";
 import { User } from "@/domain/User/User";
