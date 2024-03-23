@@ -4,4 +4,7 @@
 
 body {
   font-family: 'Poppins', 'Sans Sefif';
+  height: 100vh;
+  width: 100vw;
 }
+

@@ -22,7 +22,7 @@ export function Navbar(){
 
   useEffect(() => {
     console.log(auth.user)
-    setScreens(getScreensProps(auth.user?.roule))
+    setScreens(getScreensProps(auth.user?.roule, auth.isAuth))
   }, [auth.user])
 
   return (

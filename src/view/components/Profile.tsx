@@ -16,7 +16,11 @@ import { useAuth } from "../hooks/useAuth"
 export function Profile(){
 
   const navigate = useNavigate()
-  const {signOut} = useAuth()
+  const {signOut, isAuth} = useAuth()
+
+  if (!isAuth){
+    return null
+  }
 
   return (
     <DropdownMenu>

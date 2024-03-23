@@ -1,6 +1,7 @@
 import { IUserResponseDTO } from "@/domain/User/dto/IUserDTO";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { ScreenContainer } from "../components/ScreenContainer";
 
 export function Home(){
 
@@ -25,7 +26,7 @@ export function Home(){
   }, [])
 
   return (
-    <div>
+    <ScreenContainer>
       Home <br />
       <button>To test page</button> <br/>
       {user?.map(_user => (
@@ -33,6 +34,6 @@ export function Home(){
          <br/> <div>{_user.firstName} - {_user.lastName}</div>
         </div>
       ))}
-    </div>
+    </ScreenContainer>
   )
 }

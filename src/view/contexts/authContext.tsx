@@ -3,7 +3,6 @@ import { IResponseEntity } from '@/domain/interfaces/IResponseEntity'
 import { IUserAuthRequestDTO } from '@/domain/User/dto/IUserAuthDTO'
 import { IUserResponseDTO } from '@/domain/User/dto/IUserDTO'
 import React from 'react'
-import { Layout } from '../components/Layout'
 
 interface AuthContextProps {
   isAuth: boolean
@@ -46,9 +45,7 @@ export function AuthProvider ({ children }: { children: ReactNode }) {
       signIn,
       signOut,
     }}>
-      {isAuth?children:<>
-        <button onClick={() => { signIn(913, '123456789') } } >Signin</button>
-      </>}
+      {children}
     </Provider>
   )
 }
