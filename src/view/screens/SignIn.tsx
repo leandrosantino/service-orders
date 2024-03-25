@@ -1,22 +1,44 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { ScreenContainer } from "../components/ScreenContainer";
-import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
-
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Input } from '../components/ui/input'
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/view/components/ui/form"
+
+const loginFormSchema = z.object({
+  register: z.string().min(1),
+  password: z.string().min(1)
+})
+
+type LoginFormType = z.infer<typeof loginFormSchema>
 
 export function SignIn(){
+
+  const loginForm = useForm<LoginFormType>({
+    resolver: zodResolver(loginFormSchema)
+  })
+
+  const {
+    handleSubmit,
+    control
+  } = loginForm
 
   const {signIn} = useAuth()
   const navigate = useNavigate()
 
-  const [register, setRegister] = useState('')
-  const [password, setPassword] = useState('')
-
-  async function handleSignIn(){
+  async function onSubmit({password, register}: LoginFormType){
     try{
       await signIn(Number(register), password)
     }catch(err){
@@ -33,35 +55,78 @@ export function SignIn(){
           <CardDescription>Insira sua matricula e senha para continuar</CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Matrícula:</Label>
-                <Input
-                  id="name"
-                  placeholder="000"
-                  value={register}
-                  onChange={(e) => setRegister(e.target.value)}
-                  />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password">Senha:</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </div>
-            </div>
-          </form>
+          <Form {...loginForm}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={control}
+                name="register"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Register:</FormLabel>
+                    <FormControl>
+                      <Input placeholder="000" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Senha:</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className="w-full" type="submit">Entrar</Button>
+            </form>
+          </Form>
         </CardContent>
-        <CardFooter className="flex justify-center">
+        {/* <CardFooter className="flex justify-center">
           <Button className="w-full" onClick={handleSignIn} >Entrar</Button>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
     </ScreenContainer>
   )
 }
 
 
+/*
+  <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="register"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Register:</FormLabel>
+              <FormControl>
+                <Input placeholder="000" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Senha:</FormLabel>
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button className="w-full" type="submit">Entrar</Button>
+      </form>
+    </Form>
+
+*/
