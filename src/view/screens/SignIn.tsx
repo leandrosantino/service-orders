@@ -1,56 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { ScreenContainer } from "../components/ScreenContainer";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import { Input } from "postcss";
+import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
+
+import { Input } from '../components/ui/input'
 
 export function SignIn(){
 
   const {signIn} = useAuth()
   const navigate = useNavigate()
 
+  const [register, setRegister] = useState('')
+  const [password, setPassword] = useState('')
+
   async function handleSignIn(){
-    await signIn(913, '123456789')
+    try{
+      await signIn(Number(register), password)
+    }catch(err){
+      console.log((err as Error).message)
+    }
     navigate('/')
   }
 
   return (
-    <ScreenContainer>
-      <Card className="w-[350px]">
+    <ScreenContainer className="flex justify-center items-center" >
+      <Card className="w-[400px]">
         <CardHeader>
-          <CardTitle>Create project</CardTitle>
-          <CardDescription>Deploy your new project in one-click.</CardDescription>
+          <CardTitle>Login</CardTitle>
+          <CardDescription>Insira sua matricula e senha para continuar</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Name of your project" />
+                <Label htmlFor="name">Matrícula:</Label>
+                <Input
+                  id="name"
+                  placeholder="000"
+                  value={register}
+                  onChange={(e) => setRegister(e.target.value)}
+                  />
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="framework">Framework</Label>
-                <Select>
-                  <SelectTrigger id="framework">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="next">Next.js</SelectItem>
-                    <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                    <SelectItem value="astro">Astro</SelectItem>
-                    <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="password">Senha:</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
               </div>
             </div>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button>Deploy</Button>
+        <CardFooter className="flex justify-center">
+          <Button className="w-full" onClick={handleSignIn} >Entrar</Button>
         </CardFooter>
       </Card>
     </ScreenContainer>

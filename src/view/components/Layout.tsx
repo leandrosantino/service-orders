@@ -8,7 +8,7 @@ export function Layout(){
   return (
     <main className="grid grid-rows-[50px_1fr] h-screen w-screen" >
       <nav className="text-zinc-800 border-b border-zinc-300 flex items-center px-4" >
-        <h1 className="w-56 font-bold text-lg text-blue-700" >Adler Pelzer Group</h1>
+        <h1 className="w-56 font-bold text-lg text-primary" >Adler Pelzer Group</h1>
         <div className="w-full ml-4" >
           <Navbar />
         </div>
