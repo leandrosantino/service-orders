@@ -32,7 +32,7 @@ export function SignIn(){
 
   const {
     handleSubmit,
-    control
+    control,
   } = loginForm
 
   const {signIn} = useAuth()
@@ -62,7 +62,7 @@ export function SignIn(){
                 name="register"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Register:</FormLabel>
+                    <FormLabel>Mátricula:</FormLabel>
                     <FormControl>
                       <Input placeholder="000" {...field} />
                     </FormControl>
@@ -87,46 +87,9 @@ export function SignIn(){
             </form>
           </Form>
         </CardContent>
-        {/* <CardFooter className="flex justify-center">
-          <Button className="w-full" onClick={handleSignIn} >Entrar</Button>
-        </CardFooter> */}
       </Card>
     </ScreenContainer>
   )
 }
 
 
-/*
-  <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="register"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Register:</FormLabel>
-              <FormControl>
-                <Input placeholder="000" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Senha:</FormLabel>
-              <FormControl>
-                <Input type="password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button className="w-full" type="submit">Entrar</Button>
-      </form>
-    </Form>
-
-*/
