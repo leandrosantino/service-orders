@@ -1,14 +1,11 @@
 import {
   Activity,
-  CreditCard,
   DollarSign,
-  Users,
 } from "lucide-react"
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/view/components/ui/card"
@@ -16,7 +13,6 @@ import {
 
 import React from "react"
 import { ScreenContainer } from "../components/ScreenContainer"
-import { ValueCard } from "../components/ValueCard"
 
 const cardsData = [
   {
