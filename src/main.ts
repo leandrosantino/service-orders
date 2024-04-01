@@ -62,8 +62,8 @@ const createWindow = () => {
         null
       }
 
-      mainWindow?.show()
-      mainWindow?.maximize()
+      // mainWindow?.show()
+      // mainWindow?.maximize()
   });
 
 };

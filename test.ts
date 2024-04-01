@@ -1,40 +1,18 @@
-import { ipcMain, ipcRenderer } from "electron"
+import { FileStorageProvider } from "./src/infra/FileStorageProvider";
+import path from 'path'
 
-function IpcChannel() {
-  return (_: object, key: string, descriptor: PropertyDescriptor) => {
-    ipcMain.on(key, (event, args) => {
-      event.reply(key + ':reply', descriptor.value(...args))
-    })
+const fileStorage = new FileStorageProvider(path.join(__dirname, './data'))
+
+fileStorage.listFiles().forEach(file => {
+  const regex = /^OS_\d+_\d{2}-\d{2}-\d{4}_(OPEN|CLOSE)_\d+_\d+\.json$/
+  if(!regex.test(file)){
+    console.log("invalid filename format!")
+    return
   }
-}
-
-class Teste {
-
-  @IpcChannel()
-  getItems() {
-    return 'leandro santino'.toLocaleUpperCase()
-  }
-
-}
-
-const a = new Teste()
-
-a.getItems()
-console.log(a)
-
-function fetch<R, T>(channel: string, args: T): Promise<R> {
-  return new Promise((resolve, reject) => {
-    try {
-      ipcRenderer.send('channel', args)
-      ipcRenderer.on(channel + ':reply', (event, a: R) => { resolve(a) })
-    } catch {
-      reject()
-    }
-  })
-}
-
-(async () => {
-  const a = await fetch<number, { a: string }>('getItems', { a: '' })
-  console.log(a)
-})()
-
+  const filename = file
+    .replace(/^OS_|\.json$/g, '')
+    .replaceAll('-', '/')
+    .split('_')
+  console.log(filename)
+})
+fileStorage.listeningDir()

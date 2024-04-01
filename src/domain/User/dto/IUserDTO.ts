@@ -3,7 +3,7 @@ import { UserRole } from "../UserRoules"
 export type IUserRequestDTO = Omit<IUserResponseDTO, 'id'>
 
 export interface IUserResponseDTO {
-  id: number
+  id: string
   firstName: string
   lastName: string
   register: number
