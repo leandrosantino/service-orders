@@ -1,5 +1,5 @@
 import fs, { readFileSync } from 'fs'
-import path from 'path'
+// import path from 'path'
 import {watch} from 'chokidar'
 
 export class FileStorageProvider {
