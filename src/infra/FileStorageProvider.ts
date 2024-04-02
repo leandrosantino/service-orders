@@ -1,5 +1,6 @@
 import fs, { readFileSync } from 'fs'
 import path from 'path'
+import {watch} from 'chokidar'
 
 export class FileStorageProvider {
 
@@ -9,7 +10,7 @@ export class FileStorageProvider {
 
   listFiles() {
     const files = fs
-      .readdirSync(this.directory, {withFileTypes: true})
+      .readdirSync(this.directory, {withFileTypes: true, })
       .filter((file) => file.isFile())
       .map(file => file.name)
     return files
@@ -18,11 +19,17 @@ export class FileStorageProvider {
 
 
   listeningDir(){
-    fs.watch(this.directory, {persistent: true}, (a, b) => {
-      const data = readFileSync(path.join(this.directory, b)).toString()
-
-      console.log(a, ' - ', data)
+    watch(this.directory, {
+      ignoreInitial: true,
     })
+      .on('change', (filename) => {
+        const data = readFileSync(filename).toString()
+        console.log(filename, ' - ', data)
+      })
+      .on('add', (filename) => {
+        const data = readFileSync(filename).toString()
+        console.log('create new file - ', filename, ' - ', data)
+      })
   }
 
 }
