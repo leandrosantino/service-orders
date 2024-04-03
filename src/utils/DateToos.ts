@@ -1,28 +1,35 @@
 import {getWeek} from 'date-fns'
 
-export class DateTime extends Date{
+export class DateTime extends Date {
 
-  private MILISECONDS_IN_ONE_DAY :number
   private MILISECONDS_IN_ONE_SECOND :number
   weekOfYearPattern = new RegExp(/\d{4}-W\d{2}/)
 
   constructor(...args:number[]) {
     super(...args as []);
     this.MILISECONDS_IN_ONE_SECOND = 1000
-    this.MILISECONDS_IN_ONE_DAY = this.MILISECONDS_IN_ONE_SECOND * 60 * 60 * 24
+  }
+
+  fromWeekOfYearString(weekOfYearString: string){
+    if(!this.weekOfYearPattern.test(weekOfYearString)){
+        throw new Error('String week not compatible with the pattern!')
+    }
+    const week = Number(weekOfYearString.split('-W')[1])
+    const year = Number( weekOfYearString.split('-W')[0])
+    const day = (1 + (week - 2) * 7) + 6
+    return new DateTime(year, 0, day)
   }
 
   getWeekOfYear(){
     return getWeek(this)
   }
 
-  getWeekOfYearString(){
+  toWeekOfYearString(){
     return `${this.getFullYear()}-W${getWeek(this)}`
   }
 
   plusDay(days: number) {
-    const daysInMiliseconds = days * this.MILISECONDS_IN_ONE_DAY
-    this.setMilliseconds(daysInMiliseconds)
+    this.setDate(this.getDate() + days)
     return this
   }
 
@@ -50,6 +57,11 @@ export class DateTime extends Date{
 
   fromDateNumber(dateNumber: number){
     return new DateTime(dateNumber * this.MILISECONDS_IN_ONE_SECOND)
+  }
+
+  plusWeek(weeks: number) {
+    this.setDate(this.getDate() + (7 * weeks))
+    return this
   }
 
 }

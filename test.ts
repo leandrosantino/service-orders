@@ -42,20 +42,17 @@ import { DateTime } from "./src/utils/DateToos";
 //   console.log(os)
 
 // fileStorage.listeningDir()
-// const d = 1000 * 60 * 60 * 24
 
-// const i = new Date(2300, 3, 2).valueOf()
-// const f = new Date(i + d).valueOf()
-// console.log(new Date(i).toLocaleDateString(), ' - ',new Date(f).toLocaleDateString())
-// console.log(i / 100000, ' - ', f / 100000)
-// console.log(i, ' - ', f)
-// console.log(i - f)
 
-// const date = new DateTime(2024, 3, 2)
-// const f = new DateTime(2024, 3, 2).plusDay(1)
-
-const teste = new DateTime(2024, 3, 2, 12, 30, 10, 659).toDateNumber()
-const t2 = new DateTime().fromDateNumber(teste).getWeekOfYearString()
-const t3 = new DateTime().fromDateNumber(teste).plusYear(1).getWeekOfYearString()
-console.log(t3, t2)
-//1712071810_1712158210
+// const teste = new DateTime(2024, 3, 2, 12, 30, 10, 659).toDateNumber()
+// const t2 = new DateTime().fromDateNumber(teste).toLocaleDateString()
+// const t3 = new DateTime().fromDateNumber(teste).plusDay(30).toLocaleDateString()
+// console.log(t2, t3)
+// console.log(new DateTime().toWeekOfYearString())
+// console.log(new DateTime().plusYear(1).plusWeek(2).toWeekOfYearString())
+console.log(
+  new DateTime()
+    .fromWeekOfYearString('2024-W15')
+    .plusWeek(52)
+    .toWeekOfYearString()
+)
