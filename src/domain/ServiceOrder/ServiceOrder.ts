@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { WorkerSpecialtys } from "@/domain/Worker/WorkerSpecialtys";
 import { Worker } from "@/domain/Worker/Worker";
 import { Machine } from "@/domain/Machine/Machine";
@@ -15,6 +15,12 @@ export class ServiceOrder {
 
   @Column('date')
   date: Date
+
+  @CreateDateColumn()
+  createdAt: Date
+
+  @UpdateDateColumn()
+  updatedAt: Date
 
   @Column('int')
   durationInMinutes: number

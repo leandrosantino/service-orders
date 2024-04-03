@@ -2,12 +2,15 @@ import {getWeek} from 'date-fns'
 
 export class DateTime extends Date {
 
-  private MILISECONDS_IN_ONE_SECOND :number
   weekOfYearPattern = new RegExp(/\d{4}-W\d{2}/)
 
   constructor(...args:number[]) {
-    super(...args as []);
-    this.MILISECONDS_IN_ONE_SECOND = 1000
+    super(...args as [])
+  }
+
+  fromDateObject(date: Date){
+    Object.assign(this, date)
+    return this
   }
 
   fromWeekOfYearString(weekOfYearString: string){
@@ -43,20 +46,20 @@ export class DateTime extends Date {
     return this
   }
 
-  isBefore(date: DateTime){
+  isBefore(date: Date){
     return this.valueOf() < date.valueOf()
   }
 
-  isAfter(date: DateTime){
+  isAfter(date: Date){
     return this.valueOf() > date.valueOf()
   }
 
   toDateNumber(){
-    return Math.floor(this.valueOf() / this.MILISECONDS_IN_ONE_SECOND)
+    return this.valueOf()
   }
 
   fromDateNumber(dateNumber: number){
-    return new DateTime(dateNumber * this.MILISECONDS_IN_ONE_SECOND)
+    return new DateTime(dateNumber)
   }
 
   plusWeek(weeks: number) {
