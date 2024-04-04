@@ -21,8 +21,7 @@
      "experimentalDecorators": true,
      "paths": {
        "@/*": [
-         "./src/*",
-         "src/test.ts"
+         "./src/*"
        ]
      }
    },

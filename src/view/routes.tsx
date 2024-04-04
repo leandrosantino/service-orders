@@ -4,7 +4,7 @@ import { Route, Router } from 'electron-router-dom'
 import { Home } from '@/view/screens/Home'
 import { Test } from '@/view/screens/Test'
 import { Layout } from './components/Layout'
-import { UserRole } from '@/domain/User/UserRoules'
+import { UserRole } from 'test'
 import { RequireAuth } from './RequireAuth'
 import { SignIn } from './screens/SignIn'
 

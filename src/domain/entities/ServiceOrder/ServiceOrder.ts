@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { WorkerSpecialtys } from "@/domain/Worker/WorkerSpecialtys";
-import { Worker } from "@/domain/Worker/Worker";
-import { Machine } from "@/domain/Machine/Machine";
+import { WorkerSpecialtys } from "test";
+import { Worker } from "test";
+import { Machine } from "test";
 import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
 
 @Entity()

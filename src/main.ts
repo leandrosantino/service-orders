@@ -1,12 +1,11 @@
 import { app, BrowserWindow, globalShortcut } from 'electron';
 import path from 'path';
 import { createFileRoute, createURLRoute } from 'electron-router-dom';
-import { servicesFactory } from '@/infra/servicesFactory'
 import 'reflect-metadata'
 import { database } from '@/infra/database';
-import { User } from '@/domain/User/User';
-import { UserRole } from './domain/User/UserRoules';
-
+import { UserRole } from './domain/entities/User/UserRoules';
+import { servicesFactory } from './infra/factories/servicesFactory';
+import { User } from './domain/entities/User/User';
 
 if (require('electron-squirrel-startup')) {
   app.quit();

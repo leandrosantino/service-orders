@@ -2,7 +2,7 @@ import fs, { readFileSync } from 'fs'
 // import path from 'path'
 import {watch} from 'chokidar'
 
-export class FileStorageProvider {
+export class FsUtils {
 
   constructor(
     private readonly directory: string
@@ -16,6 +16,12 @@ export class FileStorageProvider {
     return files
   }
 
+  readFile(path: string){
+    if(!fs.existsSync(path)){
+      throw new Error("File is not found!")
+    }
+    return fs.readFileSync(path).toString()
+  }
 
 
   listeningDir(){

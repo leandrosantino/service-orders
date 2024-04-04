@@ -1,11 +1,11 @@
 import { DataSource } from "typeorm"
-import { User } from "../domain/User/User"
-import { Worker } from "../domain/Worker/Worker"
-import { Machine } from "../domain/Machine/Machine"
-import { ServiceOrder } from "../domain/ServiceOrder/ServiceOrder"
-import { PreventiveAction } from "@/domain/PreventiveAction/PreventiveAction"
-import { Zone } from "@/domain/Zone/Zone"
-import { Technology } from "@/domain/Technology/Technology"
+import { User } from "@/domain/entities/User/User"
+import { Worker } from "@/domain/entities/Worker/Worker"
+import { Machine } from "@/domain/entities/Machine/Machine"
+import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder"
+import { PreventiveAction } from "@/domain/entities/PreventiveAction/PreventiveAction"
+import { Zone } from "@/domain/entities/Zone/Zone"
+import { Technology } from "@/domain/entities/Technology/Technology"
 
 export const database = new DataSource({
     type: "sqlite",
