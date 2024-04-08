@@ -2,10 +2,10 @@ import { app, BrowserWindow, globalShortcut } from 'electron';
 import path from 'path';
 import { createFileRoute, createURLRoute } from 'electron-router-dom';
 import 'reflect-metadata'
-import { database } from '@/infra/database';
-import { UserRole } from './domain/entities/User/UserRoules';
-import { servicesFactory } from './infra/factories/servicesFactory';
-import { User } from './domain/entities/User/User';
+// import { database } from '@/infra/database';
+// import { UserRole } from './domain/entities/User/UserRoules';
+// import { servicesFactory } from './infra/factories/servicesFactory';
+// import { User } from './domain/entities/User/User';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -45,21 +45,21 @@ const createWindow = () => {
   mainWindow.setMenuBarVisibility(false)
 
   mainWindow.once('ready-to-show', async () => {
-      await database.initialize()
-      const services = servicesFactory()
+      // await database.initialize()
+      // const services = servicesFactory()
 
-      try{
-        const user = new User()
-          .setFirstName('Leandro')
-          .setLastName('Santino')
-          .setRegister(913)
-          .setPassword('123456789')
-          .setRoule(UserRole.LEADER)
+      // try{
+      //   const user = new User()
+      //     .setFirstName('Leandro')
+      //     .setLastName('Santino')
+      //     .setRegister(913)
+      //     .setPassword('123456789')
+      //     .setRoule(UserRole.LEADER)
 
-        await services.userService.create(user)
-      }catch{
-        null
-      }
+      //   await services.userService.create(user)
+      // }catch{
+      //   null
+      // }
 
       mainWindow?.show()
       mainWindow?.maximize()

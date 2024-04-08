@@ -10,7 +10,7 @@ export class Cause {
   @Column('nchar')
   description: string
 
-  @Column('char', {length: 1, unique: true})
+  @Column('nchar', {length: 1, unique: true})
   code: string
 
   @OneToMany(() => ServiceOrder, (serviceOrder) => serviceOrder.machine)
