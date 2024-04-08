@@ -11,6 +11,10 @@ export class UserRepository implements IUserRepository {
     this.repository = database.getRepository(User)
   }
 
+  create(entity: User): Promise<User> {
+    return this.repository.save(entity)
+  }
+
   find(options?: FindManyOptions<User>): Promise<User[]> {
     return this.repository.find(options)
   }

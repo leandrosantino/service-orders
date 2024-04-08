@@ -18,7 +18,7 @@ export class Machine {
   technology: Technology
 
   @OneToMany(() => ServiceOrder, (serviceOrder) => serviceOrder.machine)
-  serviceOrders: ServiceOrder
+  serviceOrders?: ServiceOrder[]
 
 
   setTag(value: string) {

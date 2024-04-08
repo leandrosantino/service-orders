@@ -11,6 +11,10 @@ export class ServiceOrderRepository implements IServiceOrderRepository{
     this.repository = database.getRepository(ServiceOrder)
   }
 
+  create(entity: ServiceOrder): Promise<ServiceOrder> {
+    return this.repository.save(entity)
+  }
+
   find(options?: FindManyOptions<ServiceOrder>): Promise<ServiceOrder[]> {
     return this.repository.find(options)
   }

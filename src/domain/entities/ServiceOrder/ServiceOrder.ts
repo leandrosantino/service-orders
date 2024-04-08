@@ -3,7 +3,8 @@ import { WorkerSpecialtys } from "@/domain/entities/Worker/WorkerSpecialtys";
 import { Worker } from "@/domain/entities/Worker/Worker";
 import { Machine } from "@/domain/entities/Machine/Machine";
 import { PreventiveAction } from "@/domain/entities/PreventiveAction/PreventiveAction";
-import { ServiceOrderTypes } from "./ServiceOrderTypes";
+import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
+import { Cause } from "../Cause/Cause";
 
 @Entity()
 export class ServiceOrder {
@@ -38,9 +39,12 @@ export class ServiceOrder {
   @ManyToOne(() => Machine, (machine) => machine.serviceOrders)
   machine: Machine
 
+  @ManyToOne(() => Cause, (cause) => cause.serviceOrders)
+  cause: Cause
+
   @ManyToMany(() => Worker)
   @JoinColumn()
-  responsibles: Worker[]
+  responsibles?: Worker[]
 
   @OneToMany(() => PreventiveAction, (preventiveAction)=> preventiveAction.serviceOrder)
   preventiveActions?: PreventiveAction[]
@@ -49,18 +53,22 @@ export class ServiceOrder {
     this.weekCode = value
     return this
   }
+
   setDate(value: Date){
     this.date = value
     return this
   }
+
   setDurationInMinutes(value: number){
     this.durationInMinutes = value
     return this
   }
+
   setConcluded(value: boolean){
     this.concluded = value
     return this
   }
+
   setSpecialty(value: WorkerSpecialtys){
     this.specialty = value
     return this
