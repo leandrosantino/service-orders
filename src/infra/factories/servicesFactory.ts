@@ -7,5 +7,3 @@ export function servicesFactory(){
     authService: new AuthService()
   }
 }
-
-export type IpcChannelKeys = keyof UserService | keyof AuthService

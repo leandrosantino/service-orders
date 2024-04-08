@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { User } from '@/domain/entities/User/User'
-import { WorkerSpecialtys } from './WorkerSpecialtys'
+import { WorkerSpecialtys } from '@/domain/entities/Worker/WorkerSpecialtys'
 import { ObjectUtils } from '@/utils/ObjectUtils'
 
 @Entity()

@@ -1,13 +1,16 @@
-import { IUserResponseDTO } from "@/domain/entities/User/dto/IUserDTO";
-import { EncryptionService } from "./EncryptionService";
 import { Autowired, IpcChannel } from "@/utils/decorators";
 import { UserRepository } from "@/infra/repositories/UserRepository";
-import { IUserAuthRequestDTO } from "@/domain/entities/User/dto/IUserAuthDTO";
+
+import { EncryptionService } from "@/services/EncryptionService";
 import { User } from "@/domain/entities/User/User";
+
+import { IUserAuthRequestDTO } from "@/domain/entities/User/dto/IUserAuthDTO";
+import { IUserResponseDTO } from "@/domain/entities/User/dto/IUserDTO";
 import { IResponseEntity } from "@/domain/interfaces/IResponseEntity";
 import { IUserRepository } from "@/domain/entities/User/IUserRepository";
+import { IUserAuthService } from "@/domain/entities/User/IUserAuthService";
 
-export class AuthService {
+export class AuthService implements IUserAuthService{
 
   @Autowired(EncryptionService)
   encryptionService: EncryptionService

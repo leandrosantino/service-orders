@@ -9,4 +9,9 @@ export class Zone {
   @Column('nchar')
   slug: string
 
+  setSlug(value: string){
+    this.slug = value
+    return this
+  }
+
 }

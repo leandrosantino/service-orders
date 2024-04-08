@@ -1,5 +1,5 @@
-import { User } from "./User";
-import { IUserRequestDTO, IUserResponseDTO } from "./dto/IUserDTO";
+import { User } from "@/domain/entities/User/User";
+import { IUserRequestDTO, IUserResponseDTO } from "@/domain/entities/User/dto/IUserDTO";
 
 export interface IUserService {
   getAllUsers(): Promise<IUserResponseDTO[]>

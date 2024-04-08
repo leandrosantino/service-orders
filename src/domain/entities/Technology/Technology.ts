@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Machine } from "../Machine/Machine";
+import { Machine } from "@/domain/entities/Machine/Machine";
 
 @Entity()
 export class Technology {

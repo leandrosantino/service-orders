@@ -1,4 +1,4 @@
-import { UserRole } from "../UserRoules"
+import { UserRole } from "@/domain/entities/User/UserRoules"
 
 export type IUserRequestDTO = Omit<IUserResponseDTO, 'id'>
 

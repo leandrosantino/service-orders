@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Machine } from "../Machine/Machine";
-import { WorkerSpecialtys } from "../Worker/WorkerSpecialtys";
-import { ServiceOrder } from "../ServiceOrder/ServiceOrder";
+import { Machine } from "@/domain/entities/Machine/Machine";
+import { WorkerSpecialtys } from "@/domain/entities/Worker/WorkerSpecialtys";
+import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 
 @Entity()
 export class PreventiveAction {

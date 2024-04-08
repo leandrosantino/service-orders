@@ -1,6 +1,7 @@
 import fs, { readFileSync } from 'fs'
-// import path from 'path'
+import path from 'path'
 import {watch} from 'chokidar'
+
 
 export class FsUtils {
 
@@ -16,11 +17,16 @@ export class FsUtils {
     return files
   }
 
-  readFile(path: string){
-    if(!fs.existsSync(path)){
+  readFile(filename: string){
+    console.log(path.join(this.directory, filename))
+    if(!fs.existsSync(path.join(this.directory, filename))){
       throw new Error("File is not found!")
     }
-    return fs.readFileSync(path).toString()
+    return fs.readFileSync(path.join(this.directory, filename)).toString()
+  }
+
+  writeFile(filename: string){
+    return fs.writeFileSync(path.join(this.directory, filename), 'teste')
   }
 
 

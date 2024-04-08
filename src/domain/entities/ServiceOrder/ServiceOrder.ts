@@ -1,8 +1,9 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { WorkerSpecialtys } from "test";
-import { Worker } from "test";
-import { Machine } from "test";
-import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
+import { WorkerSpecialtys } from "@/domain/entities/Worker/WorkerSpecialtys";
+import { Worker } from "@/domain/entities/Worker/Worker";
+import { Machine } from "@/domain/entities/Machine/Machine";
+import { PreventiveAction } from "@/domain/entities/PreventiveAction/PreventiveAction";
+import { ServiceOrderTypes } from "./ServiceOrderTypes";
 
 @Entity()
 export class ServiceOrder {
@@ -10,7 +11,7 @@ export class ServiceOrder {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column('nchar')
+  @Column('nchar', {nullable: true})
   weekCode?: string
 
   @Column('date')
@@ -29,19 +30,20 @@ export class ServiceOrder {
   concluded: boolean
 
   @Column('nchar')
-  specialty: WorkerSpecialtys
+  type: ServiceOrderTypes
+
+  @Column('nchar', {nullable: true})
+  specialty?: WorkerSpecialtys
 
   @ManyToOne(() => Machine, (machine) => machine.serviceOrders)
   machine: Machine
 
   @ManyToMany(() => Worker)
   @JoinColumn()
-  responsible: Worker[]
-
+  responsibles: Worker[]
 
   @OneToMany(() => PreventiveAction, (preventiveAction)=> preventiveAction.serviceOrder)
-  preventiveActions: PreventiveAction[]
-
+  preventiveActions?: PreventiveAction[]
 
   setWeekCode(value: string){
     this.weekCode = value

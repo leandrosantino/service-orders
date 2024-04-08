@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
-import { Technology } from "../Technology/Technology";
+import { Technology } from "@/domain/entities/Technology/Technology";
 
 @Entity()
 export class Machine {

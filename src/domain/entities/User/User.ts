@@ -1,5 +1,5 @@
 import { Entity, Column, Generated, PrimaryColumn } from "typeorm"
-import { UserRole } from "./UserRoules"
+import { UserRole } from "@/domain/entities/User/UserRoules"
 import { ObjectUtils } from "@/utils/ObjectUtils"
 
 
