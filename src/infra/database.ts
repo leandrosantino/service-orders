@@ -10,7 +10,7 @@ import { Cause } from "@/domain/entities/Cause/Cause"
 
 export const database = new DataSource({
     type: "sqlite",
-    database: "database.sqlite",
+    database: "database/database.sqlite",
     synchronize: true,
     logging: false,
     entities: [User, Worker, Machine, ServiceOrder, PreventiveAction, Zone, Technology, Cause],
