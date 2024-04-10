@@ -1,13 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Generated, OneToMany, PrimaryColumn } from "typeorm";
 import { Machine } from "@/domain/entities/Machine/Machine";
 
-@Entity()
+@Entity({name: 'technology'})
 export class Technology {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({type: 'nchar', name: 'id'})
+  @Generated("uuid")
   id: number
 
-  @Column('nchar')
+  @Column('nchar', {name: 'description'})
   description: string
 
   @OneToMany(() => Machine, (machine) => machine.technology)

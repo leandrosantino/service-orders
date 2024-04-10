@@ -5,7 +5,7 @@ import { database } from "../database";
 
 export class ServiceOrderRepository implements IServiceOrderRepository{
 
-  repository: Repository<ServiceOrder>
+  private repository: Repository<ServiceOrder>
 
   constructor() {
     this.repository = database.getRepository(ServiceOrder)

@@ -1,5 +1,5 @@
 import { contextBridge } from 'electron';
-import { ipcInvoke } from '@/utils/ipcInvoke';
+import { ipcInvoke } from '@/infra/ipcInvoke'
 
 const preloadMethods = {
   invoke: ipcInvoke

@@ -1,16 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Generated, PrimaryColumn } from "typeorm";
 
-@Entity()
+@Entity({name: 'zone'})
 export class Zone {
 
-  @PrimaryGeneratedColumn()
-  id: number
+  @PrimaryColumn({type: 'nchar', name: 'id'})
+  @Generated("uuid")
+  id: string
 
-  @Column('nchar')
-  slug: string
+  @Column('nchar', {name: 'name'})
+  name: string
 
   setSlug(value: string){
-    this.slug = value
+    this.name = value
     return this
   }
 

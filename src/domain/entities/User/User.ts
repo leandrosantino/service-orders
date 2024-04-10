@@ -3,26 +3,26 @@ import { UserRole } from "@/domain/entities/User/UserRoules"
 import { ObjectUtils } from "@/utils/ObjectUtils"
 
 
-@Entity()
+@Entity({name: 'user'})
 export class User {
 
-    @PrimaryColumn({type: 'nchar'})
+    @PrimaryColumn({type: 'nchar', name: 'id'})
     @Generated("uuid")
     id: string
 
-    @Column('nchar')
+    @Column('nchar', {name: 'first_name'})
     firstName: string
 
-    @Column('nchar')
+    @Column('nchar', {name: 'last_name'})
     lastName: string
 
-    @Column({type: 'int', unique: true})
+    @Column('int', {unique: true, name: 'register'})
     register: number
 
-    @Column('nchar')
+    @Column('nchar', {name: 'password'})
     password: string
 
-    @Column('nchar')
+    @Column('nchar', {name: 'role'})
     roule: UserRole
 
 

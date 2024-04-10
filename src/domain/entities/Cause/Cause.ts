@@ -1,16 +1,16 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 
-@Entity()
+@Entity({name: 'cause'})
 export class Cause {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({name: 'id'})
   id: number
 
-  @Column('nchar')
+  @Column('nchar', {name: 'description'})
   description: string
 
-  @Column('nchar', {length: 1, unique: true})
+  @Column('nchar', {length: 1, unique: true, name: 'code'})
   code: string
 
   @OneToMany(() => ServiceOrder, (serviceOrder) => serviceOrder.machine)

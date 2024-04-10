@@ -1,20 +1,22 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { Technology } from "@/domain/entities/Technology/Technology";
 
-@Entity()
+@Entity({name: 'machine'})
 export class Machine {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({name: 'id'})
   id: number
 
-  @Column('nchar')
+  @Column('nchar', {name: 'tag'})
   tag: string
 
-  @Column('nchar')
+  //Mudar para um relacionamento com a entidade Zone
+  @Column('nchar', {name: 'ute'})
   ute: string
 
   @ManyToOne(() => Technology, (technology) => technology.machines)
+  @JoinColumn({name: 'technology'})
   technology: Technology
 
   @OneToMany(() => ServiceOrder, (serviceOrder) => serviceOrder.machine)

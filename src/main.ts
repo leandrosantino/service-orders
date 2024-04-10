@@ -5,8 +5,8 @@ import 'reflect-metadata'
 import { database } from './infra/database';
 import { servicesFactory } from './infra/factories/servicesFactory';
 
-// import { UserRole } from './domain/entities/User/UserRoules';
-// import { User } from './domain/entities/User/User';
+import { UserRole } from './domain/entities/User/UserRoules';
+import { User } from './domain/entities/User/User';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -46,20 +46,20 @@ const createWindow = () => {
 
   mainWindow.once('ready-to-show', async () => {
       await database.initialize()
-      servicesFactory()
+      const services = servicesFactory()
 
-      // try{
-      //   const user = new User()
-      //     .setFirstName('Leandro')
-      //     .setLastName('Santino')
-      //     .setRegister(913)
-      //     .setPassword('123456789')
-      //     .setRoule(UserRole.LEADER)
+      try{
+        const user = new User()
+          .setFirstName('Leandro')
+          .setLastName('Santino')
+          .setRegister(913)
+          .setPassword('123456789')
+          .setRoule(UserRole.LEADER)
 
-      //   await services.userService.create(user)
-      // }catch{
-      //   null
-      // }
+        await services.userService.create(user)
+      }catch{
+        null
+      }
 
       mainWindow?.show()
       mainWindow?.maximize()

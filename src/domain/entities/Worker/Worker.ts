@@ -1,19 +1,20 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Generated, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm'
 import { User } from '@/domain/entities/User/User'
 import { WorkerSpecialtys } from '@/domain/entities/Worker/WorkerSpecialtys'
 import { ObjectUtils } from '@/utils/ObjectUtils'
 
-@Entity()
+@Entity({name: 'worker'})
 export class Worker {
 
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryColumn({type: 'nchar', name: 'id'})
+    @Generated("uuid")
+    id: string
 
     @OneToOne(() => User)
-    @JoinColumn()
+    @JoinColumn({name: 'user_data'})
     userData: User
 
-    @Column('nchar')
+    @Column('nchar', {name: 'specialty'})
     specialty: WorkerSpecialtys
 
     setSpecialty(value: WorkerSpecialtys) {

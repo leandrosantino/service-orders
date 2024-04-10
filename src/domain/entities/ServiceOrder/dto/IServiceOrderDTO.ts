@@ -21,7 +21,8 @@ const excludedProperties  = [
   'createdAt',
   'id',
   'updatedAt',
-  'cause'
+  'cause',
+  'concluded'
 ] as const
 
 export interface ICreateServiceOrderRequestDTO {

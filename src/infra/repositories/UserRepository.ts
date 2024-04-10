@@ -5,7 +5,7 @@ import { FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
 
 export class UserRepository implements IUserRepository {
 
-  repository: Repository<User>
+  private repository: Repository<User>
 
   constructor (){
     this.repository = database.getRepository(User)

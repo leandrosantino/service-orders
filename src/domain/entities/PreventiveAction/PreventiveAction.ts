@@ -1,30 +1,31 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, Generated, ManyToOne, PrimaryColumn } from "typeorm";
 import { Machine } from "@/domain/entities/Machine/Machine";
 import { WorkerSpecialtys } from "@/domain/entities/Worker/WorkerSpecialtys";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 
-@Entity()
+@Entity({name: 'preventive_action'})
 export class PreventiveAction {
 
-  @PrimaryGeneratedColumn()
+  @PrimaryColumn({type: 'nchar', name: 'id'})
+  @Generated("uuid")
   id: number
 
-  @Column('nchar')
+  @Column('nchar', {name: 'description'})
   description: string
 
-  @Column('nchar')
+  @Column('nchar', {name: 'execution'})
   excution: string
 
-  @Column('int')
+  @Column('int', {name: 'frequency_in_weeks'})
   frequencyInWeeks: number
 
-  @Column('nchar')
-  nextExecution: string
+  @Column('date', {name: 'next_execution'})
+  nextExecution: Date
 
-  @Column('boolean')
+  @Column('boolean', {name: 'ignore'})
   ignore: boolean
 
-  @Column('nchar')
+  @Column('nchar', {name: 'specialtys'})
   specialtys: WorkerSpecialtys
 
   @ManyToOne(()=> Machine)
@@ -37,22 +38,27 @@ export class PreventiveAction {
     this.description = value
     return this
   }
+
   setExcution(value: string) {
     this.excution = value
     return this
   }
+
   setFrequencyInWeeks(value: number) {
     this.frequencyInWeeks = value
     return this
   }
-  setNextExecution(value: string) {
+
+  setNextExecution(value: Date) {
     this.nextExecution = value
     return this
   }
+
   setIgnore(value: boolean) {
     this.ignore = value
     return this
   }
+
   setSpecialtys(value: WorkerSpecialtys) {
     this.specialtys = value
     return this
