@@ -1,11 +1,20 @@
 import React from 'react'
 import {createRoot} from 'react-dom/client'
-import './styles/global.css'
 import { AppRoutes } from './routes'
 import { AuthProvider } from './contexts/authContext'
+import { ThemeModeProvider } from './contexts/themeContext.js'
+import { SideBarContextProvider } from './contexts/sideBarContext.js'
+import { GlobalStyle } from './styles/global'
 
 createRoot(document.getElementById('root') as HTMLElement).render(
-  <AuthProvider>
-    <AppRoutes/>
-  </AuthProvider>
+  <ThemeModeProvider>
+    <AuthProvider>
+
+        <SideBarContextProvider>
+          <GlobalStyle />
+          <AppRoutes />
+        </SideBarContextProvider>
+
+    </AuthProvider>
+  </ThemeModeProvider>
 )
