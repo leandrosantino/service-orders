@@ -10,9 +10,13 @@ export const Main = styled.main<{ isAuth: 'true' | 'false' }>`
   grid-template-columns: 25.6rem auto;
   header{grid-area: head}
   aside{grid-area: side;}
+
   &>section{
     padding: 1.2rem;
     grid-area: content;
+    display: flex;
+    justify-content: center;
+    align-items: start;
   }
 
   @media(max-width: 1000px){

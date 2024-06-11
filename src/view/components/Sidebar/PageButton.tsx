@@ -6,7 +6,7 @@ import { type ToggleGroupItemProps } from '@radix-ui/react-toggle-group'
 import React from 'react'
 
 interface Props extends ToggleGroupItemProps {
-  permission?: UserRole
+  permission?: UserRole[]
 }
 
 export function PageButton ({ value, children, permission, ...rest }: Props) {

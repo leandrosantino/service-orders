@@ -1,13 +1,12 @@
 import React from 'react'
 import { Route, Router } from 'electron-router-dom'
 
-// import { Home } from '@/view/screens/Home'
-// import { Test } from '@/view/screens/Test'
 import { Layout } from './components/Layout'
 import { UserRole } from '@/domain/entities/User/UserRoules'
 import { RequireAuth } from './RequireAuth'
 import { SignIn } from './screens/signIn'
 import { UserInfo } from './screens/userInfo'
+import { Home } from './screens/home'
 
 export function AppRoutes() {
   return (
@@ -19,7 +18,7 @@ export function AppRoutes() {
             <Route path="/signIn" element={<SignIn />} />
             <Route element={<RequireAuth />} >
 
-              <Route path="" element={<h1>Bem vindo!</h1>} />
+              <Route path="" element={<Home/>} />
               <Route path="/serviceOrders" element={<h1>Teste</h1>} />
               <Route path="/preventiveActions" element={<>preventiveActions</>} />
               <Route path="/settings" element={<>config</>} />

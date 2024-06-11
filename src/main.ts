@@ -15,8 +15,8 @@ if (require('electron-squirrel-startup')) {
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
     title: 'Ordens de Serviço',
-    minHeight: 700,
-    minWidth: 1350,
+    minHeight: 750,
+    minWidth: 1400,
     show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),

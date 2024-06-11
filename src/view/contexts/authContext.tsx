@@ -9,7 +9,7 @@ interface AuthContextProps {
   user: IUserResponseDTO | null
   signIn: (register: number, password: string) => Promise<void>
   signOut: () => void
-  verifyUserPermisson: (userRole: IUserResponseDTO["roule"]) => boolean
+  verifyUserPermisson: (userRoles: IUserResponseDTO["roule"][]) => boolean
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
@@ -19,12 +19,12 @@ export function AuthProvider ({ children }: { children: ReactNode }) {
   const [isAuth, setAuth] = useState(false)
   const [user, setUser] = useState<IUserResponseDTO | null>(null)
 
-  function verifyUserPermisson(userRole?: UserRole){
+  function verifyUserPermisson(userRoles?: UserRole[]){
     if(user.roule === UserRole.ROOT){
       return true
     }
-    if(userRole){
-      return userRole === user.roule
+    if(userRoles){
+      return userRoles.includes(user.roule)
     }
     return true
   }
