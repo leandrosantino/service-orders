@@ -1,4 +1,4 @@
-import { FsUtils } from "./src/utils/FsUtils";
+import { FsUtils } from "../src/utils/FsUtils";
 import path from 'path'
 
 // ;(async () => {

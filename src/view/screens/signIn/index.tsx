@@ -28,34 +28,27 @@ export function SignIn () {
     if (isAuth) {
       navigate('/')
     }
-    // signIn('admin', 'frd4aws2')
-    //   .then(() => {
-    //     navigate('/')
-    //   })
-    //   .catch(err => {
-    //     const message = (err as Error).message
-    //     setIsError({
-    //       userName: message === 'Unregistered User',
-    //       password: message === 'Invalid Password!'
-    //     })
-    //     console.log(message)
-    //   })
+    auth(913, '123456789')
   })
+
+  function auth(register: number, password: string ){
+    signIn(register, password)
+    .then(() => {
+      navigate('/')
+    })
+    .catch(err => {
+      const message = (err as Error).message
+      setIsError({
+        register: message === 'Unregistered User',
+        password: message === 'Invalid Password!'
+      })
+      console.log(message)
+    })
+  }
 
   function handleSignIn (event: FormEvent) {
     event.preventDefault()
-    signIn(Number(register), password)
-      .then(() => {
-        navigate('/')
-      })
-      .catch(err => {
-        const message = (err as Error).message
-        setIsError({
-          register: message === 'Unregistered User',
-          password: message === 'Invalid Password!'
-        })
-        console.log(message)
-      })
+    auth(Number(register), password)
   }
 
   return (

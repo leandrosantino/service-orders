@@ -19,8 +19,14 @@ export function AuthProvider ({ children }: { children: ReactNode }) {
   const [isAuth, setAuth] = useState(false)
   const [user, setUser] = useState<IUserResponseDTO | null>(null)
 
-  function verifyUserPermisson(userRole: UserRole){
-    return userRole === user.roule
+  function verifyUserPermisson(userRole?: UserRole){
+    if(user.roule === UserRole.ROOT){
+      return true
+    }
+    if(userRole){
+      return userRole === user.roule
+    }
+    return true
   }
 
   async function signIn (register: number, password: string) {

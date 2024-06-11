@@ -4,7 +4,7 @@ import { PageButton } from './PageButton'
 import { Link, useLocation } from 'react-router-dom'
 import { useSideBarShow } from '../../hooks/useSideBarShow'
 import { ShowSideBarButton } from '../ShowSideBarButton'
-import { UserRole } from '@/domain/entities/User/UserRoules'
+// import { UserRole } from '@/domain/entities/User/UserRoules'
 
 export function Sidebar () {
   const { pathname } = useLocation()
@@ -38,7 +38,7 @@ export function Sidebar () {
         value={alignment}
       >
 
-        <PageButton permission={UserRole.LEADER} value="/" >Home</PageButton>
+        <PageButton value="/" >Home</PageButton>
 
       </ToggleGroupRoot>
     </Aside >
