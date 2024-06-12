@@ -12,4 +12,5 @@ export interface IServiceOrderService {
   closeServiceOrder(data: ICloseServiceOrderDTO): IResponseEntity<ServiceOrderResponseDTO>
   closePreventiveServiceOrder(data: ICreateServiceOrderRequestDTO): IResponseEntity<ServiceOrderResponseDTO>
   listPreventiveServiceOrders(): IResponseEntity<ServiceOrderResponseDTO[]>
+  teste(): Promise<void>
 }

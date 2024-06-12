@@ -1,6 +1,6 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
-import { Technology } from "@/domain/entities/Technology/Technology";
+import { Zone } from "./Zone";
 
 @Entity({name: 'machine'})
 export class Machine {
@@ -11,13 +11,11 @@ export class Machine {
   @Column('nchar', {name: 'tag'})
   tag: string
 
-  //Mudar para um relacionamento com a entidade Zone
   @Column('nchar', {name: 'ute'})
-  ute: string
+  ute: Zone
 
-  @ManyToOne(() => Technology, (technology) => technology.machines)
-  @JoinColumn({name: 'technology'})
-  technology: Technology
+  @Column('nchar', {name: 'technology'})
+  technology: string
 
   @OneToMany(() => ServiceOrder, (serviceOrder) => serviceOrder.machine)
   serviceOrders?: ServiceOrder[]
@@ -27,11 +25,11 @@ export class Machine {
     this.tag = value
     return this
   }
-  setUte(value: string) {
+  setUte(value: Zone) {
     this.ute = value
     return this
   }
-  setTechnology(value: Technology) {
+  setTechnology(value: string) {
     this.technology = value
     return this
   }

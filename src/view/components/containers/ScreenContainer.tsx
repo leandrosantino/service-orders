@@ -8,7 +8,6 @@ export const ScreenContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: .8rem;
   padding: 1.2rem;
 

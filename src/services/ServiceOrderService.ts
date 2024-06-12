@@ -17,6 +17,26 @@ export class ServiceOrderService implements IServiceOrderService{
   @Autowired(MachineRepository)
   machineRepository: IMachineRepository
 
+
+  async teste() {
+
+    this.serviceOrderRepository.find({
+      where:{
+        id: true
+      },
+      relations: {
+        machine: {
+          technology: true as never
+        }
+      },
+      select:{
+        id: true
+      }
+    })
+
+    return
+  }
+
   @IpcChannel()
   createServiceOrder({data, machineId}: ICreateServiceOrderRequestDTO): IResponseEntity<Properties<ServiceOrder>> {
 

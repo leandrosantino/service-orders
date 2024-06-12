@@ -1,4 +1,4 @@
-import { Entity, Column, Generated, PrimaryColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
 import { UserRole } from "@/domain/entities/User/UserRoules"
 import { ObjectUtils } from "@/utils/ObjectUtils"
 
@@ -6,9 +6,8 @@ import { ObjectUtils } from "@/utils/ObjectUtils"
 @Entity({name: 'user'})
 export class User {
 
-    @PrimaryColumn({type: 'nchar', name: 'id'})
-    @Generated("uuid")
-    id: string
+    @PrimaryGeneratedColumn({name: 'id'})
+    id: number
 
     @Column('nchar', {name: 'first_name'})
     firstName: string

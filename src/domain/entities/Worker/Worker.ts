@@ -1,23 +1,22 @@
 import { User } from '@/domain/entities/User/User'
-import { WorkerSpecialtys } from '@/domain/entities/Worker/WorkerSpecialtys'
+import { Specialty } from '@/domain/entities/Worker/Specialty'
 import { ObjectUtils } from '@/utils/ObjectUtils'
-import { Column, Entity, Generated, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm'
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'worker' })
 export class Worker {
 
-    @PrimaryColumn({ type: 'nchar', name: 'id' })
-    @Generated("uuid")
-    id: string
+    @PrimaryGeneratedColumn({name: 'id'})
+    id: number
 
     @OneToOne(() => User)
     @JoinColumn({ name: 'user_data' })
     userData: User
 
     @Column('nchar', { name: 'specialty' })
-    specialty: WorkerSpecialtys
+    specialty: Specialty
 
-    setSpecialty(value: WorkerSpecialtys) {
+    setSpecialty(value: Specialty) {
         this.specialty = value
         return this
     }
@@ -28,7 +27,7 @@ export class Worker {
     }
 
     static getWorkerSpecialtyValues() {
-        const specialtys = ObjectUtils.listNoNumberProperties(WorkerSpecialtys)
+        const specialtys = ObjectUtils.listNoNumberProperties(Specialty)
         return specialtys
     }
 

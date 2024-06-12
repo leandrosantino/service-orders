@@ -1,13 +1,12 @@
-import { Column, Entity, Generated, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Machine } from "@/domain/entities/Machine/Machine";
-import { WorkerSpecialtys } from "@/domain/entities/Worker/WorkerSpecialtys";
-import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
+import { Specialty } from "@/domain/entities/Worker/Specialty";
+import { PreventiveServiceOrder } from "../PreventiveServiceOrder/PreventiveServiceOrder";
 
 @Entity({name: 'preventive_action'})
 export class PreventiveAction {
 
-  @PrimaryColumn({type: 'nchar', name: 'id'})
-  @Generated("uuid")
+  @PrimaryGeneratedColumn({type: 'int', name: 'id'})
   id: number
 
   @Column('nchar', {name: 'description'})
@@ -16,23 +15,20 @@ export class PreventiveAction {
   @Column('nchar', {name: 'execution'})
   excution: string
 
-  @Column('int', {name: 'frequency_in_weeks'})
-  frequencyInWeeks: number
-
   @Column('date', {name: 'next_execution'})
   nextExecution: Date
-
-  @Column('boolean', {name: 'ignore'})
-  ignore: boolean
-
-  @Column('nchar', {name: 'specialtys'})
-  specialtys: WorkerSpecialtys
 
   @ManyToOne(()=> Machine)
   machine: Machine
 
-  @ManyToOne(()=> ServiceOrder, (serviceOrder) => serviceOrder.preventiveActions)
-  serviceOrder: ServiceOrder
+  @Column('nchar', {name: 'nature'})
+  nature: Specialty
+
+  @Column('int', {name: 'frequency_in_weeks'})
+  frequencyInWeeks: number
+
+  @ManyToOne(()=> PreventiveServiceOrder, (PreventiveServiceOrder) => PreventiveServiceOrder.preventiveActions)
+  preventiveServiceOrder: PreventiveServiceOrder
 
   setDescription(value: string) {
     this.description = value
@@ -54,13 +50,8 @@ export class PreventiveAction {
     return this
   }
 
-  setIgnore(value: boolean) {
-    this.ignore = value
-    return this
-  }
-
-  setSpecialtys(value: WorkerSpecialtys) {
-    this.specialtys = value
+  setSpecialtys(value: Specialty) {
+    this.nature = value
     return this
   }
 

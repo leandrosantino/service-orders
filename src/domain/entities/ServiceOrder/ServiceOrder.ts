@@ -1,16 +1,14 @@
-import { Column, CreateDateColumn, Entity, Generated, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { WorkerSpecialtys } from "@/domain/entities/Worker/WorkerSpecialtys";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Specialty } from "@/domain/entities/Worker/Specialty";
 import { Worker } from "@/domain/entities/Worker/Worker";
 import { Machine } from "@/domain/entities/Machine/Machine";
-import { PreventiveAction } from "@/domain/entities/PreventiveAction/PreventiveAction";
 import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
 import { Cause } from "../Cause/Cause";
 
 @Entity({name: 'service_order'})
 export class ServiceOrder {
 
-  @PrimaryColumn({type: 'nchar', name: 'id'})
-  @Generated("uuid")
+  @PrimaryGeneratedColumn({name: 'id'})
   id: number
 
   @Column('nchar', {nullable: true, name: 'week_code'})
@@ -41,7 +39,7 @@ export class ServiceOrder {
   type: ServiceOrderTypes
 
   @Column('nchar', {nullable: true, name: 'specialty'})
-  specialty?: WorkerSpecialtys
+  specialty?: Specialty
 
   @ManyToOne(() => Machine, (machine) => machine.serviceOrders)
   machine: Machine
@@ -52,9 +50,6 @@ export class ServiceOrder {
   @ManyToMany(() => Worker, {nullable: true})
   @JoinColumn({name: 'responsibles'})
   responsibles?: Worker[]
-
-  @OneToMany(() => PreventiveAction, (preventiveAction)=> preventiveAction.serviceOrder, {nullable: true})
-  preventiveActions?: PreventiveAction[]
 
   setWeekCode(value: string){
     this.weekCode = value
@@ -84,7 +79,7 @@ export class ServiceOrder {
     this.type = value
     return this
   }
-  setSpecialty(value: WorkerSpecialtys){
+  setSpecialty(value: Specialty){
     this.specialty = value
     return this
   }
