@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Machine } from "@/domain/entities/Machine/Machine";
 import { Specialty } from "@/domain/entities/Worker/Specialty";
 import { PreventiveServiceOrder } from "../PreventiveServiceOrder/PreventiveServiceOrder";
@@ -28,6 +28,7 @@ export class PreventiveAction {
   frequencyInWeeks: number
 
   @ManyToOne(()=> PreventiveServiceOrder, (PreventiveServiceOrder) => PreventiveServiceOrder.preventiveActions)
+  @JoinColumn({name: 'preventiveServiceOrderId'})
   preventiveServiceOrder: PreventiveServiceOrder
 
   setDescription(value: string) {

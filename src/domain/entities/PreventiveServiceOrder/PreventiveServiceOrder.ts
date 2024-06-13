@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "ty
 import { Machine } from "../Machine/Machine";
 import { Specialty } from "../Worker/Specialty";
 import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
+import { PendingPreventiveServiceOrder } from "../PendingPreventiveServiceOrder/PendingPreventiveServiceOrder";
 
 @Entity('preventive_service_order')
 export class PreventiveServiceOrder{
@@ -18,7 +19,10 @@ export class PreventiveServiceOrder{
   @Column('int', {name: 'frequency_in_weeks'})
   frequencyInWeeks: number
 
-  @OneToMany(() => PreventiveAction, (preventiveAction)=> preventiveAction.preventiveServiceOrder, {nullable: false})
+  @OneToMany(() => PreventiveAction, (preventiveAction)=> preventiveAction.preventiveServiceOrder)
   preventiveActions?: PreventiveAction[]
+
+  @OneToMany(() => PendingPreventiveServiceOrder, (pendingPreventiveServiceOrders) => pendingPreventiveServiceOrders.preventiveServiceOrder)
+  pendingPreventiveServiceOrders: PendingPreventiveServiceOrder[]
 
 }

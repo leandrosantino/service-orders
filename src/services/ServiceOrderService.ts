@@ -20,19 +20,21 @@ export class ServiceOrderService implements IServiceOrderService{
 
   async teste() {
 
-    this.serviceOrderRepository.find({
+    const a = await this.serviceOrderRepository.find({
       where:{
-        id: true
+        machine: {
+          id: 2
+        }
       },
       relations: {
-        machine: {
-          technology: true as never
-        }
+        machine: true
       },
       select:{
         id: true
       }
     })
+
+    console.log(a)
 
     return
   }

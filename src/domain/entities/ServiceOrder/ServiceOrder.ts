@@ -1,9 +1,10 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Specialty } from "@/domain/entities/Worker/Specialty";
 import { Worker } from "@/domain/entities/Worker/Worker";
 import { Machine } from "@/domain/entities/Machine/Machine";
 import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
 import { Cause } from "../Cause/Cause";
+import { PendingPreventiveServiceOrder } from "../PendingPreventiveServiceOrder/PendingPreventiveServiceOrder";
 
 @Entity({name: 'service_order'})
 export class ServiceOrder {
@@ -23,10 +24,10 @@ export class ServiceOrder {
   @Column('nchar', {name: 'solution_description'})
   solutionDescription : string
 
-  @CreateDateColumn({})
+  @CreateDateColumn({name: 'createdAt'})
   createdAt: Date
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({name: 'updatedAt'})
   updatedAt: Date
 
   @Column('int', {name: 'duration_in_minutes'})
@@ -42,14 +43,20 @@ export class ServiceOrder {
   specialty?: Specialty
 
   @ManyToOne(() => Machine, (machine) => machine.serviceOrders)
+  @JoinColumn({name: 'machineId'})
   machine: Machine
 
   @ManyToOne(() => Cause, (cause) => cause.serviceOrders)
+  @JoinColumn({name: 'causeId'})
   cause: Cause
 
-  @ManyToMany(() => Worker, {nullable: true})
-  @JoinColumn({name: 'responsibles'})
+  @ManyToMany(() => Worker, (worker) => worker.serviceOrders, {nullable: true})
+  @JoinTable({name: 'service_order_responsibles'})
   responsibles?: Worker[]
+
+  @OneToOne(() => PendingPreventiveServiceOrder, (pendingPreventiveServiceOrder) => pendingPreventiveServiceOrder.serviceOrder)
+  @JoinColumn({name: 'preventiveServiceOrderId'})
+  preventiveServiceOrder: PendingPreventiveServiceOrder
 
   setWeekCode(value: string){
     this.weekCode = value
