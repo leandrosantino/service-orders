@@ -11,6 +11,7 @@
       "publish": "electron-forge publish",
       "lint": "eslint --ext .ts,.tsx .",
       "typeorm": "typeorm-ts-node-commonjs",
+      "py": "python ./scripts/index.py",
       "test": "npx tsx ./test.ts"
    },
    "devDependencies": {
