@@ -11,10 +11,14 @@ export class PreventiveServiceOrder{
   id: number
 
   @ManyToOne(()=> Machine)
+  @JoinColumn({name: 'machineId'})
   machine: Machine
 
   @Column('nchar', {name: 'nature'})
   nature: Specialty
+
+  @Column('date', {name: 'next_execution'})
+  nextExecution: Date
 
   @Column('int', {name: 'frequency_in_weeks'})
   frequencyInWeeks: number

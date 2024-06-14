@@ -20,7 +20,6 @@ export class Machine {
   @OneToMany(() => ServiceOrder, (serviceOrder) => serviceOrder.machine)
   serviceOrders?: ServiceOrder[]
 
-
   setTag(value: string) {
     this.tag = value
     return this

@@ -1,5 +1,4 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Machine } from "@/domain/entities/Machine/Machine";
 import { Specialty } from "@/domain/entities/Worker/Specialty";
 import { PreventiveServiceOrder } from "../PreventiveServiceOrder/PreventiveServiceOrder";
 
@@ -14,18 +13,6 @@ export class PreventiveAction {
 
   @Column('nchar', {name: 'execution'})
   excution: string
-
-  @Column('date', {name: 'next_execution'})
-  nextExecution: Date
-
-  @ManyToOne(()=> Machine)
-  machine: Machine
-
-  @Column('nchar', {name: 'nature'})
-  nature: Specialty
-
-  @Column('int', {name: 'frequency_in_weeks'})
-  frequencyInWeeks: number
 
   @ManyToOne(()=> PreventiveServiceOrder, (PreventiveServiceOrder) => PreventiveServiceOrder.preventiveActions)
   @JoinColumn({name: 'preventiveServiceOrderId'})
@@ -57,3 +44,12 @@ export class PreventiveAction {
   }
 
 }
+
+  // @ManyToOne(()=> Machine)
+  // machine: Machine
+
+  // @Column('nchar', {name: 'nature'})
+  // nature: Specialty
+
+  // @Column('int', {name: 'frequency_in_weeks'})
+  // frequencyInWeeks: number
