@@ -2,6 +2,7 @@ select
   prev.description,
   prev.excution,
   prev.frequency,
+  prev.machineId,
   m.tag as machineName,
   n.name as nature
 from (

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Machine } from "../Machine/Machine";
 import { Specialty } from "../Worker/Specialty";
 import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
@@ -17,7 +17,7 @@ export class PreventiveServiceOrder{
   @Column('nchar', {name: 'nature'})
   nature: Specialty
 
-  @Column('date', {name: 'next_execution'})
+  @Column('date', {name: 'next_execution', nullable: true})
   nextExecution: Date
 
   @Column('int', {name: 'frequency_in_weeks'})

@@ -28,20 +28,20 @@ export class PreventiveAction {
     return this
   }
 
-  setFrequencyInWeeks(value: number) {
-    this.frequencyInWeeks = value
-    return this
-  }
+  // setFrequencyInWeeks(value: number) {
+  //   this.frequencyInWeeks = value
+  //   return this
+  // }
 
-  setNextExecution(value: Date) {
-    this.nextExecution = value
-    return this
-  }
+  // setNextExecution(value: Date) {
+  //   this.nextExecution = value
+  //   return this
+  // }
 
-  setSpecialtys(value: Specialty) {
-    this.nature = value
-    return this
-  }
+  // setSpecialtys(value: Specialty) {
+  //   this.nature = value
+  //   return this
+  // }
 
 }
 

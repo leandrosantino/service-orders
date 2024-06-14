@@ -10,7 +10,7 @@ def getSqlCommand():
     return command
 
 def createSqlMigration(file_name: str, content: list[str]):
-    with open(file_name, 'w') as file:
+    with open(file_name, 'w', encoding='utf-8') as file:
         for statement in content:
             file.write(statement + '\n')
 
@@ -34,7 +34,7 @@ for index, action in preventiveActions.iterrows():
     else:
         preventiveServiceOrders[code] = {
             'id': i,
-            'machineName': action['machineName'],
+            'machineId': action['machineId'],
             'nature': action['nature'],
             'frequency': action['frequency'],
             'nextExecution': week[action['frequency']]
@@ -53,14 +53,25 @@ print(preventiveServiceOrders.head())
 
 insert_statements = []
 for i, row in preventiveActions.iterrows():
-    insert_statement = f"INSERT INTO {table_name} (nome, idade, cidade) VALUES ('{row['nome']}', {row['idade']}, '{row['cidade']}');"
+    desc = str(row["description"]).replace('\n', ' ')
+    insert_statement = f"""
+        INSERT INTO preventive_action 
+        (description, execution, preventiveServiceOrderId) VALUES 
+        ('{desc}', '{row["excution"]}', {row["serviceOrderId"]});
+    """
     insert_statements.append(insert_statement)
-    pass
+
 createSqlMigration('./scripts/out/preventive_actions.sql', insert_statements)
 
 insert_statements = []
 for i, row in preventiveServiceOrders.iterrows():
-    pass
+    insert_statement = f"""
+        INSERT INTO preventive_service_order 
+        (id, nature, frequency_in_weeks, machineId) VALUES 
+        ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, {row["machineId"]});
+    """
+    insert_statements.append(insert_statement)
+    
 createSqlMigration('./scripts/out/preventive_service_orders.sql', insert_statements)
 # preventiveActions.to_excel('./scripts/out/preventive_actions.xlsx', index=False)
 # preventiveServiceOrders.to_excel('./scripts/out/preventive_service_orders.xlsx', index=False)
