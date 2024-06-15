@@ -3,19 +3,35 @@ import sqlite3
 
 connection = sqlite3.connect('D:\\dev\\QuickOS\\database\\app.db')
 
-def getSqlCommand():
-    command = ''
-    with open('./scripts/query.sql', 'r', encoding='utf-8') as file:
-        command = file.read()
-    return command
-
 def createSqlMigration(file_name: str, content: list[str]):
     with open(file_name, 'w', encoding='utf-8') as file:
         for statement in content:
             file.write(statement + '\n')
 
 preventiveActions = pd.read_sql(
-    sql= getSqlCommand(),
+    sql= """--sql
+        select
+            prev.description,
+            prev.excution,
+            prev.frequency,
+            prev.machineId,
+            m.tag as machineName,
+            n.name as nature
+        from (
+            select distinct
+                p.description,
+                p.machineId,
+                p.excution,
+                p.frequency,
+                p.natureId
+            from PreventiveAction as p
+            order by p.frequency desc
+        ) as prev
+        inner join Machine as m
+        on m.id = prev.machineId
+        inner join Nature as n
+        on n.id = prev.natureId
+    """,
     con= connection
 )
 
@@ -50,30 +66,22 @@ preventiveServiceOrders = pd.DataFrame(list(preventiveServiceOrders.values()))
 print(preventiveActions.head(100))
 print(preventiveServiceOrders.head())
 
-
 insert_statements = []
 for i, row in preventiveActions.iterrows():
-    desc = str(row["description"]).replace('\n', ' ')
     insert_statement = f"""
-        INSERT INTO preventive_action 
-        (description, execution, preventiveServiceOrderId) VALUES 
-        ('{desc}', '{row["excution"]}', {row["serviceOrderId"]});
-    """
+insert into preventive_action (description, execution, preventiveServiceOrderId) values ('{row["description"].replace("'", '"')}', '{row["excution"].replace("'", '"')}', {row["serviceOrderId"]});
+    """.replace('\n', ' ').replace('\r', '')
     insert_statements.append(insert_statement)
 
-createSqlMigration('./scripts/out/preventive_actions.sql', insert_statements)
+createSqlMigration('./scripts/seed/preventive_action.sql', insert_statements)
 
 insert_statements = []
 for i, row in preventiveServiceOrders.iterrows():
     insert_statement = f"""
-        INSERT INTO preventive_service_order 
-        (id, nature, frequency_in_weeks, machineId) VALUES 
-        ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, {row["machineId"]});
-    """
+insert into preventive_service_order (id, nature, frequency_in_weeks, machineId) values ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, {row["machineId"]});
+    """.replace('\n', ' ').replace('\r', '')
     insert_statements.append(insert_statement)
-    
-createSqlMigration('./scripts/out/preventive_service_orders.sql', insert_statements)
-# preventiveActions.to_excel('./scripts/out/preventive_actions.xlsx', index=False)
-# preventiveServiceOrders.to_excel('./scripts/out/preventive_service_orders.xlsx', index=False)
+
+createSqlMigration('./scripts/seed/preventive_service_order.sql', insert_statements)
 
 connection.close()
