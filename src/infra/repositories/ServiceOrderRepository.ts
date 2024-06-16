@@ -3,7 +3,7 @@ import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
 import { database } from "../database";
 
-export class ServiceOrderRepository implements IServiceOrderRepository{
+export class ServiceOrderRepository{
 
   private repository: Repository<ServiceOrder>
 

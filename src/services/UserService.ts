@@ -23,7 +23,7 @@ export class UserService implements IUserService{
   }
 
   @IpcChannel()
-  async getUserById(id: string): Promise<IUserResponseDTO> {
+  async getUserById(id: number): Promise<IUserResponseDTO> {
     try{
       const user = await this.userRepository.findOneBy({id})
       return user

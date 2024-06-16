@@ -48,6 +48,8 @@ const createWindow = () => {
       await database.initialize()
       const services = servicesFactory()
 
+      services.ServiceOrderService.teste()
+
       try{
         const user = new User()
           .setFirstName('Leandro')
@@ -57,6 +59,7 @@ const createWindow = () => {
           .setRoule(UserRole.LEADER)
 
         await services.userService.create(user)
+
       }catch{
         null
       }

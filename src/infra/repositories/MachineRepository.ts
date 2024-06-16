@@ -3,7 +3,7 @@ import { Machine } from "@/domain/entities/Machine/Machine";
 import { FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
 import { database } from "../database";
 
-export class MachineRepository implements IMachineRepository {
+export class MachineRepository {
 
   private repository: Repository<Machine>
 

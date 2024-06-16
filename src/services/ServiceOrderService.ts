@@ -6,6 +6,8 @@ import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { IResponseEntity } from "@/domain/interfaces/IResponseEntity";
 import { Properties } from "@/domain/interfaces/Properties";
 import { MachineRepository } from "@/infra/repositories/MachineRepository";
+import { PreventiveActionRepository } from "@/infra/repositories/PreventiveActionRepository";
+import { PreventiveServiceOrderRepository } from "@/infra/repositories/PreventiveServiceOrderRepository";
 import { ServiceOrderRepository } from "@/infra/repositories/ServiceOrderRepository";
 import { ResponseEntity } from "@/infra/ResponseEntity";
 import { Autowired, IpcChannel } from "@/utils/decorators";
@@ -14,27 +16,33 @@ export class ServiceOrderService implements IServiceOrderService{
 
   @Autowired(ServiceOrderRepository)
   serviceOrderRepository: IServiceOrderRepository
+
+  @Autowired(PreventiveActionRepository)
+  preventiveActionRepository: PreventiveActionRepository
+
+  @Autowired(PreventiveServiceOrderRepository)
+  preventiveServiceOrderRepository: PreventiveServiceOrderRepository
+
   @Autowired(MachineRepository)
   machineRepository: IMachineRepository
 
 
   async teste() {
 
-    const a = await this.serviceOrderRepository.find({
-      where:{
-        machine: {
-          id: 2
-        }
+    const a = await this.preventiveServiceOrderRepository.findOne({
+      where: {
+        id: 1
       },
       relations: {
-        machine: true
-      },
-      select:{
-        id: true
+        machine: true,
+        preventiveActions: true
       }
+
     })
 
     console.log(a)
+    console.log(a.machine)
+    console.log(a.preventiveActions)
 
     return
   }

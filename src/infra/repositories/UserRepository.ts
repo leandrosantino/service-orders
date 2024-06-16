@@ -3,7 +3,7 @@ import { database } from "../database";
 import { IUserRepository } from "@/domain/entities/User/IUserRepository";
 import { FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
 
-export class UserRepository implements IUserRepository {
+export class UserRepository{
 
   private repository: Repository<User>
 
