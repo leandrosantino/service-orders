@@ -3,6 +3,8 @@ import { Machine } from "../Machine/Machine";
 import { Specialty } from "../Worker/Specialty";
 import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
 import { PendingPreventiveServiceOrder } from "../PendingPreventiveServiceOrder/PendingPreventiveServiceOrder";
+import { DateTransformer } from "@/utils/DateTransformer";
+import { DateTime } from "@/utils/DateTime";
 
 @Entity('preventive_service_order')
 export class PreventiveServiceOrder{
@@ -17,8 +19,8 @@ export class PreventiveServiceOrder{
   @Column('nchar', {name: 'nature'})
   nature: Specialty
 
-  @Column('date', {name: 'next_execution', nullable: true})
-  nextExecution: Date
+  @Column('date', {name: 'next_execution', nullable: true, transformer: new DateTransformer()})
+  nextExecution: DateTime
 
   @Column('int', {name: 'frequency_in_weeks'})
   frequencyInWeeks: number

@@ -30,7 +30,7 @@ export class Worker {
         return this
     }
 
-    static getWorkerSpecialtyValues() {
+    public static getWorkerSpecialtyValues() {
         const specialtys = ObjectUtils.listNoNumberProperties(Specialty)
         return specialtys
     }

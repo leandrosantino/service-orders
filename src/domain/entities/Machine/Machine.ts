@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { Zone } from "./Zone";
+import { ObjectUtils } from "@/utils/ObjectUtils";
 
 @Entity({name: 'machine'})
 export class Machine {
@@ -8,7 +9,7 @@ export class Machine {
   @PrimaryGeneratedColumn({name: 'id'})
   id: number
 
-  @Column('nchar', {name: 'tag'})
+  @Column('nchar', {name: 'tag', unique: true})
   tag: string
 
   @Column('nchar', {name: 'ute'})
@@ -33,5 +34,8 @@ export class Machine {
     return this
   }
 
+  public static getZoneValues(){
+    return ObjectUtils.listNoNumberProperties(Zone)
+  }
 
 }

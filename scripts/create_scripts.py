@@ -1,5 +1,6 @@
 import pandas as pd
 import sqlite3
+import datetime
 
 connection = sqlite3.connect('D:\\dev\\QuickOS\\database\\app.db')
 
@@ -35,7 +36,18 @@ preventiveActions = pd.read_sql(
     con= connection
 )
 
-week = { 1: '2023-W23', 4: '2023-W04', 8: '2023-W04', 12: '2023-W11', 24: '2023-W02', 52: '2023-W50'}
+week = { 1: '2024-W23', 4: '2024-W04', 8: '2024-W04', 12: '2024-W11', 24: '2024-W02', 52: '2024-W50'}
+
+def iso_to_date(iso_week):
+    year, week = iso_week.split('-W')
+    first_day_of_year = datetime.date(int(year), 1, 1)
+    first_weekday = first_day_of_year.isoweekday()
+    days_to_first_monday = (7 - first_weekday + 1) % 7
+    first_monday = first_day_of_year + datetime.timedelta(days=days_to_first_monday)
+    desired_date = first_monday + datetime.timedelta(weeks=int(week) - 1)
+    return desired_date.strftime('%Y-%m-%d')
+
+week = {k: iso_to_date(v) for k, v in week.items()}
 
 preventiveServiceOrders = {}
 
@@ -73,15 +85,15 @@ insert into preventive_action (description, execution, preventiveServiceOrderId)
     """.replace('\n', ' ').replace('\r', '')
     insert_statements.append(insert_statement)
 
-createSqlMigration('./scripts/seed/preventive_action.sql', insert_statements)
+createSqlMigration('./scripts/seed/3 - preventive_action.sql', insert_statements)
 
 insert_statements = []
 for i, row in preventiveServiceOrders.iterrows():
     insert_statement = f"""
-insert into preventive_service_order (id, nature, frequency_in_weeks, machineId) values ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, {row["machineId"]});
+insert into preventive_service_order (id, nature, frequency_in_weeks, next_execution, machineId) values ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, '{row['nextExecution']}', {row["machineId"]});
     """.replace('\n', ' ').replace('\r', '')
     insert_statements.append(insert_statement)
 
-createSqlMigration('./scripts/seed/preventive_service_order.sql', insert_statements)
+createSqlMigration('./scripts/seed/2 - preventive_service_order.sql', insert_statements)
 
 connection.close()

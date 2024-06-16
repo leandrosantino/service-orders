@@ -4,14 +4,14 @@ export class DateTime extends Date {
 
   weekOfYearPattern = new RegExp(/\d{4}-W\d{2}/)
 
-  constructor(...args:number[]) {
+  constructor(...args:Array<number | string>) {
     super(...args as [])
   }
 
-  fromDateObject(date: Date){
-    Object.assign(this, date)
-    return this
-  }
+  // fromDateObject(date: Date){
+  //   Object.assign(this, date)
+  //   return this
+  // }
 
   fromWeekOfYearString(weekOfYearString: string){
     if(!this.weekOfYearPattern.test(weekOfYearString)){
@@ -28,7 +28,9 @@ export class DateTime extends Date {
   }
 
   toWeekOfYearString(){
-    return `${this.getFullYear()}-W${getWeek(this)}`
+    let weekNumber = String(getWeek(this))
+    weekNumber = weekNumber.length == 1? `0${weekNumber}`: weekNumber
+    return `${this.getFullYear()}-W${weekNumber}`
   }
 
   plusDay(days: number) {

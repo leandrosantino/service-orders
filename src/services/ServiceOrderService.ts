@@ -31,7 +31,7 @@ export class ServiceOrderService implements IServiceOrderService{
 
     const a = await this.preventiveServiceOrderRepository.findOne({
       where: {
-        id: 1
+        id: 8
       },
       relations: {
         machine: true,
@@ -40,9 +40,10 @@ export class ServiceOrderService implements IServiceOrderService{
 
     })
 
-    console.log(a)
-    console.log(a.machine)
-    console.log(a.preventiveActions)
+    console.log(a.nextExecution.toWeekOfYearString())
+    // console.log(a.nextExecution)
+    // console.log(a.machine)
+    // console.log(a.preventiveActions)
 
     return
   }

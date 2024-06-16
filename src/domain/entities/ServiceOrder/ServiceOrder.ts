@@ -5,6 +5,8 @@ import { Machine } from "@/domain/entities/Machine/Machine";
 import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
 import { Cause } from "../Cause/Cause";
 import { PendingPreventiveServiceOrder } from "../PendingPreventiveServiceOrder/PendingPreventiveServiceOrder";
+import { DateTime } from "@/utils/DateTime";
+import { DateTransformer } from "@/utils/DateTransformer";
 
 @Entity({name: 'service_order'})
 export class ServiceOrder {
@@ -15,8 +17,8 @@ export class ServiceOrder {
   @Column('nchar', {nullable: true, name: 'week_code'})
   weekCode?: string
 
-  @Column('date', {name: 'date'})
-  date: Date
+  @Column('date', {name: 'date', transformer: new DateTransformer()})
+  date: DateTime
 
   @Column('nchar', {name: 'problem_description'})
   problemDescription : string
@@ -24,10 +26,10 @@ export class ServiceOrder {
   @Column('nchar', {name: 'solution_description'})
   solutionDescription : string
 
-  @CreateDateColumn({name: 'createdAt'})
+  @CreateDateColumn({type: 'datetime', name: 'createdAt', transformer: new DateTransformer()})
   createdAt: Date
 
-  @UpdateDateColumn({name: 'updatedAt'})
+  @UpdateDateColumn({type: 'datetime', name: 'updatedAt', transformer: new DateTransformer()})
   updatedAt: Date
 
   @Column('int', {name: 'duration_in_minutes'})
@@ -62,15 +64,15 @@ export class ServiceOrder {
     this.weekCode = value
     return this
   }
-  setDate(value: Date){
+  setDate(value: DateTime){
     this.date = value
     return this
   }
-  setCreatedAt(value: Date){
+  setCreatedAt(value: DateTime){
     this.createdAt = value
     return this
   }
-  setUpdatedAt(value: Date){
+  setUpdatedAt(value: DateTime){
     this.updatedAt = value
     return this
   }
