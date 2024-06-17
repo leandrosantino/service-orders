@@ -1,0 +1,20 @@
+[
+  {"id":1,"registration":282,"name":"ALBERTO","class":"especialista"},
+  {"id":2,"registration":267,"name":"FERNANDO","class":"elétrica"},
+  {"id":3,"registration":188,"name":"DAVID","class":"especialista"},
+  {"id":4,"registration":444,"name":"EDUARDO","class":"mecânica"},
+  {"id":6,"registration":185,"name":"FELIPE","class":"mecânica"},
+  {"id":7,"registration":631,"name":"JOSINALDO","class":"elétrica"},
+  {"id":8,"registration":680,"name":"PERCIVAL","class":"especialista"},
+  {"id":9,"registration":677,"name":"RAFAEL","class":"mecânica"},
+  {"id":10,"registration":15,"name":"ROBERT","class":"mecânica"},
+  {"id":11,"registration":248,"name":"RUIGUENS","class":"mecânica)"},
+  {"id":12,"registration":73,"name":"VALDEMAR","class":"mecânica"},
+  {"id":13,"registration":721,"name":"GENILSON","class":"elétrica"},
+  {"id":14,"registration":493,"name":"ELIAS","class":"mecânica"},
+  {"id":15,"registration":592,"name":"CRISTIANO","class":"mecânica"},
+  {"id":16,"registration":739,"name":"DANILLO","class":"elétrica"},
+  {"id":17,"registration":540,"name":"ANDERSON","class":"mecânica"},
+  {"id":18,"registration":782,"name":"JOSÉ","class":"elétrica"},
+  {"id":19,"registration":877,"name":"RONALDO","class":"elétrica"}
+]

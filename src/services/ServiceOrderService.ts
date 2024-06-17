@@ -6,8 +6,6 @@ import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { IResponseEntity } from "@/domain/interfaces/IResponseEntity";
 import { Properties } from "@/domain/interfaces/Properties";
 import { MachineRepository } from "@/infra/repositories/MachineRepository";
-import { PreventiveActionRepository } from "@/infra/repositories/PreventiveActionRepository";
-import { PreventiveServiceOrderRepository } from "@/infra/repositories/PreventiveServiceOrderRepository";
 import { ServiceOrderRepository } from "@/infra/repositories/ServiceOrderRepository";
 import { ResponseEntity } from "@/infra/ResponseEntity";
 import { Autowired, IpcChannel } from "@/utils/decorators";
@@ -17,36 +15,8 @@ export class ServiceOrderService implements IServiceOrderService{
   @Autowired(ServiceOrderRepository)
   serviceOrderRepository: IServiceOrderRepository
 
-  @Autowired(PreventiveActionRepository)
-  preventiveActionRepository: PreventiveActionRepository
-
-  @Autowired(PreventiveServiceOrderRepository)
-  preventiveServiceOrderRepository: PreventiveServiceOrderRepository
-
   @Autowired(MachineRepository)
   machineRepository: IMachineRepository
-
-
-  async teste() {
-
-    const a = await this.preventiveServiceOrderRepository.findOne({
-      where: {
-        id: 8
-      },
-      relations: {
-        machine: true,
-        preventiveActions: true
-      }
-
-    })
-
-    console.log(a.nextExecution.toWeekOfYearString())
-    // console.log(a.nextExecution)
-    // console.log(a.machine)
-    // console.log(a.preventiveActions)
-
-    return
-  }
 
   @IpcChannel()
   createServiceOrder({data, machineId}: ICreateServiceOrderRequestDTO): IResponseEntity<Properties<ServiceOrder>> {
@@ -91,7 +61,6 @@ export class ServiceOrderService implements IServiceOrderService{
   listPreventiveServiceOrders(): IResponseEntity<Properties<ServiceOrder>[]> {
     throw new Error("Method not implemented.");
   }
-
 
 
 }

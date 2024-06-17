@@ -1,5 +1,8 @@
 export enum Specialty {
-   MECHANICS = 'mechanics',
-   ELECTRICAL = 'electrical',
-   TOOLING = 'tooling'
+   MECHANICS = 'mecânica',
+   ELECTRICAL = 'elétrica',
+   TOOLING = 'ferramental',
+   SPECIALIST = 'especialista'
 }
+
+

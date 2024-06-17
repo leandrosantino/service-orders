@@ -5,7 +5,8 @@ import { IpcChannel , Autowired } from "@/utils/decorators";
 import { User } from "@/domain/entities/User/User";
 import { database } from "@/infra/database";
 import { EncryptionService } from "./EncryptionService";
-import { IUserRepository } from "@/domain/entities/User/IUserRepository";
+import { WorkerRepostory } from "@/infra/repositories/WorkerRepostory";
+import { Worker } from "@/domain/entities/Worker/Worker";
 
 
 export class UserService implements IUserService{
@@ -14,7 +15,10 @@ export class UserService implements IUserService{
   encryptionService: EncryptionService
 
   @Autowired(UserRepository)
-  userRepository: IUserRepository
+  userRepository: UserRepository
+
+  @Autowired(WorkerRepostory)
+  workerRepository: WorkerRepostory
 
   @IpcChannel()
   async getAllUsers(): Promise<IUserResponseDTO[]>{
@@ -33,20 +37,14 @@ export class UserService implements IUserService{
   }
 
   @IpcChannel()
-  async create(data: IUserRequestDTO): Promise<IUserResponseDTO> {
-
-    const encryptedPassword = this.encryptionService.generate(data.password)
-
-    const user = new User()
-      .setFirstName(data.firstName)
-      .setLastName(data.lastName)
-      .setRegister(data.register)
-      .setPassword(encryptedPassword)
-      .setRoule(data.roule)
-
-    await database.manager.save(user)
-    return user
+  async create(user: User): Promise<User> {
+    const encryptedPassword = this.encryptionService.generate(user.password)
+    user.setPassword(encryptedPassword)
+    return await database.manager.save(user)
   }
 
+  async createWorker(worker: Worker): Promise<void> {
+    await database.manager.save(worker)
+  }
 
 }

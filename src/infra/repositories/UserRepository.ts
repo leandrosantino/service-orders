@@ -1,6 +1,5 @@
 import { User } from "@/domain/entities/User/User";
 import { database } from "../database";
-import { IUserRepository } from "@/domain/entities/User/IUserRepository";
 import { FindManyOptions, FindOptionsWhere, Repository } from "typeorm";
 
 export class UserRepository{
