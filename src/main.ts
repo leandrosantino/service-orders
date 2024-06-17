@@ -44,8 +44,8 @@ const createWindow = () => {
   mainWindow.once('ready-to-show', async () => {
       await database.initialize()
       servicesFactory()
-      // mainWindow?.show()
-      // mainWindow?.maximize()
+      mainWindow?.show()
+      mainWindow?.maximize()
   });
 
 };

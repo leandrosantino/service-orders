@@ -11,6 +11,15 @@ import { Specialty } from "../src/domain/entities/Worker/Specialty"
   const services = servicesFactory()
 
   try{
+
+    const user = new User()
+        .setFirstName('Leandro')
+        .setLastName('Santino')
+        .setRegister(913)
+        .setPassword('LEA@adler')
+        .setRoule(UserRole.ADMIN)
+    await services.userService.create(user)
+
     for await (let item of workers){
       const user = new User()
         .setFirstName(item.name)
