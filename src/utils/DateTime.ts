@@ -20,7 +20,7 @@ export class DateTime extends Date {
     const week = Number(weekOfYearString.split('-W')[1])
     const year = Number( weekOfYearString.split('-W')[0])
     const day = (1 + (week - 2) * 7) + 6
-    return new DateTime(year, 0, day)
+    return new DateTime(year, 0, day, 0, 0, 0, 0)
   }
 
   getWeekOfYear(){
@@ -35,6 +35,11 @@ export class DateTime extends Date {
 
   plusDay(days: number) {
     this.setDate(this.getDate() + days)
+    return this
+  }
+
+  minusDay(days: number) {
+    this.setDate(this.getDate() - days)
     return this
   }
 

@@ -19,7 +19,7 @@ export class ServiceOrderService implements IServiceOrderService{
   machineRepository: IMachineRepository
 
   @IpcChannel()
-  createServiceOrder({data, machineId}: ICreateServiceOrderRequestDTO): IResponseEntity<Properties<ServiceOrder>> {
+  async createServiceOrder({data, machineId}: ICreateServiceOrderRequestDTO): Promise<IResponseEntity<Properties<ServiceOrder>>> {
 
     const response = new ResponseEntity<ServiceOrder>()
 
@@ -37,6 +37,8 @@ export class ServiceOrderService implements IServiceOrderService{
       .setDurationInMinutes(data.durationInMinutes)
       .setSpecialty(data.specialty)
       .setType(data.type)
+
+    await this.serviceOrderRepository.create(serviceOrder)
 
     return response.setData(serviceOrder)
 

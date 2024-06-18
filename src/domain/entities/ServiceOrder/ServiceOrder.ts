@@ -27,10 +27,10 @@ export class ServiceOrder {
   solutionDescription : string
 
   @CreateDateColumn({type: 'datetime', name: 'createdAt', transformer: new DateTransformer()})
-  createdAt: Date
+  createdAt: DateTime
 
-  @UpdateDateColumn({type: 'datetime', name: 'updatedAt', transformer: new DateTransformer()})
-  updatedAt: Date
+  @UpdateDateColumn({type: 'datetime', name: 'updatedAt', transformer: new DateTransformer() })
+  updatedAt: DateTime
 
   @Column('int', {name: 'duration_in_minutes'})
   durationInMinutes: number

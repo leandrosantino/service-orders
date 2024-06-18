@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from create_scripts import *
 
 def insert_data_from_files(directory):
 
@@ -31,5 +32,6 @@ def insert_data_from_files(directory):
     conn.close()
 
 if __name__ == "__main__":
+    create_scripts()
     directory = './scripts/seed'
     insert_data_from_files(directory)

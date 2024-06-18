@@ -4,6 +4,9 @@ import { createFileRoute, createURLRoute } from 'electron-router-dom';
 import 'reflect-metadata'
 import { database } from './infra/database';
 import { servicesFactory } from './infra/factories/servicesFactory';
+import { DateTime } from './utils/DateTime';
+import { ServiceOrderTypes } from './domain/entities/ServiceOrder/ServiceOrderTypes';
+import { Specialty } from './domain/entities/Worker/Specialty';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -43,9 +46,34 @@ const createWindow = () => {
 
   mainWindow.once('ready-to-show', async () => {
       await database.initialize()
-      servicesFactory()
-      mainWindow?.show()
-      mainWindow?.maximize()
+      const services = servicesFactory()
+
+      try {
+        const data = await services.preventiveServiceOrderService.getPlannedServiceOrders({
+          weekCode: '2024-W02'
+        })
+        console.log(data.data)
+
+        // const a = await services.serviceOrderService.createServiceOrder({
+        //   data: {
+        //     date: new DateTime(),
+        //     durationInMinutes: 10,
+        //     problemDescription: '',
+        //     solutionDescription: '',
+        //     type: ServiceOrderTypes.CORRECTIVE,
+        //     specialty: Specialty.ELECTRICAL,
+        //     weekCode: ''
+        //   },
+        //   machineId: 1
+        // })
+
+      }catch(e) {
+        console.log((e as Error).message)
+      }
+
+
+      // mainWindow?.show()
+      // mainWindow?.maximize()
   });
 
 };

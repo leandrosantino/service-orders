@@ -11,7 +11,6 @@
       "publish": "electron-forge publish",
       "lint": "eslint --ext .ts,.tsx .",
       "typeorm": "typeorm-ts-node-commonjs",
-      "create_seed": "python ./scripts/create_scripts.py",
       "seed": "python ./scripts/run_seed.py",
       "test": "npx tsx ./test.ts"
    },
