@@ -37,18 +37,14 @@ def create_scripts():
         con= connection
     )
 
-    week = { 1: '2024-W23', 4: '2024-W04', 8: '2024-W04', 12: '2024-W11', 24: '2024-W02', 52: '2024-W50'}
-
-    def iso_to_date(iso_week):
-        year, week = iso_week.split('-W')
-        first_day_of_year = datetime.date(int(year), 1, 1)
-        first_weekday = first_day_of_year.isoweekday()
-        days_to_first_sunday = (6 - first_weekday + 1) % 7
-        first_sunday = first_day_of_year + datetime.timedelta(days=days_to_first_sunday)
-        desired_date = first_sunday + datetime.timedelta(weeks=int(week) - 1)
-        return desired_date.strftime('%Y-%m-%d')
-
-    week = {k: iso_to_date(v) for k, v in week.items()}
+    week = {
+        1: '2024-06-02T03:00:00.000Z',
+        4: '2024-01-21T03:00:00.000Z',
+        8: '2024-01-21T03:00:00.000Z',
+        12: '2024-03-10T03:00:00.000Z',
+        24: '2024-01-07T03:00:00.000Z',
+        52: '2024-12-08T03:00:00.000Z'
+    }
 
     preventiveServiceOrders = {}
 
@@ -81,20 +77,19 @@ def create_scripts():
 
     insert_statements = []
     for i, row in preventiveActions.iterrows():
-        insert_statement = f"""
-    insert into preventive_action (description, execution, preventiveServiceOrderId) values ('{row["description"].replace("'", '"')}', '{row["excution"].replace("'", '"')}', {row["serviceOrderId"]});
-        """.replace('\n', ' ').replace('\r', '')
+        insert_statement = f"insert into 'preventive_action' ('description', 'execution', 'preventiveServiceOrderId') values ('{row["description"].replace("'", '"')}', '{row["excution"].replace("'", '"')}', {row["serviceOrderId"]});"
+        insert_statement = insert_statement.replace('\n', ' ').replace('\r', '')
         insert_statements.append(insert_statement)
 
     createSqlMigration('./scripts/seed/3 - preventive_action.sql', insert_statements)
 
     insert_statements = []
     for i, row in preventiveServiceOrders.iterrows():
-        insert_statement = f"""
-    insert into preventive_service_order (id, nature, frequency_in_weeks, next_execution, machineId) values ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, '{row['nextExecution']}', {row["machineId"]});
-        """.replace('\n', ' ').replace('\r', '')
+        insert_statement = f"insert into 'preventive_service_order' ('id', 'nature', 'frequency_in_weeks', 'next_execution', 'machineId') values ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, '{row['nextExecution']}', {row["machineId"]});"
+        insert_statement = insert_statement.replace('\n', ' ').replace('\r', '')
         insert_statements.append(insert_statement)
 
     createSqlMigration('./scripts/seed/2 - preventive_service_order.sql', insert_statements)
 
     connection.close()
+

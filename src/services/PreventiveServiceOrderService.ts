@@ -20,7 +20,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         machine: {
           id: filters?.machineId
         },
-        nextExecution: new DateTime().fromWeekOfYearString(filters.weekCode)
+        nextExecution: filters?.weekCode && new DateTime().fromWeekOfYearString(filters?.weekCode)
       }
     })
 

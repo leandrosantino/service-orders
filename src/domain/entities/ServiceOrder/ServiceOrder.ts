@@ -17,7 +17,7 @@ export class ServiceOrder {
   @Column('nchar', {nullable: true, name: 'week_code'})
   weekCode?: string
 
-  @Column('date', {name: 'date', transformer: new DateTransformer()})
+  @Column('datetime', {name: 'date', transformer: new DateTransformer()})
   date: DateTime
 
   @Column('nchar', {name: 'problem_description'})
@@ -59,6 +59,17 @@ export class ServiceOrder {
   @OneToOne(() => PendingPreventiveServiceOrder, (pendingPreventiveServiceOrder) => pendingPreventiveServiceOrder.serviceOrder)
   @JoinColumn({name: 'preventiveServiceOrderId'})
   preventiveServiceOrder: PendingPreventiveServiceOrder
+
+
+  setProblemDescription(value: string){
+    this.problemDescription = value
+    return this
+  }
+
+  setSolutionDescription(value: string){
+    this.solutionDescription = value
+    return this
+  }
 
   setWeekCode(value: string){
     this.weekCode = value

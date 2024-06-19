@@ -19,7 +19,7 @@ export class PreventiveServiceOrder{
   @Column('nchar', {name: 'nature'})
   nature: Specialty
 
-  @Column('date', {name: 'next_execution', nullable: true, transformer: new DateTransformer()})
+  @Column('datetime', {name: 'next_execution', nullable: true, transformer: new DateTransformer()})
   nextExecution: DateTime
 
   @Column('int', {name: 'frequency_in_weeks'})

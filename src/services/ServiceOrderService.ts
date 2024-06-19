@@ -33,10 +33,16 @@ export class ServiceOrderService implements IServiceOrderService{
 
     const serviceOrder = new ServiceOrder()
       .setConcluded(false)
+      .setSolutionDescription(data.solutionDescription)
+      .setProblemDescription(data.problemDescription)
       .setDate(data.date)
+      .setCreatedAt(data.createdAt)
+      .setUpdatedAt(data.updatedAt)
       .setDurationInMinutes(data.durationInMinutes)
       .setSpecialty(data.specialty)
       .setType(data.type)
+      .setWeekCode(data.weekCode)
+
 
     await this.serviceOrderRepository.create(serviceOrder)
 

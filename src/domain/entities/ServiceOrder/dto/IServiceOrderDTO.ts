@@ -20,9 +20,9 @@ const excludedProperties  = [
   'responsibles',
   'preventiveActions',
   'preventiveServiceOrder',
-  'createdAt',
+  // 'createdAt',
+  // 'updatedAt',
   'id',
-  'updatedAt',
   'cause',
   'concluded'
 ] as const
