@@ -91,3 +91,6 @@ typings/
 # Electron-Forge
 out/
 data
+
+#python
+__pycache__

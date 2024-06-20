@@ -9,6 +9,7 @@ export function Autowired(Constructor: {new (...args: unknown[]): object }){
 
 export function IpcChannel (){
   return (target: object, key: string, descriptor: PropertyDescriptor) => {
+    if (!ipcMain) return;
     ipcMain.handle(key, async (_, args)=>{
       return await descriptor.value.apply(target, [args])
     })

@@ -11,7 +11,7 @@
       "publish": "electron-forge publish",
       "lint": "eslint --ext .ts,.tsx .",
       "typeorm": "typeorm-ts-node-commonjs",
-      "seed": "python ./scripts/run_seed.py",
+      "seed": "python ./scripts/run_seed.py && npx tsx ./scripts/users_migration.ts",
       "test": "npx tsx ./test.ts"
    },
    "devDependencies": {

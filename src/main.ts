@@ -4,10 +4,6 @@ import { createFileRoute, createURLRoute } from 'electron-router-dom';
 import 'reflect-metadata'
 import { database } from './infra/database';
 import { servicesFactory } from './infra/factories/servicesFactory';
-import { DateTime } from './utils/DateTime';
-import { ServiceOrderTypes } from './domain/entities/ServiceOrder/ServiceOrderTypes';
-import { Specialty } from './domain/entities/Worker/Specialty';
-import { ServiceOrderRepository } from './infra/repositories/ServiceOrderRepository';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -47,9 +43,18 @@ const createWindow = () => {
 
   mainWindow.once('ready-to-show', async () => {
       await database.initialize()
-      servicesFactory()
-      mainWindow?.show()
-      mainWindow?.maximize()
+      const s = servicesFactory()
+
+      try{
+
+        console.log(await s.preventiveServiceOrderService.getPrintedServiceOrders())
+
+      }catch(e){
+        console.log((e as Error).message)
+      }
+
+      // mainWindow?.show()
+      // mainWindow?.maximize()
   });
 
 };

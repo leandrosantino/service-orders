@@ -6,7 +6,7 @@ import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder"
 import { PreventiveAction } from "@/domain/entities/PreventiveAction/PreventiveAction"
 import { Cause } from "@/domain/entities/Cause/Cause"
 import { PreventiveServiceOrder } from "@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrder"
-import { PendingPreventiveServiceOrder } from "@/domain/entities/PendingPreventiveServiceOrder/PendingPreventiveServiceOrder"
+import { PrintedPreventiveServiceOrder } from "@/domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder"
 
 export const database = new DataSource({
     type: "sqlite",
@@ -19,7 +19,7 @@ export const database = new DataSource({
         Machine,
         ServiceOrder,
         PreventiveAction,
-        PendingPreventiveServiceOrder,
+        PrintedPreventiveServiceOrder,
         PreventiveServiceOrder,
         Cause
     ],

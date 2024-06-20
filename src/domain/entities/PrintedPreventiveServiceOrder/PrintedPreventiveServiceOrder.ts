@@ -3,8 +3,8 @@ import { PreventiveServiceOrder } from "../PreventiveServiceOrder/PreventiveServ
 import { ServiceOrder } from "../ServiceOrder/ServiceOrder";
 
 
-@Entity('pending_preventive_service_order')
-export class PendingPreventiveServiceOrder{
+@Entity('printed_preventive_service_order')
+export class PrintedPreventiveServiceOrder{
 
   @PrimaryGeneratedColumn({type: 'int', name: 'id'})
   id: number
@@ -14,6 +14,9 @@ export class PendingPreventiveServiceOrder{
 
   @Column('text', {name: 'preventive_actions'})
   preventiveActions?: string
+
+  @Column('boolean', {name: 'concluded'})
+  concluded: Boolean
 
   @ManyToOne(() => PreventiveServiceOrder, (preventiveServiceOrder) => preventiveServiceOrder.pendingPreventiveServiceOrders)
   @JoinColumn({name: 'preventiveServiceOrderId'})

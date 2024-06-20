@@ -4,7 +4,7 @@ import { Worker } from "@/domain/entities/Worker/Worker";
 import { Machine } from "@/domain/entities/Machine/Machine";
 import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
 import { Cause } from "../Cause/Cause";
-import { PendingPreventiveServiceOrder } from "../PendingPreventiveServiceOrder/PendingPreventiveServiceOrder";
+import { PrintedPreventiveServiceOrder } from "../PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { DateTime } from "@/utils/DateTime";
 import { DateTransformer } from "@/utils/DateTransformer";
 
@@ -56,9 +56,9 @@ export class ServiceOrder {
   @JoinTable({name: 'service_order_responsibles'})
   responsibles?: Worker[]
 
-  @OneToOne(() => PendingPreventiveServiceOrder, (pendingPreventiveServiceOrder) => pendingPreventiveServiceOrder.serviceOrder)
+  @OneToOne(() => PrintedPreventiveServiceOrder, (printedPreventiveServiceOrder) => printedPreventiveServiceOrder.serviceOrder)
   @JoinColumn({name: 'preventiveServiceOrderId'})
-  preventiveServiceOrder: PendingPreventiveServiceOrder
+  preventiveServiceOrder: PrintedPreventiveServiceOrder
 
 
   setProblemDescription(value: string){

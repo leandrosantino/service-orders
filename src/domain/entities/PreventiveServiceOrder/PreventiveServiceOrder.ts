@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { Machine } from "../Machine/Machine";
 import { Specialty } from "../Worker/Specialty";
 import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
-import { PendingPreventiveServiceOrder } from "../PendingPreventiveServiceOrder/PendingPreventiveServiceOrder";
+import { PrintedPreventiveServiceOrder } from "../PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { DateTransformer } from "@/utils/DateTransformer";
 import { DateTime } from "@/utils/DateTime";
 
@@ -28,7 +28,7 @@ export class PreventiveServiceOrder{
   @OneToMany(() => PreventiveAction, (preventiveAction)=> preventiveAction.preventiveServiceOrder)
   preventiveActions?: PreventiveAction[]
 
-  @OneToMany(() => PendingPreventiveServiceOrder, (pendingPreventiveServiceOrders) => pendingPreventiveServiceOrders.preventiveServiceOrder)
-  pendingPreventiveServiceOrders: PendingPreventiveServiceOrder[]
+  @OneToMany(() => PrintedPreventiveServiceOrder, (printedPreventiveServiceOrder) => printedPreventiveServiceOrder.preventiveServiceOrder)
+  pendingPreventiveServiceOrders: PrintedPreventiveServiceOrder[]
 
 }
