@@ -87,4 +87,49 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
     }
   }
 
+
+  @IpcChannel()
+  async printServiceOrder(plannedServiceOrderId: number): Promise<IResponseEntity<void>> {
+
+    const plannedServiceOrder = await this.repository.findOne({
+      where: {
+        id: plannedServiceOrderId
+      },
+      relations: {
+        preventiveActions: true
+      },
+      select: {
+        preventiveActions: {
+          id: true,
+          description: true,
+          excution: true
+        }
+      }
+    })
+
+    if(!plannedServiceOrder) return {error: true, message: 'planned service order not found'}
+
+    const isPrinted = await this.printedPreventiveServiceOrderRepository.existsBy({
+      weekCode: plannedServiceOrder.nextExecution.toWeekOfYearString(),
+      preventiveServiceOrder: {
+        id: plannedServiceOrder.id
+      }
+    })
+
+    if(isPrinted) return {error: true, message: 'planned service order already printed'}
+
+    const printedServiceOrder = new PrintedPreventiveServiceOrder()
+      .setConcluded(false)
+      .setWeekCode(plannedServiceOrder.nextExecution.toWeekOfYearString())
+      .setPreventiveActions(plannedServiceOrder.preventiveActions)
+
+    this.printedPreventiveServiceOrderRepository.create(printedServiceOrder)
+
+    return {
+      error: false,
+    }
+  }
+
+
+
 }

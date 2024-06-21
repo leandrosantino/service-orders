@@ -1,4 +1,4 @@
-import { FindManyOptions, FindOneOptions, FindOptionsWhere, Repository } from "typeorm";
+import { FindManyOptions, FindOneOptions, FindOperator, FindOptionsUtils, FindOptionsWhere, Repository } from "typeorm";
 import { database } from "../database";
 import { PrintedPreventiveServiceOrder } from "@/domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 
@@ -22,6 +22,10 @@ export class PrintedPreventiveServiceOrderRepository{
   }
   findOneBy(options: FindOptionsWhere<PrintedPreventiveServiceOrder>): Promise<PrintedPreventiveServiceOrder> {
     return this.repository.findOneBy(options)
+  }
+
+  existsBy(options: FindOptionsWhere<PrintedPreventiveServiceOrder> | FindOptionsWhere<PrintedPreventiveServiceOrder>[]): Promise<boolean>{
+    return this.repository.existsBy(options)
   }
 
 }

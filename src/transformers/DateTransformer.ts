@@ -1,5 +1,5 @@
 import { ValueTransformer } from 'typeorm';
-import { DateTime } from './DateTime';
+import { DateTime } from '../utils/DateTime';
 
 export class DateTransformer implements ValueTransformer {
 

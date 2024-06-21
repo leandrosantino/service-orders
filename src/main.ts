@@ -46,7 +46,8 @@ const createWindow = () => {
       const s = servicesFactory()
 
       try{
-
+        const resp = await s.preventiveServiceOrderService.printServiceOrder(2)
+        console.log(resp)
         console.log(await s.preventiveServiceOrderService.getPrintedServiceOrders())
 
       }catch(e){

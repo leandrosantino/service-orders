@@ -10,6 +10,7 @@ export interface PreventiveServiceOrderFilters {
 }
 
 export interface IPreventiveServiceOrderService {
-  getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PreventiveServiceOrder[]>>
-  getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PrintedPreventiveServiceOrder[]>>
+  getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise< IResponseEntity<PreventiveServiceOrder[]> >
+  getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise< IResponseEntity<PrintedPreventiveServiceOrder[]> >
+  printServiceOrder(plannedServiceOrderId: number): Promise< IResponseEntity<void> >
 }

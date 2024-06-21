@@ -3,7 +3,7 @@ import { Machine } from "../Machine/Machine";
 import { Specialty } from "../Worker/Specialty";
 import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
 import { PrintedPreventiveServiceOrder } from "../PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
-import { DateTransformer } from "@/utils/DateTransformer";
+import { DateTransformer } from "@/transformers/DateTransformer";
 import { DateTime } from "@/utils/DateTime";
 
 @Entity('preventive_service_order')

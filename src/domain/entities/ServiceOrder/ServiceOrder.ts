@@ -6,7 +6,7 @@ import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTy
 import { Cause } from "../Cause/Cause";
 import { PrintedPreventiveServiceOrder } from "../PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { DateTime } from "@/utils/DateTime";
-import { DateTransformer } from "@/utils/DateTransformer";
+import { DateTransformer } from "@/transformers/DateTransformer";
 
 @Entity({name: 'service_order'})
 export class ServiceOrder {

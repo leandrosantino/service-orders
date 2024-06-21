@@ -1,9 +1,15 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Specialty } from "@/domain/entities/Worker/Specialty";
 import { PreventiveServiceOrder } from "../PreventiveServiceOrder/PreventiveServiceOrder";
+import { z } from "zod";
 
 @Entity({name: 'preventive_action'})
 export class PreventiveAction {
+
+  static schema = z.object({
+    id: z.number(),
+    description: z.string(),
+    excution: z.string()
+  })
 
   @PrimaryGeneratedColumn({type: 'int', name: 'id'})
   id: number
