@@ -4,6 +4,7 @@ import { createFileRoute, createURLRoute } from 'electron-router-dom';
 import 'reflect-metadata'
 import { database } from './infra/database';
 import { servicesFactory } from './infra/factories/servicesFactory';
+import { DateTime } from './utils/DateTime';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -46,10 +47,12 @@ const createWindow = () => {
       const s = servicesFactory()
 
       try{
-        const resp = await s.preventiveServiceOrderService.printServiceOrder(2)
-        console.log(resp)
-        console.log(await s.preventiveServiceOrderService.getPrintedServiceOrders())
-
+        const a = await s.preventiveServiceOrderService.executeServiceOrders(1, {
+          date: new DateTime(),
+          durationInMinutes: 10,
+          responsibles: [{id: 1}, {id: 2}]
+        })
+        console.log(a)
       }catch(e){
         console.log((e as Error).message)
       }

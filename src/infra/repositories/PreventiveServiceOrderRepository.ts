@@ -7,8 +7,11 @@ export class PreventiveServiceOrderRepository{
 
   private repository: Repository<PreventiveServiceOrder>
 
+  update: Repository<PreventiveServiceOrder>['update']
+
   constructor() {
     this.repository = database.getRepository(PreventiveServiceOrder)
+    this.update = this.repository.update
   }
 
   findOne(options: FindOneOptions<PreventiveServiceOrder>): Promise<PreventiveServiceOrder> {

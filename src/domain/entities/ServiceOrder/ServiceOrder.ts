@@ -14,9 +14,6 @@ export class ServiceOrder {
   @PrimaryGeneratedColumn({name: 'id'})
   id: number
 
-  @Column('nchar', {nullable: true, name: 'week_code'})
-  weekCode?: string
-
   @Column('datetime', {name: 'date', transformer: new DateTransformer()})
   date: DateTime
 
@@ -26,7 +23,7 @@ export class ServiceOrder {
   @Column('nchar', {name: 'solution_description'})
   solutionDescription : string
 
-  @CreateDateColumn({type: 'datetime', name: 'createdAt', transformer: new DateTransformer()})
+  @CreateDateColumn({type: 'datetime', name: 'createdAt', transformer: new DateTransformer() })
   createdAt: DateTime
 
   @UpdateDateColumn({type: 'datetime', name: 'updatedAt', transformer: new DateTransformer() })
@@ -60,6 +57,10 @@ export class ServiceOrder {
   @JoinColumn({name: 'preventiveServiceOrderId'})
   preventiveServiceOrder: PrintedPreventiveServiceOrder
 
+  setResponsibles(value: Worker[]){
+    this.responsibles = value
+    return this
+  }
 
   setProblemDescription(value: string){
     this.problemDescription = value
@@ -71,10 +72,6 @@ export class ServiceOrder {
     return this
   }
 
-  setWeekCode(value: string){
-    this.weekCode = value
-    return this
-  }
   setDate(value: DateTime){
     this.date = value
     return this
