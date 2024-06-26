@@ -47,12 +47,12 @@ const createWindow = () => {
       const s = servicesFactory()
 
       try{
-        const a = await s.preventiveServiceOrderService.executeServiceOrders(1, {
-          date: new DateTime(),
-          durationInMinutes: 10,
-          responsibles: [{id: 1}, {id: 2}]
-        })
-        console.log(a)
+        // console.log(await s.preventiveServiceOrderService.printServiceOrder(2))
+        // console.log(await s.preventiveServiceOrderService.executeServiceOrders(14, {
+        //   date: new DateTime(),
+        //   durationInMinutes: 10,
+        //   responsibles: [{id: 1}, {id: 2}]
+        // }))
       }catch(e){
         console.log((e as Error).message)
       }

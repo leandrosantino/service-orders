@@ -29,6 +29,12 @@ export class PrintedPreventiveServiceOrder{
   @JoinColumn({name: 'serviceOrderId'})
   serviceOrder: ServiceOrder
 
+
+  setPreventiveServiceOrder(value: PreventiveServiceOrder){
+    this.preventiveServiceOrder = value
+    return this
+  }
+
   setConcluded(value: boolean){
     this.concluded = value
     return this

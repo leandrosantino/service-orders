@@ -4,35 +4,24 @@ import { PrintedPreventiveServiceOrder } from "@/domain/entities/PrintedPreventi
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
 import { Worker } from "@/domain/entities/Worker/Worker";
-
 import { IResponseEntity } from "@/domain/interfaces/IResponseEntity";
 import { database } from "@/infra/database";
-import { PreventiveServiceOrderRepository } from "@/infra/repositories/PreventiveServiceOrderRepository";
-import { PrintedPreventiveServiceOrderRepository } from "@/infra/repositories/PrintedPreventiveServiceOrderRepository";
-import { ServiceOrderRepository } from "@/infra/repositories/ServiceOrderRepository";
 import { DateTime } from "@/utils/DateTime";
-import { Autowired, IpcChannel } from "@/utils/decorators";
-import { Repository } from "typeorm";
+import { IpcChannel } from "@/utils/decorators";
+
 
 
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
 
-  //@Autowired(PreventiveServiceOrderRepository)
-  private repository: Repository<PreventiveServiceOrder> = database.getRepository(PreventiveServiceOrder)
-
-  //@Autowired(PrintedPreventiveServiceOrderRepository)
-  private printedPreventiveServiceOrderRepository: Repository<PrintedPreventiveServiceOrder> = database.getRepository(PrintedPreventiveServiceOrder)
-
-  @Autowired(ServiceOrderRepository)
-  serviceOrdersRepository: ServiceOrderRepository
-
-
-  private workerRepository: Repository<Worker> = database.getRepository(Worker)
+  private preventiveServiceRepository = database.getRepository(PreventiveServiceOrder)
+  private printedServiceOrderRepository = database.getRepository(PrintedPreventiveServiceOrder)
+  private serviceOrdersRepository =  database.getRepository(ServiceOrder)
+  private workerRepository = database.getRepository(Worker)
 
   @IpcChannel()
   async getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PreventiveServiceOrder[]>> {
     try{
-      const serviceOrders = await this.repository.find({
+      const serviceOrders = await this.preventiveServiceRepository.find({
         where: {
           nature: filters?.nature,
           machine: {
@@ -53,7 +42,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
   async getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PrintedPreventiveServiceOrder[]>> {
     try{
 
-      const serviceOrders = await this.printedPreventiveServiceOrderRepository.find({
+      const serviceOrders = await this.printedServiceOrderRepository.find({
         where: {
           preventiveServiceOrder:{
             nature: filters?.nature,
@@ -92,7 +81,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
   @IpcChannel()
   async printServiceOrder(plannedServiceOrderId: number): Promise<IResponseEntity<void>> {
     try {
-      const plannedServiceOrder = await this.repository.findOne({
+      const plannedServiceOrder = await this.preventiveServiceRepository.findOne({
         where: {
           id: plannedServiceOrderId
         },
@@ -110,12 +99,14 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
 
       if(!plannedServiceOrder) return {error: true, message: 'planned service order not found'}
 
-      const wasPrinted = await this.printedPreventiveServiceOrderRepository.existsBy({
+      const wasPrinted = await this.printedServiceOrderRepository.existsBy({
         weekCode: plannedServiceOrder.nextExecution.toWeekOfYearString(),
         preventiveServiceOrder: {
           id: plannedServiceOrder.id
         }
       })
+
+      console.log(wasPrinted)
 
       if(wasPrinted) return {error: true, message: 'planned service order already been printed'}
 
@@ -123,8 +114,10 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         .setConcluded(false)
         .setWeekCode(plannedServiceOrder.nextExecution.toWeekOfYearString())
         .setPreventiveActions(plannedServiceOrder.preventiveActions)
+        .setPreventiveServiceOrder(plannedServiceOrder)
 
-      this.printedPreventiveServiceOrderRepository.create(printedServiceOrder)
+
+      this.printedServiceOrderRepository.save(printedServiceOrder)
 
       return { error: false }
 
@@ -136,19 +129,26 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
   async executeServiceOrders(printedServiceOrderId: number, data: ExecuteServiceOrdersRequestDTO): Promise<IResponseEntity<void>> {
     try {
 
-      const {preventiveServiceOrder, ...printedServiceOrder} = await this.printedPreventiveServiceOrderRepository.findOne({
+      const {preventiveServiceOrder, ...printedServiceOrder} = await this.printedServiceOrderRepository.findOne({
         where: { id: printedServiceOrderId },
         relations: {
-          preventiveServiceOrder: true
+          preventiveServiceOrder: {
+            machine: true
+          }
         },
-        select: { preventiveServiceOrder: { id: true, nature: true, nextExecution: true } }
+        select: { preventiveServiceOrder: { id: true, nature: true, nextExecution: true, frequencyInWeeks: true } }
       })
 
+      console.log(preventiveServiceOrder)
+
       if(!printedServiceOrder) return {error: true, message: 'printed service order not found!'}
+      if(printedServiceOrder.concluded) return {error: true, message: 'service order already executed'}
 
       const responsibles = await this.workerRepository.find({
         where: data.responsibles
       })
+
+      if(data.responsibles.length !== responsibles.length) return {error: true, message: 'responsibles not found'}
 
       const serviceOrder = new ServiceOrder()
         .setConcluded(true)
@@ -163,13 +163,12 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         .setMachine(preventiveServiceOrder.machine)
         .setResponsibles(responsibles)
 
-      this.serviceOrdersRepository.create(serviceOrder)
+      await this.serviceOrdersRepository.save(serviceOrder)
 
-      // this.printedPreventiveServiceOrderRepository.update(printedServiceOrder.id, {concluded: true})
-      this.repository.update(preventiveServiceOrder.id, {
+      this.printedServiceOrderRepository.update(printedServiceOrder.id, {concluded: true, serviceOrder: {id: serviceOrder.id} })
+      this.preventiveServiceRepository.update(preventiveServiceOrder.id, {
         nextExecution: preventiveServiceOrder.nextExecution.plusWeek(preventiveServiceOrder.frequencyInWeeks)
       })
-
 
       return { error: false }
 
