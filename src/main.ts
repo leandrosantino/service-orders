@@ -46,16 +46,9 @@ const createWindow = () => {
       await database.initialize()
       const s = servicesFactory()
 
-      try{
-        // console.log(await s.preventiveServiceOrderService.printServiceOrder(2))
-        // console.log(await s.preventiveServiceOrderService.executeServiceOrders(14, {
-        //   date: new DateTime(),
-        //   durationInMinutes: 10,
-        //   responsibles: [{id: 1}, {id: 2}]
-        // }))
-      }catch(e){
-        console.log((e as Error).message)
-      }
+
+      await s.preventiveServiceOrderService.getPlannedServiceOrders()
+
 
       // mainWindow?.show()
       // mainWindow?.maximize()

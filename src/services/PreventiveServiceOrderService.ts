@@ -3,25 +3,21 @@ import { PreventiveServiceOrder } from "@/domain/entities/PreventiveServiceOrder
 import { PrintedPreventiveServiceOrder } from "@/domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
-import { Worker } from "@/domain/entities/Worker/Worker";
 import { IResponseEntity } from "@/domain/interfaces/IResponseEntity";
-import { database } from "@/infra/database";
+import { ResponseEntity } from "@/infra/ResponseEntity";
+
+import { preventiveServiceOrderRepository, printedPreventiveServiceOrderRepository, serviceOrderRepository, workerRepository } from "@/infra/repositories";
 import { DateTime } from "@/utils/DateTime";
 import { IpcChannel } from "@/utils/decorators";
 
-
-
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
 
-  private preventiveServiceRepository = database.getRepository(PreventiveServiceOrder)
-  private printedServiceOrderRepository = database.getRepository(PrintedPreventiveServiceOrder)
-  private serviceOrdersRepository =  database.getRepository(ServiceOrder)
-  private workerRepository = database.getRepository(Worker)
 
   @IpcChannel()
   async getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PreventiveServiceOrder[]>> {
+    const response = new ResponseEntity<PreventiveServiceOrder[]>()
     try{
-      const serviceOrders = await this.preventiveServiceRepository.find({
+      const serviceOrders = await preventiveServiceOrderRepository.find({
         where: {
           nature: filters?.nature,
           machine: {
@@ -31,18 +27,18 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         }
       })
 
-      return { error: false,data: serviceOrders }
+      return response.success(serviceOrders)
 
     }catch(e){
-      return {error: true,  message: (e as Error).message }
+      return response.falure((e as Error).message)
     }
   }
 
   @IpcChannel()
   async getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PrintedPreventiveServiceOrder[]>> {
+    const response = new ResponseEntity<PrintedPreventiveServiceOrder[]>()
     try{
-
-      const serviceOrders = await this.printedServiceOrderRepository.find({
+      const serviceOrders = await printedPreventiveServiceOrderRepository.find({
         where: {
           preventiveServiceOrder:{
             nature: filters?.nature,
@@ -70,18 +66,19 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         }
       })
 
-      return { error: false, data: serviceOrders }
+      return response.success(serviceOrders)
 
     }catch(e){
-      return {error: true,  message: (e as Error).message }
+      return response.falure((e as Error).message)
     }
   }
 
 
   @IpcChannel()
   async printServiceOrder(plannedServiceOrderId: number): Promise<IResponseEntity<void>> {
+    const response = new ResponseEntity<void>()
     try {
-      const plannedServiceOrder = await this.preventiveServiceRepository.findOne({
+      const plannedServiceOrder = await preventiveServiceOrderRepository.findOne({
         where: {
           id: plannedServiceOrderId
         },
@@ -97,9 +94,9 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         }
       })
 
-      if(!plannedServiceOrder) return {error: true, message: 'planned service order not found'}
+      if(!plannedServiceOrder) return response.falure('planned service order not found')
 
-      const wasPrinted = await this.printedServiceOrderRepository.existsBy({
+      const wasPrinted = await printedPreventiveServiceOrderRepository.existsBy({
         weekCode: plannedServiceOrder.nextExecution.toWeekOfYearString(),
         preventiveServiceOrder: {
           id: plannedServiceOrder.id
@@ -108,7 +105,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
 
       console.log(wasPrinted)
 
-      if(wasPrinted) return {error: true, message: 'planned service order already been printed'}
+      if(wasPrinted) return response.falure('planned service order already been printed')
 
       const printedServiceOrder = new PrintedPreventiveServiceOrder()
         .setConcluded(false)
@@ -117,19 +114,19 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         .setPreventiveServiceOrder(plannedServiceOrder)
 
 
-      this.printedServiceOrderRepository.save(printedServiceOrder)
+      printedPreventiveServiceOrderRepository.save(printedServiceOrder)
 
-      return { error: false }
+      return response.success()
 
     }catch(e){
-      return {error: true,  message: (e as Error).message }
+      return response.falure((e as Error).message)
     }
   }
 
   async executeServiceOrders(printedServiceOrderId: number, data: ExecuteServiceOrdersRequestDTO): Promise<IResponseEntity<void>> {
+    const response = new ResponseEntity<void>()
     try {
-
-      const {preventiveServiceOrder, ...printedServiceOrder} = await this.printedServiceOrderRepository.findOne({
+      const {preventiveServiceOrder, ...printedServiceOrder} = await printedPreventiveServiceOrderRepository.findOne({
         where: { id: printedServiceOrderId },
         relations: {
           preventiveServiceOrder: {
@@ -141,14 +138,14 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
 
       console.log(preventiveServiceOrder)
 
-      if(!printedServiceOrder) return {error: true, message: 'printed service order not found!'}
-      if(printedServiceOrder.concluded) return {error: true, message: 'service order already executed'}
+      if(!printedServiceOrder) return response.falure('printed service order not found!')
+      if(printedServiceOrder.concluded) return response.falure('service order already executed')
 
-      const responsibles = await this.workerRepository.find({
+      const responsibles = await workerRepository.find({
         where: data.responsibles
       })
 
-      if(data.responsibles.length !== responsibles.length) return {error: true, message: 'responsibles not found'}
+      if(data.responsibles.length !== responsibles.length) return response.falure('responsibles not found')
 
       const serviceOrder = new ServiceOrder()
         .setConcluded(true)
@@ -163,17 +160,17 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         .setMachine(preventiveServiceOrder.machine)
         .setResponsibles(responsibles)
 
-      await this.serviceOrdersRepository.save(serviceOrder)
+      await serviceOrderRepository.save(serviceOrder)
 
-      this.printedServiceOrderRepository.update(printedServiceOrder.id, {concluded: true, serviceOrder: {id: serviceOrder.id} })
-      this.preventiveServiceRepository.update(preventiveServiceOrder.id, {
+      printedPreventiveServiceOrderRepository.update(printedServiceOrder.id, {concluded: true, serviceOrder: {id: serviceOrder.id} })
+      preventiveServiceOrderRepository.update(preventiveServiceOrder.id, {
         nextExecution: preventiveServiceOrder.nextExecution.plusWeek(preventiveServiceOrder.frequencyInWeeks)
       })
 
-      return { error: false }
+      return response.success()
 
     }catch(e){
-      return {error: true,  message: (e as Error).message }
+      return response.falure((e as Error).message)
     }
   }
 

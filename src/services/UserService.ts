@@ -1,12 +1,11 @@
-import { IUserRequestDTO , IUserResponseDTO} from "@/domain/entities/User/dto/IUserDTO";
+import { IUserResponseDTO} from "@/domain/entities/User/dto/IUserDTO";
 import { IUserService } from "@/domain/entities/User/IUserService";
-import { UserRepository } from "@/infra/repositories/UserRepository";
 import { IpcChannel , Autowired } from "@/utils/decorators";
 import { User } from "@/domain/entities/User/User";
 import { database } from "@/infra/database";
 import { EncryptionService } from "./EncryptionService";
-import { WorkerRepostory } from "@/infra/repositories/WorkerRepostory";
 import { Worker } from "@/domain/entities/Worker/Worker";
+import { userRepository } from "@/infra/repositories";
 
 
 export class UserService implements IUserService{
@@ -14,22 +13,16 @@ export class UserService implements IUserService{
   @Autowired(EncryptionService)
   encryptionService: EncryptionService
 
-  @Autowired(UserRepository)
-  userRepository: UserRepository
-
-  @Autowired(WorkerRepostory)
-  workerRepository: WorkerRepostory
-
   @IpcChannel()
   async getAllUsers(): Promise<IUserResponseDTO[]>{
-    const users = await this.userRepository.find()
+    const users = await userRepository.find()
     return users
   }
 
   @IpcChannel()
   async getUserById(id: number): Promise<IUserResponseDTO> {
     try{
-      const user = await this.userRepository.findOneBy({id})
+      const user = await userRepository.findOneBy({id})
       return user
     }catch{
       return null

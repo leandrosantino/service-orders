@@ -1,34 +1,25 @@
-import { IMachineRepository } from "@/domain/entities/Machine/IMachineRepository";
 import { ICreateServiceOrderRequestDTO, ISavePreventiveServiceOrderRequestDTO, ICloseServiceOrderDTO } from "@/domain/entities/ServiceOrder/dto/IServiceOrderDTO";
-import { IServiceOrderRepository } from "@/domain/entities/ServiceOrder/IServiceOrderRepository";
 import { IServiceOrderService } from "@/domain/entities/ServiceOrder/IServiceOrderService";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { IResponseEntity } from "@/domain/interfaces/IResponseEntity";
 import { Properties } from "@/domain/interfaces/Properties";
-import { MachineRepository } from "@/infra/repositories/MachineRepository";
-import { ServiceOrderRepository } from "@/infra/repositories/ServiceOrderRepository";
+import { machineRepository, serviceOrderRepository } from "@/infra/repositories";
 import { ResponseEntity } from "@/infra/ResponseEntity";
-import { Autowired, IpcChannel } from "@/utils/decorators";
+import { IpcChannel } from "@/utils/decorators";
 
 export class ServiceOrderService implements IServiceOrderService{
-
-  @Autowired(ServiceOrderRepository)
-  serviceOrderRepository: IServiceOrderRepository
-
-  @Autowired(MachineRepository)
-  machineRepository: IMachineRepository
 
   @IpcChannel()
   async createServiceOrder({data, machineId}: ICreateServiceOrderRequestDTO): Promise<IResponseEntity<Properties<ServiceOrder>>> {
 
     const response = new ResponseEntity<ServiceOrder>()
 
-    const machine = this.machineRepository.findOneBy({
+    const machine = machineRepository.findOneBy({
       id: machineId
     })
 
     if(machine === null){
-      return response.setError(true).setMessage('machine id not found').build()
+      return response.falure('machine id not found')
     }
 
     const serviceOrder = new ServiceOrder()
@@ -41,12 +32,10 @@ export class ServiceOrderService implements IServiceOrderService{
       .setDurationInMinutes(data.durationInMinutes)
       .setSpecialty(data.specialty)
       .setType(data.type)
-      .setWeekCode(data.weekCode)
 
+    await serviceOrderRepository.save(serviceOrder)
 
-    await this.serviceOrderRepository.create(serviceOrder)
-
-    return response.setData(serviceOrder)
+    return response.success(serviceOrder)
 
   }
 

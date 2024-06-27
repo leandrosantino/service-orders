@@ -5,38 +5,17 @@ export class ResponseEntity<T> implements IResponseEntity<T> {
   error = false;
   data?: T;
 
-  private temp_data: {
-    message?: string;
-    error: boolean;
-  }
-
-  setMessage(value: string){
-    this.temp_data.message = value
+  falure(message: string){
+    this.message = message
+    this.error = true
+    console.log('error : ' + this.message)
     return this
   }
 
-  setError(value: boolean){
-    this.temp_data.error = value
-    return this
-  }
-
-  setData(value: T){
-    this.data = value
-    return this
-  }
-
-  build(){
-    this.error = this.temp_data.error
-    this.message = this.temp_data.message
-
-    if(this.error){
-      console.log('error : ' + this.message)
-    }
-
-    if(!this.error){
-      console.log('log : ' + this.message)
-    }
-
+  success(data:T){
+    this.data = data
+    this.error = false
+    console.log(this.data)
     return this
   }
 
