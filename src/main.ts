@@ -5,6 +5,8 @@ import 'reflect-metadata'
 import { database } from './infra/database';
 import { servicesFactory } from './infra/factories/servicesFactory';
 import { DateTime } from './utils/DateTime';
+import { PrintedPreventiveServiceOrder } from './domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder';
+import { ServiceOrder } from './domain/entities/ServiceOrder/ServiceOrder';
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -46,9 +48,21 @@ const createWindow = () => {
       await database.initialize()
       const s = servicesFactory()
 
+      // await s.preventiveServiceOrderService.getPlannedServiceOrders({
+      //   weekCode: '2024-W02'
+      // })
+      await s.preventiveServiceOrderService.getPrintedServiceOrders({
+        weekCode: '2024-W02'
+      })
 
-      await s.preventiveServiceOrderService.getPlannedServiceOrders()
-
+      // await s.preventiveServiceOrderService.printServiceOrder(1)
+      // await s.preventiveServiceOrderService.executeServiceOrders(18, {
+      //   date: new DateTime(),
+      //   durationInMinutes: 10,
+      //   responsibles: [
+      //     {id: 1}, {id: 2}
+      //   ]
+      // })
 
       // mainWindow?.show()
       // mainWindow?.maximize()

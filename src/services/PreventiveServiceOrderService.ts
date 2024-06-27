@@ -40,13 +40,21 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
     try{
       const serviceOrders = await printedPreventiveServiceOrderRepository.find({
         where: {
+          weekCode: filters?.weekCode,
           preventiveServiceOrder:{
             nature: filters?.nature,
             machine: {
               id: filters?.machineId
             },
-            nextExecution: filters?.weekCode && new DateTime().fromWeekOfYearString(filters?.weekCode)
           },
+        },
+        relations: {
+          preventiveServiceOrder: {
+            machine: true
+          },
+          serviceOrder: {
+            responsibles: true
+          }
         },
         select: {
           id: true,
@@ -103,8 +111,6 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         }
       })
 
-      console.log(wasPrinted)
-
       if(wasPrinted) return response.falure('planned service order already been printed')
 
       const printedServiceOrder = new PrintedPreventiveServiceOrder()
@@ -126,7 +132,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
   async executeServiceOrders(printedServiceOrderId: number, data: ExecuteServiceOrdersRequestDTO): Promise<IResponseEntity<void>> {
     const response = new ResponseEntity<void>()
     try {
-      const {preventiveServiceOrder, ...printedServiceOrder} = await printedPreventiveServiceOrderRepository.findOne({
+      const printedServiceOrder = await printedPreventiveServiceOrderRepository.findOne({
         where: { id: printedServiceOrderId },
         relations: {
           preventiveServiceOrder: {
@@ -136,7 +142,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         select: { preventiveServiceOrder: { id: true, nature: true, nextExecution: true, frequencyInWeeks: true } }
       })
 
-      console.log(preventiveServiceOrder)
+      const preventiveServiceOrder = printedServiceOrder.preventiveServiceOrder
 
       if(!printedServiceOrder) return response.falure('printed service order not found!')
       if(printedServiceOrder.concluded) return response.falure('service order already executed')
@@ -159,6 +165,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         .setUpdatedAt(data.date)
         .setMachine(preventiveServiceOrder.machine)
         .setResponsibles(responsibles)
+        .setPreventiveServiceOrder(printedServiceOrder)
 
       await serviceOrderRepository.save(serviceOrder)
 

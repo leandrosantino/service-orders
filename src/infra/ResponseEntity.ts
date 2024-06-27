@@ -15,6 +15,10 @@ export class ResponseEntity<T> implements IResponseEntity<T> {
   success(data:T){
     this.data = data
     this.error = false
+    if(!this.data) {
+      console.log('Success!!')
+      return this
+    }
     console.log(this.data)
     return this
   }

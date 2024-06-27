@@ -25,7 +25,7 @@ export class PrintedPreventiveServiceOrder{
   @JoinColumn({name: 'preventiveServiceOrderId'})
   preventiveServiceOrder: PreventiveServiceOrder
 
-  @OneToOne(() => ServiceOrder, (serviceOrder) => serviceOrder.preventiveServiceOrder)
+  @OneToOne(() => ServiceOrder, (serviceOrder) => serviceOrder.preventiveServiceOrder, {onDelete: 'CASCADE'})
   @JoinColumn({name: 'serviceOrderId'})
   serviceOrder: ServiceOrder
 

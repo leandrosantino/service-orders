@@ -8,7 +8,7 @@ export class DateTransformer implements ValueTransformer {
   }
 
   to(value: Date): string {
-    return value.toISOString();
+    return value.toISOString().replace('T', ' ').replace('Z', '');
   }
 
 }
