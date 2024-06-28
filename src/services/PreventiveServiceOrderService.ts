@@ -1,5 +1,6 @@
 import { ExecuteServiceOrdersRequestDTO, IPreventiveServiceOrderService, PreventiveServiceOrderFilters } from "@/domain/entities/PreventiveServiceOrder/IPreventiveServiceOrderService";
 import { PreventiveServiceOrder } from "@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrder";
+import { PreventiveServiceOrderState } from "@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrderState";
 import { PrintedPreventiveServiceOrder } from "@/domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
@@ -122,6 +123,10 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
 
       printedPreventiveServiceOrderRepository.save(printedServiceOrder)
 
+      preventiveServiceOrderRepository.update(plannedServiceOrder.id, {
+        state: PreventiveServiceOrderState.PRINTED
+      })
+
       return response.success()
 
     }catch(e){
@@ -171,6 +176,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
 
       printedPreventiveServiceOrderRepository.update(printedServiceOrder.id, {concluded: true, serviceOrder: {id: serviceOrder.id} })
       preventiveServiceOrderRepository.update(preventiveServiceOrder.id, {
+        state: PreventiveServiceOrderState.PLANED,
         nextExecution: preventiveServiceOrder.nextExecution.plusWeek(preventiveServiceOrder.frequencyInWeeks)
       })
 

@@ -85,7 +85,7 @@ def create_scripts():
 
     insert_statements = []
     for i, row in preventiveServiceOrders.iterrows():
-        insert_statement = f"insert into 'preventive_service_order' ('id', 'nature', 'frequency_in_weeks', 'next_execution', 'machineId') values ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, '{row['nextExecution']}', {row["machineId"]});"
+        insert_statement = f"insert into 'preventive_service_order' ('id', 'nature', 'frequency_in_weeks', 'next_execution', 'machineId', 'state') values ('{row["id"]}', '{row["nature"]}', {row["frequency"]}, '{row['nextExecution']}', {row["machineId"]}, 'planed');"
         insert_statement = insert_statement.replace('\n', ' ').replace('\r', '')
         insert_statements.append(insert_statement)
 

@@ -48,21 +48,21 @@ const createWindow = () => {
       await database.initialize()
       const s = servicesFactory()
 
-      // await s.preventiveServiceOrderService.getPlannedServiceOrders({
-      //   weekCode: '2024-W02'
-      // })
-      await s.preventiveServiceOrderService.getPrintedServiceOrders({
+      await s.preventiveServiceOrderService.getPlannedServiceOrders({
         weekCode: '2024-W02'
       })
+      // await s.preventiveServiceOrderService.getPrintedServiceOrders({
+      //   weekCode: '2024-W02'
+      // })
 
       // await s.preventiveServiceOrderService.printServiceOrder(1)
-      // await s.preventiveServiceOrderService.executeServiceOrders(18, {
-      //   date: new DateTime(),
-      //   durationInMinutes: 10,
-      //   responsibles: [
-      //     {id: 1}, {id: 2}
-      //   ]
-      // })
+      await s.preventiveServiceOrderService.executeServiceOrders(1, {
+        date: new DateTime(),
+        durationInMinutes: 10,
+        responsibles: [
+          {id: 1}, {id: 2}
+        ]
+      })
 
       // mainWindow?.show()
       // mainWindow?.maximize()

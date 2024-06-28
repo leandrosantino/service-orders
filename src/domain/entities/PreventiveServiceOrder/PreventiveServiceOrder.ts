@@ -5,6 +5,7 @@ import { PreventiveAction } from "../PreventiveAction/PreventiveAction";
 import { PrintedPreventiveServiceOrder } from "../PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { DateTransformer } from "@/transformers/DateTransformer";
 import { DateTime } from "@/utils/DateTime";
+import { PreventiveServiceOrderState } from "./PreventiveServiceOrderState";
 
 @Entity('preventive_service_order')
 export class PreventiveServiceOrder{
@@ -30,5 +31,8 @@ export class PreventiveServiceOrder{
 
   @OneToMany(() => PrintedPreventiveServiceOrder, (printedPreventiveServiceOrder) => printedPreventiveServiceOrder.preventiveServiceOrder)
   pendingPreventiveServiceOrders: PrintedPreventiveServiceOrder[]
+
+  @Column('nchar', {name: 'state'})
+  state: PreventiveServiceOrderState
 
 }
