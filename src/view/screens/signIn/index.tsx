@@ -28,7 +28,7 @@ export function SignIn () {
     if (isAuth) {
       navigate('/')
     }
-    // auth(913, '123456789')
+    auth(913, 'LEA@adler')
   })
 
   function auth(register: number, password: string ){

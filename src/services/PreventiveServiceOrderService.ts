@@ -153,7 +153,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
       if(printedServiceOrder.concluded) return response.falure('service order already executed')
 
       const responsibles = await workerRepository.find({
-        where: data.responsibles
+        where: data.responsibles.map(id => ({id}))
       })
 
       if(data.responsibles.length !== responsibles.length) return response.falure('responsibles not found')

@@ -7,6 +7,7 @@ import { RequireAuth } from './RequireAuth'
 import { SignIn } from './screens/signIn'
 import { UserInfo } from './screens/userInfo'
 import { Home } from './screens/home'
+import { Preventives } from './screens/preventives'
 
 export function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ export function AppRoutes() {
             <Route element={<RequireAuth />} >
 
               <Route path="" element={<Home/>} />
+              <Route path="/preventives" element={<Preventives/>} />
               <Route path="/serviceOrders" element={<h1>Teste</h1>} />
               <Route path="/preventiveActions" element={<>preventiveActions</>} />
               <Route path="/settings" element={<>config</>} />

@@ -37,7 +37,8 @@ export function Sidebar () {
         value={alignment}
       >
 
-        <PageButton value="/" >Home</PageButton>
+        <PageButton value="/" >Dashboard</PageButton>
+        <PageButton value="/preventives" >Preventivas</PageButton>
 
       </ToggleGroupRoot>
     </Aside >

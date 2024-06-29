@@ -12,7 +12,7 @@ export type PreventiveServiceOrderFilters = {
 
 export type ExecuteServiceOrdersRequestDTO = {
   date: DateTime
-  responsibles: Array<{id: number}>
+  responsibles: Array<number>
   durationInMinutes: number
 }
 
