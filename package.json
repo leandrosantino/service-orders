@@ -12,6 +12,7 @@
       "lint": "eslint --ext .ts,.tsx .",
       "typeorm": "typeorm-ts-node-commonjs",
       "seed": "python ./scripts/run_seed.py && npx tsx ./scripts/users_migration.ts",
+      "generate_ipc": "npx tsx ./generate_ipc_method.ts",
       "test": "npx tsx ./test.ts"
    },
    "devDependencies": {
@@ -74,6 +75,7 @@
       "reflect-metadata": "^0.1.13",
       "sqlite3": "^5.0.2",
       "styled-components": "^6.1.11",
+      "ts-morph": "^23.0.0",
       "typeorm": "0.3.20",
       "zod": "^3.22.4"
    }

@@ -30,10 +30,7 @@ export function AuthProvider ({ children }: { children: ReactNode }) {
   }
 
   async function signIn (register: number, password: string) {
-    const userDataRequest = await window.app.invoke<IResponseEntity<IUserResponseDTO>, IUserAuthRequestDTO>(
-      'auth',
-      {register, password}
-    )
+    const userDataRequest = await window.app.invoke.auth({register, password})
     if(userDataRequest.error) {
       throw new Error(userDataRequest.message)
     }

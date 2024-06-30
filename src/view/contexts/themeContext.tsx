@@ -12,6 +12,7 @@ import {
   yellow,
   yellowDark
 } from '@radix-ui/colors'
+import React from 'react'
 
 type Mode = 'dark' | 'light'
 
