@@ -12,7 +12,7 @@
       "lint": "eslint --ext .ts,.tsx .",
       "typeorm": "typeorm-ts-node-commonjs",
       "seed": "python ./scripts/run_seed.py && npx tsx ./scripts/users_migration.ts",
-      "generate_ipc": "npx tsx ./generate_ipc_method.ts",
+      "generate_ipc": "npx tsx ./scripts/generate_ipc_method.ts",
       "test": "npx tsx ./test.ts"
    },
    "devDependencies": {

@@ -6,8 +6,8 @@ export function Preventives(){
 
   useEffect(()=>{
     (async () => {
-      const resp = await window.app.invoke.getPrintedServiceOrders({
-        weekCode: '2024-W02'
+      const resp = await window.app.invoke.preventiveServiceOrderService.getPrintedServiceOrders({
+        weekCode: '2024-W02',
       })
 
       console.log(resp)

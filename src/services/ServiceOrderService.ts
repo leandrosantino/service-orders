@@ -11,7 +11,6 @@ export class ServiceOrderService implements IServiceOrderService{
 
   @IpcChannel()
   async createServiceOrder({data, machineId}: ICreateServiceOrderRequestDTO): Promise<IResponseEntity<Properties<ServiceOrder>>> {
-
     const response = new ResponseEntity<ServiceOrder>()
 
     const machine = machineRepository.findOneBy({
