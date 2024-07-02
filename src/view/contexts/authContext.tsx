@@ -1,7 +1,5 @@
 import React, { type ReactNode, createContext, useState } from 'react'
-import { IResponseEntity } from '@/domain/interfaces/IResponseEntity'
 import { IUserResponseDTO } from '@/domain/entities/User/dto/IUserDTO'
-import { IUserAuthRequestDTO } from '@/domain/entities/User/dto/IUserAuthDTO'
 import { UserRole } from '@/domain/entities/User/UserRoules'
 
 interface AuthContextProps {

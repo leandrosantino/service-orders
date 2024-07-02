@@ -29,7 +29,7 @@ export function SignIn () {
       navigate('/')
     }
     auth(913, 'LEA@adler')
-  })
+  }, [])
 
   function auth(register: number, password: string ){
     signIn(register, password)

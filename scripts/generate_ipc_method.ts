@@ -1,13 +1,14 @@
 import { Project } from 'ts-morph'
+import * as path from 'path';
 
 const project = new Project({
     tsConfigFilePath: "./tsconfig.json",
 })
 
-const alias = '@/'
-const aliasPath = 'src/'
-
 const sourceFiles = project.addSourceFilesAtPaths("./src/services/**/*.ts")
+
+const alias = '@/'
+const aliasPath = './src/*'
 
 let script:string = 'import { ipcRenderer } from "electron" \nexport const invokeMethods = {\n'
 
@@ -36,7 +37,7 @@ sourceFiles.forEach(sourceFile => {
                 const parameters_ = method.getParameters().map(param => param.getName()).join(", ")
 
                 functions.push(`${' '.repeat(4)}${methodName}: async (${parameters}):${returnType} =>`+
-                       `await ipcRenderer.invoke('${methodName}', [${parameters_}]),`)
+                       ` await ipcRenderer.invoke('${methodName}', ${parameters_}),`)
             }
         }
 
@@ -58,7 +59,22 @@ console.log("Functions generated successfully.")
 
 function getRelativeType(typeText: string): string {
     const a = typeText.replace(/\("(.+?)"\)/g, (_, absolutePath) => {
-        return `("${alias + absolutePath.split(aliasPath)[1]}")`;
+        return `("${replacePathAlias(absolutePath, aliasPath.replaceAll('*', ''), alias)}")`
     });
     return a
+}
+
+function replacePathAlias(filePath: string, toReplace: string, alias: string): string {
+    const normalizedFilePath = path.normalize(filePath);
+    const normalizedToReplace = path.normalize(toReplace);
+
+    const index = normalizedFilePath.indexOf(normalizedToReplace);
+    if (index === -1) {
+        throw new Error(`O caminho "${normalizedFilePath}" não contém a string para substituição "${normalizedToReplace}".`);
+    }
+
+    const newPath = normalizedFilePath.substring(index + normalizedToReplace.length);
+    const resultPath = path.join(alias, newPath);
+
+    return resultPath.replace(/\\/g, '/');
 }

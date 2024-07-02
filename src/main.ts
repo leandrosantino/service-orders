@@ -46,21 +46,7 @@ const createWindow = () => {
 
   mainWindow.once('ready-to-show', async () => {
       await database.initialize()
-      const s = servicesFactory()
-
-      // await s.preventiveServiceOrderService.getPlannedServiceOrders({
-      //   weekCode: '2024-W02'
-      // })
-      // await s.preventiveServiceOrderService.getPrintedServiceOrders({
-      //   weekCode: '2024-W02'
-      // })
-      // await s.preventiveServiceOrderService.printServiceOrder(2)
-      // await s.preventiveServiceOrderService.executeServiceOrders(2, {
-      //   date: new DateTime(),
-      //   durationInMinutes: 10,
-      //   responsibles: [1, 2]
-      // })
-
+      servicesFactory()
       mainWindow?.show()
       mainWindow?.maximize()
   });
