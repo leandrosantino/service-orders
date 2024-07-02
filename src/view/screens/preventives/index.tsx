@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import { ScreenContainer } from "@/view/components/containers/ScreenContainer";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "@/utils/DateTime";
-import { getPlannedServiceOrders } from "@/view/query";
+import { api } from "@/view/query";
 
 
 export function Preventives(){
 
   const queryClient = useQueryClient()
 
-  const query = getPlannedServiceOrders({
+  const query = api.preventiveServiceOrderService.getPrintedServiceOrders({
     weekCode: '2024-W02'
   })
 

@@ -9,7 +9,7 @@ import { ResponseEntity } from "@/infra/ResponseEntity";
 
 import { preventiveServiceOrderRepository, printedPreventiveServiceOrderRepository, serviceOrderRepository, workerRepository } from "@/infra/repositories";
 import { DateTime } from "@/utils/DateTime";
-import { IpcChannel } from "@/utils/decorators";
+import { IpcChannel, IpcMutation, IpcQuery } from "@/utils/decorators";
 
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
 
@@ -35,7 +35,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
     }
   }
 
-  @IpcChannel()
+  @IpcQuery()
   async getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PrintedPreventiveServiceOrder[]>> {
     const response = new ResponseEntity<PrintedPreventiveServiceOrder[]>()
     try{
@@ -134,6 +134,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
     }
   }
 
+  @IpcMutation()
   async executeServiceOrders(printedServiceOrderId: number, data: ExecuteServiceOrdersRequestDTO): Promise<IResponseEntity<void>> {
     const response = new ResponseEntity<void>()
     try {

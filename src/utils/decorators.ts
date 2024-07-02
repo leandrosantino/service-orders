@@ -7,11 +7,21 @@ export function Autowired(Constructor: {new (...args: unknown[]): object }){
   }
 }
 
+function defineIpcHandle(target: object, key: string, descriptor: PropertyDescriptor){
+  if (!ipcMain) return;
+  ipcMain.handle(key, async (_, ...args)=>{
+    return await descriptor.value.apply(target, args)
+  })
+}
+
 export function IpcChannel (){
-  return (target: object, key: string, descriptor: PropertyDescriptor) => {
-    if (!ipcMain) return;
-    ipcMain.handle(key, async (_, ...args)=>{
-      return await descriptor.value.apply(target, args)
-    })
-  }
+  return defineIpcHandle
+}
+
+export function IpcQuery (){
+  return defineIpcHandle
+}
+
+export function IpcMutation (){
+  return defineIpcHandle
 }

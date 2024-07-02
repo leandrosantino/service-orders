@@ -10,9 +10,7 @@ const sourceFiles = project.addSourceFilesAtPaths("./src/services/**/*.ts")
 const alias = '@/'
 const aliasPath = './src/*'
 
-let script:string = '' +
-'import { useQuery } from "@tanstack/react-query"\n\n' +
-'export const api = {\n'
+let script:string = 'import { ipcRenderer } from "electron" \nexport const invokeMethods = {\n'
 
 sourceFiles.forEach(sourceFile => {
     const classes = sourceFile.getClasses()
@@ -24,9 +22,7 @@ sourceFiles.forEach(sourceFile => {
 
         const functions = []
         for (const method of methods) {
-            const decorator = method.getDecorators().find(decorator => {
-                return decorator.getName() == 'IpcMutation' || decorator.getName() == 'IpcQuery'
-            })
+            const decorator = method.getDecorators().find(decorator => decorator.getName() == 'IpcChannel')
 
             if(decorator && method.isAsync()){
                 const methodName = method.getName()
@@ -40,15 +36,8 @@ sourceFiles.forEach(sourceFile => {
 
                 const parameters_ = method.getParameters().map(param => param.getName()).join(", ")
 
-                const content = '' +
-                `${' '.repeat(4)}${methodName}: (${parameters}) => {\n`+
-                (decorator.getName() == 'IpcQuery' ?
-                    `${' '.repeat(6)}return useQuery({queryKey: ['${methodName}'], queryFn: ():${returnType} => {\n` :
-                    `${' '.repeat(6)}return useQuery({queryKey: ['${methodName}'], queryFn: ():${returnType} => {\n`
-                ) +
-                `${' '.repeat(8)}return window.app.ipc('${methodName}', ${parameters_})\n${' '.repeat(5)} }})\n${' '.repeat(3)} },`
-
-                functions.push(content)
+                functions.push(`${' '.repeat(4)}${methodName}: async (${parameters}):${returnType} =>`+
+                       ` await ipcRenderer.invoke('${methodName}', ${parameters_}),`)
             }
         }
 
@@ -63,7 +52,7 @@ sourceFiles.forEach(sourceFile => {
 
 script += '\n}'
 
-const newSourceFile = project.createSourceFile(`./src/view/query.ts`, script, { overwrite: true })
+const newSourceFile = project.createSourceFile(`./src/infra/ipcInvoke.ts`, script, { overwrite: true })
 newSourceFile.saveSync()
 
 console.log("Functions generated successfully.")
