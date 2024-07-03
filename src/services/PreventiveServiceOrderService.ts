@@ -14,7 +14,7 @@ import { IpcChannel, IpcMutation, IpcQuery } from "@/utils/decorators";
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
 
 
-  @IpcChannel()
+  @IpcQuery()
   async getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PreventiveServiceOrder[]>> {
     const response = new ResponseEntity<PreventiveServiceOrder[]>()
     try{
@@ -83,7 +83,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
   }
 
 
-  @IpcChannel()
+  @IpcMutation()
   async printServiceOrder(plannedServiceOrderId: number): Promise<IResponseEntity<void>> {
     const response = new ResponseEntity<void>()
     try {

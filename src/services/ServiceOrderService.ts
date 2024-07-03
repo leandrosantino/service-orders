@@ -5,11 +5,11 @@ import { IResponseEntity } from "@/domain/interfaces/IResponseEntity";
 import { Properties } from "@/domain/interfaces/Properties";
 import { machineRepository, serviceOrderRepository } from "@/infra/repositories";
 import { ResponseEntity } from "@/infra/ResponseEntity";
-import { IpcChannel } from "@/utils/decorators";
+import { IpcChannel, IpcMutation } from "@/utils/decorators";
 
 export class ServiceOrderService implements IServiceOrderService{
 
-  @IpcChannel()
+  @IpcMutation()
   async createServiceOrder({data, machineId}: ICreateServiceOrderRequestDTO): Promise<IResponseEntity<Properties<ServiceOrder>>> {
     const response = new ResponseEntity<ServiceOrder>()
 

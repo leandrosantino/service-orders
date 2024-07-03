@@ -1,6 +1,7 @@
 import React, { type ReactNode, createContext, useState } from 'react'
 import { IUserResponseDTO } from '@/domain/entities/User/dto/IUserDTO'
 import { UserRole } from '@/domain/entities/User/UserRoules'
+import { api } from '../query'
 
 interface AuthContextProps {
   isAuth: boolean
@@ -28,7 +29,7 @@ export function AuthProvider ({ children }: { children: ReactNode }) {
   }
 
   async function signIn (register: number, password: string) {
-    const userDataRequest = await window.app.invoke.authService.auth({register, password})
+    const userDataRequest = await api.authService.auth.invoke({register, password})
     if(userDataRequest.error) {
       throw new Error(userDataRequest.message)
     }

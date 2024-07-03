@@ -1,6 +1,6 @@
 import { IUserResponseDTO} from "@/domain/entities/User/dto/IUserDTO";
 import { IUserService } from "@/domain/entities/User/IUserService";
-import { IpcChannel , Autowired } from "@/utils/decorators";
+import { IpcChannel , Autowired, IpcQuery, IpcMutation } from "@/utils/decorators";
 import { User } from "@/domain/entities/User/User";
 import { database } from "@/infra/database";
 import { EncryptionService } from "./EncryptionService";
@@ -13,13 +13,13 @@ export class UserService implements IUserService{
   @Autowired(EncryptionService)
   encryptionService: EncryptionService
 
-  @IpcChannel()
+  @IpcQuery()
   async getAllUsers(): Promise<IUserResponseDTO[]>{
     const users = await userRepository.find()
     return users
   }
 
-  @IpcChannel()
+  @IpcQuery()
   async getUserById(id: number): Promise<IUserResponseDTO> {
     try{
       const user = await userRepository.findOneBy({id})
@@ -29,7 +29,7 @@ export class UserService implements IUserService{
     }
   }
 
-  @IpcChannel()
+  @IpcMutation()
   async create(user: User): Promise<User> {
     const encryptedPassword = this.encryptionService.generate(user.password)
     user.setPassword(encryptedPassword)

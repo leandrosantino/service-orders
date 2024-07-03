@@ -1,5 +1,6 @@
 import { Project } from 'ts-morph'
 import * as path from 'path';
+import {minify_sync} from 'terser'
 
 const project = new Project({
     tsConfigFilePath: "./tsconfig.json",
@@ -11,7 +12,7 @@ const alias = '@/'
 const aliasPath = './src/*'
 
 let script:string = '' +
-'import { useQuery } from "@tanstack/react-query"\n\n' +
+'import { useQuery, useMutation } from "@tanstack/react-query"\n\n' +
 'export const api = {\n'
 
 sourceFiles.forEach(sourceFile => {
@@ -32,21 +33,44 @@ sourceFiles.forEach(sourceFile => {
                 const methodName = method.getName()
                 const returnType = getRelativeType(method.getReturnType().getText())
 
-                const parameters = method.getParameters().map(param => {
+                const typedParameters = method.getParameters().map(param => {
                     const paramName = param.getName()
                     const paramType = getRelativeType(param.getType().getText())
                     return `${paramName}: ${paramType}`
-                }).join(', ')
+                }).join(', ').replace(/\{[^}]*\}/g, 'params')
 
-                const parameters_ = method.getParameters().map(param => param.getName()).join(", ")
+                const parameters = method.getParameters()
+                    .map(param => param.getName())
+                    .join(", ")
+                    .replace(/\{[^}]*\}/g, 'params')
 
-                const content = '' +
-                `${' '.repeat(4)}${methodName}: (${parameters}) => {\n`+
-                (decorator.getName() == 'IpcQuery' ?
-                    `${' '.repeat(6)}return useQuery({queryKey: ['${methodName}'], queryFn: ():${returnType} => {\n` :
-                    `${' '.repeat(6)}return useQuery({queryKey: ['${methodName}'], queryFn: ():${returnType} => {\n`
-                ) +
-                `${' '.repeat(8)}return window.app.ipc('${methodName}', ${parameters_})\n${' '.repeat(5)} }})\n${' '.repeat(3)} },`
+                let content = ''
+
+                const query = decorator.getName() == 'IpcQuery'?
+`            query: (${typedParameters}) => {
+                return useQuery({
+                    queryKey: ['${methodName}', { ${parameters} }] as const,
+                    queryFn: ({queryKey}):${returnType} => {
+                        const [_, { ${parameters} }] = queryKey
+                        return window.app.ipc('${methodName}', ${parameters})
+                    }
+                })
+            }`
+                :
+`            mutation: () => {
+                return useMutation({
+                    mutationFn: ( args:{${typedParameters} }):${returnType} => {
+                        return window.app.ipc('${methodName}', ...Object.values(args))
+                    }
+                })
+            }`
+
+                content = '' +
+`        ${methodName}: {
+${query},
+            invoke: async (${typedParameters}):${returnType} => await window.app.ipc('${methodName}', ${parameters})
+        },
+                `
 
                 functions.push(content)
             }
@@ -55,13 +79,14 @@ sourceFiles.forEach(sourceFile => {
         if(functions.length > 0){
             const _className = className.split('')
             _className[0] = _className[0].toLocaleLowerCase()
-            script += `${' '.repeat(2)}${_className.join('')}:{\n${functions.join("\n")}\n${' '.repeat(2)}},\n`
+            script += `${' '.repeat(4)}${_className.join('')}:{\n${functions.join("\n")}\n${' '.repeat(4)}},\n`
         }
 
     });
 });
 
 script += '\n}'
+
 
 const newSourceFile = project.createSourceFile(`./src/view/query.ts`, script, { overwrite: true })
 newSourceFile.saveSync()
