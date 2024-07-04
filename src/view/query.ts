@@ -21,26 +21,26 @@ export const api = {
             query: (filters: import("@/domain/entities/PreventiveServiceOrder/IPreventiveServiceOrderService").PreventiveServiceOrderFilters) => {
                 return useQuery({
                     queryKey: ['getPlannedServiceOrders', { filters }] as const,
-                    queryFn: ({queryKey}):Promise<import("@/domain/interfaces/IResponseEntity").IResponseEntity<import("@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrder").PreventiveServiceOrder[]>> => {
+                    queryFn: ({queryKey}):Promise<import("@/domain/interfaces/Properties").Properties<import("@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrder").PreventiveServiceOrder>[]> => {
                         const [_, { filters }] = queryKey
                         return window.app.ipc('getPlannedServiceOrders', filters)
                     }
                 })
             },
-            invoke: async (filters: import("@/domain/entities/PreventiveServiceOrder/IPreventiveServiceOrderService").PreventiveServiceOrderFilters):Promise<import("@/domain/interfaces/IResponseEntity").IResponseEntity<import("@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrder").PreventiveServiceOrder[]>> => await window.app.ipc('getPlannedServiceOrders', filters)
+            invoke: async (filters: import("@/domain/entities/PreventiveServiceOrder/IPreventiveServiceOrderService").PreventiveServiceOrderFilters):Promise<import("@/domain/interfaces/Properties").Properties<import("@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrder").PreventiveServiceOrder>[]> => await window.app.ipc('getPlannedServiceOrders', filters)
         },
                 
         getPrintedServiceOrders: {
             query: (filters: import("@/domain/entities/PreventiveServiceOrder/IPreventiveServiceOrderService").PreventiveServiceOrderFilters) => {
                 return useQuery({
                     queryKey: ['getPrintedServiceOrders', { filters }] as const,
-                    queryFn: ({queryKey}):Promise<import("@/domain/interfaces/IResponseEntity").IResponseEntity<import("@/domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder").PrintedPreventiveServiceOrder[]>> => {
+                    queryFn: ({queryKey}):Promise<import("@/domain/interfaces/Properties").Properties<import("@/domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder").PrintedPreventiveServiceOrder>[]> => {
                         const [_, { filters }] = queryKey
                         return window.app.ipc('getPrintedServiceOrders', filters)
                     }
                 })
             },
-            invoke: async (filters: import("@/domain/entities/PreventiveServiceOrder/IPreventiveServiceOrderService").PreventiveServiceOrderFilters):Promise<import("@/domain/interfaces/IResponseEntity").IResponseEntity<import("@/domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder").PrintedPreventiveServiceOrder[]>> => await window.app.ipc('getPrintedServiceOrders', filters)
+            invoke: async (filters: import("@/domain/entities/PreventiveServiceOrder/IPreventiveServiceOrderService").PreventiveServiceOrderFilters):Promise<import("@/domain/interfaces/Properties").Properties<import("@/domain/entities/PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder").PrintedPreventiveServiceOrder>[]> => await window.app.ipc('getPrintedServiceOrders', filters)
         },
                 
         printServiceOrder: {

@@ -5,6 +5,7 @@ import { PrintedPreventiveServiceOrder } from "@/domain/entities/PrintedPreventi
 import { ServiceOrder } from "@/domain/entities/ServiceOrder/ServiceOrder";
 import { ServiceOrderTypes } from "@/domain/entities/ServiceOrder/ServiceOrderTypes";
 import { IResponseEntity } from "@/domain/interfaces/IResponseEntity";
+import { Properties } from "@/domain/interfaces/Properties";
 import { ResponseEntity } from "@/infra/ResponseEntity";
 
 import { preventiveServiceOrderRepository, printedPreventiveServiceOrderRepository, serviceOrderRepository, workerRepository } from "@/infra/repositories";
@@ -15,8 +16,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
 
 
   @IpcQuery()
-  async getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PreventiveServiceOrder[]>> {
-    const response = new ResponseEntity<PreventiveServiceOrder[]>()
+  async getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PreventiveServiceOrder>[]> {
     try{
       const serviceOrders = await preventiveServiceOrderRepository.find({
         where: {
@@ -28,16 +28,15 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         }
       })
 
-      return response.success(serviceOrders)
+      return serviceOrders
 
     }catch(e){
-      return response.falure((e as Error).message)
+      throw new Error('')
     }
   }
 
   @IpcQuery()
-  async getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<IResponseEntity<PrintedPreventiveServiceOrder[]>> {
-    const response = new ResponseEntity<PrintedPreventiveServiceOrder[]>()
+  async getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PrintedPreventiveServiceOrder>[]> {
     try{
       const serviceOrders = await printedPreventiveServiceOrderRepository.find({
         where: {
@@ -48,6 +47,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
               id: filters?.machineId
             },
           },
+          concluded: true
         },
         relations: {
           preventiveServiceOrder: {
@@ -75,10 +75,10 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         }
       })
 
-      return response.success(serviceOrders)
+      return serviceOrders
 
     }catch(e){
-      return response.falure((e as Error).message)
+      throw new Error('')
     }
   }
 

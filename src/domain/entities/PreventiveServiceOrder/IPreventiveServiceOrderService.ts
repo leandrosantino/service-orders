@@ -3,6 +3,7 @@ import { PreventiveServiceOrder } from "./PreventiveServiceOrder";
 import { Specialty } from "../Worker/Specialty";
 import { PrintedPreventiveServiceOrder } from "../PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { DateTime } from "@/utils/DateTime";
+import { Properties } from "@/domain/interfaces/Properties";
 
 export type PreventiveServiceOrderFilters = {
   weekCode?: string
@@ -17,8 +18,8 @@ export type ExecuteServiceOrdersRequestDTO = {
 }
 
 export interface IPreventiveServiceOrderService {
-  getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise< IResponseEntity<PreventiveServiceOrder[]> >
-  getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise< IResponseEntity<PrintedPreventiveServiceOrder[]> >
+  getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PreventiveServiceOrder>[]>
+  getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PrintedPreventiveServiceOrder>[]>
   printServiceOrder(plannedServiceOrderId: number): Promise< IResponseEntity<void> >
   executeServiceOrders(printedServiceOrderId: number, data: ExecuteServiceOrdersRequestDTO): Promise< IResponseEntity<void> >
 }
