@@ -7,32 +7,34 @@ import { PreventiveServiceOrderState } from "@/domain/entities/PreventiveService
 
 export function Preventives(){
 
-  const plannedServiceOrders = api.preventiveServiceOrderService.getPlannedServiceOrders.query({})
-  const printedServiceOrders = api.preventiveServiceOrderService.getPrintedServiceOrders.query({})
+  const plannedServiceOrders = api.preventiveServiceOrderService.getPlannedServiceOrders.query({
+    weekCode: '2024-W02'
+  })
+  const printedServiceOrders = api.preventiveServiceOrderService.getPrintedServiceOrders.query({
+    weekCode: '2024-W01'
+  })
 
 
   const printServiceOrder = api.preventiveServiceOrderService.printServiceOrder.mutation()
   const executeServiceOrder = api.preventiveServiceOrderService.executeServiceOrders.mutation()
 
-  function handlePrint(id: number){
-    printServiceOrder.mutateAsync({plannedServiceOrderId: id}).then(() => {
-      plannedServiceOrders.refetch()
-      printedServiceOrders.refetch()
-    })
+  async function handlePrint(id: number){
+    await printServiceOrder.mutateAsync({plannedServiceOrderId: id})
+    await plannedServiceOrders.refetch()
+    await printedServiceOrders.refetch()
   }
 
-  function handleExecute(id: number){
-    executeServiceOrder.mutateAsync({
+  async function handleExecute(id: number){
+    await executeServiceOrder.mutateAsync({
       printedServiceOrderId: id,
       data: {
         date: new DateTime(),
         durationInMinutes: 15,
         responsibles: [1, 2]
       }
-    }).then(() => {
-      plannedServiceOrders.refetch()
-      printedServiceOrders.refetch()
     })
+    await plannedServiceOrders.refetch()
+    await printedServiceOrders.refetch()
   }
 
   return (
@@ -47,24 +49,25 @@ export function Preventives(){
       <Content>
         <CardsContainer>
           <section>
-            {plannedServiceOrders.data?.map(({id, state, }) => (
+            {plannedServiceOrders.data?.map(({id, state, nextExecution}) => (
               <Card isPrinted={state == PreventiveServiceOrderState.PRINTED} >
-                {id}
+                {id} <br/>
+                {String(nextExecution)}
                 <button onClick={() => handlePrint(id)}>Imprimir</button>
-                {
-                  state == PreventiveServiceOrderState.PRINTED&&
-                  <button onClick={() => handleExecute(id)} >Executar</button>
-                }
               </Card>
             ))}
           </section>
         </CardsContainer>
         <CardsContainer>
           <section>
-            {printedServiceOrders.data?.map(({id}) => (
+            {printedServiceOrders.data?.map(({id, concluded}) => (
               <Card isPrinted={true} >
                 {id}
                 <button onClick={() => handlePrint(id)} >Imprimir</button>
+                {
+                  !concluded&&
+                  <button onClick={() => handleExecute(id)} >Executar</button>
+                }
               </Card>
             ))}
           </section>

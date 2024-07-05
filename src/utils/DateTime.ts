@@ -38,6 +38,11 @@ export class DateTime extends Date {
     return this
   }
 
+  plusHours(hours: number) {
+    this.setHours(this.getHours() + hours)
+    return this
+  }
+
   minusDay(days: number) {
     this.setDate(this.getDate() - days)
     return this
@@ -70,6 +75,10 @@ export class DateTime extends Date {
   }
 
   plusWeek(weeks: number) {
+    this.setHours(0)
+    this.setMinutes(0)
+    this.setSeconds(0)
+    this.setMilliseconds(0)
     this.setDate(this.getDate() + (7 * weeks))
     return this
   }

@@ -24,6 +24,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
           machine: {
             id: filters?.machineId
           },
+          state: PreventiveServiceOrderState.PLANED,
           nextExecution: filters?.weekCode && new DateTime().fromWeekOfYearString(filters?.weekCode)
         }
       })
@@ -47,7 +48,6 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
               id: filters?.machineId
             },
           },
-          concluded: true
         },
         relations: {
           preventiveServiceOrder: {
