@@ -7,11 +7,13 @@ import { PreventiveServiceOrderState } from "@/domain/entities/PreventiveService
 
 export function Preventives(){
 
+  const [week, setWeek] = useState('2024-W26')
+
   const plannedServiceOrders = api.preventiveServiceOrderService.getPlannedServiceOrders.query({
-    weekCode: '2024-W02'
+    weekCode: week == ''?undefined: week
   })
   const printedServiceOrders = api.preventiveServiceOrderService.getPrintedServiceOrders.query({
-    weekCode: '2024-W01'
+    weekCode: week
   })
 
 
@@ -43,16 +45,24 @@ export function Preventives(){
       <h2>Preventivas</h2>
 
 
-      <header></header>
+      <header>
+        <label htmlFor="week">Semana: </label>
+        <input type="week" id='week' onChange={(e) => setWeek(e.target.value)} value={week}/>
+        <div>
+          Quantidade: {plannedServiceOrders.data?.length + printedServiceOrders.data?.length}
+        </div>
+      </header>
 
 
       <Content>
         <CardsContainer>
           <section>
-            {plannedServiceOrders.data?.map(({id, state, nextExecution}) => (
+            {plannedServiceOrders.data?.map(({id, state, nextExecution, frequencyInWeeks}) => (
               <Card isPrinted={state == PreventiveServiceOrderState.PRINTED} >
                 {id} <br/>
-                {String(nextExecution)}
+                {new DateTime(String(nextExecution)).toLocaleString()}<br/>
+                {new DateTime(String(nextExecution)).toWeekOfYearString()}<br/>
+                {frequencyInWeeks}
                 <button onClick={() => handlePrint(id)}>Imprimir</button>
               </Card>
             ))}
@@ -60,13 +70,13 @@ export function Preventives(){
         </CardsContainer>
         <CardsContainer>
           <section>
-            {printedServiceOrders.data?.map(({id, concluded}) => (
+            {printedServiceOrders.data?.map(({id, concluded, preventiveServiceOrder, weekCode}) => (
               <Card isPrinted={true} >
-                {id}
+                Code: {id.toString().padStart(5, '0')} <br/>
                 <button onClick={() => handlePrint(id)} >Imprimir</button>
                 {
                   !concluded&&
-                  <button onClick={() => handleExecute(id)} >Executar</button>
+                  <button onClick={() => handleExecute(preventiveServiceOrder.id)} >Executar</button>
                 }
               </Card>
             ))}

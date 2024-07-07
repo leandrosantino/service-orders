@@ -14,7 +14,7 @@ export const Content = styled.div`
 
 export const CardsContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 200px);
   overflow-x: auto;
 
   &>section {

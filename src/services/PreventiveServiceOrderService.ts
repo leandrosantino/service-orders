@@ -11,6 +11,7 @@ import { ResponseEntity } from "@/infra/ResponseEntity";
 import { preventiveServiceOrderRepository, printedPreventiveServiceOrderRepository, serviceOrderRepository, workerRepository } from "@/infra/repositories";
 import { DateTime } from "@/utils/DateTime";
 import { IpcChannel, IpcMutation, IpcQuery } from "@/utils/decorators";
+import { Between } from "typeorm";
 
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
 
@@ -18,6 +19,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
   @IpcQuery()
   async getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PreventiveServiceOrder>[]> {
     try{
+      const nextExecutionDate = new DateTime().fromWeekOfYearString(filters?.weekCode)
       const serviceOrders = await preventiveServiceOrderRepository.find({
         where: {
           nature: filters?.nature,
@@ -25,7 +27,10 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
             id: filters?.machineId
           },
           state: PreventiveServiceOrderState.PLANED,
-          nextExecution: filters?.weekCode && new DateTime().fromWeekOfYearString(filters?.weekCode)
+          nextExecution: filters?.weekCode && Between(
+            nextExecutionDate.getStartOfDay(),
+            nextExecutionDate.getEndOfDay()
+          )
         }
       })
 
@@ -61,13 +66,16 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
           id: true,
           preventiveActions: true,
           concluded: {},
+          weekCode: true,
           preventiveServiceOrder: {
+            id: true,
             machine: {
               tag: true
             },
             nature: true
           },
           serviceOrder: {
+            id: true,
             date: true,
             responsibles: true,
             durationInMinutes: true,

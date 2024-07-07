@@ -75,12 +75,22 @@ export class DateTime extends Date {
   }
 
   plusWeek(weeks: number) {
-    this.setHours(0)
-    this.setMinutes(0)
-    this.setSeconds(0)
-    this.setMilliseconds(0)
     this.setDate(this.getDate() + (7 * weeks))
     return this
+  }
+
+  getStartOfDay(){
+    const day = this.getDate()
+    const month = this.getMonth()
+    const year = this.getFullYear()
+    return new DateTime(year, month, day, 0, 0, 0, 0)
+  }
+
+  getEndOfDay(){
+    const day = this.getDate()
+    const month = this.getMonth()
+    const year = this.getFullYear()
+    return new DateTime(year, month, day, 23, 59, 59, 999)
   }
 
 }
