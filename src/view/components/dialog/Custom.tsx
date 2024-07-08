@@ -1,3 +1,4 @@
+import React from 'react'
 import { Overlay } from './style'
 import { type ReactNode } from 'react'
 

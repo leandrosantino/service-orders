@@ -24,14 +24,15 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         where: {
           nature: filters?.nature,
           machine: {
-            id: filters?.machineId
+            id: filters?.machineId,
           },
           state: PreventiveServiceOrderState.PLANED,
           nextExecution: filters?.weekCode && Between(
             nextExecutionDate.getStartOfDay(),
             nextExecutionDate.getEndOfDay()
           )
-        }
+        },
+        relations: {machine: true}
       })
 
       return serviceOrders
@@ -65,7 +66,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         select: {
           id: true,
           preventiveActions: true,
-          concluded: {},
+          concluded: true,
           weekCode: true,
           preventiveServiceOrder: {
             id: true,

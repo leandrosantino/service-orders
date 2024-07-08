@@ -19,7 +19,7 @@ export class PrintedPreventiveServiceOrder{
   preventiveActions: PreventiveAction[]
 
   @Column('boolean', {name: 'concluded'})
-  concluded: Boolean
+  concluded: boolean
 
   @ManyToOne(() => PreventiveServiceOrder, (preventiveServiceOrder) => preventiveServiceOrder.pendingPreventiveServiceOrders)
   @JoinColumn({name: 'preventiveServiceOrderId'})

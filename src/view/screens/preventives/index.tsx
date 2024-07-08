@@ -57,27 +57,45 @@ export function Preventives(){
       <Content>
         <CardsContainer>
           <section>
-            {plannedServiceOrders.data?.map(({id, state, nextExecution, frequencyInWeeks}) => (
+            {plannedServiceOrders.data?.map(({id, state, nextExecution, frequencyInWeeks, machine:{tag}, nature }) => (
               <Card isPrinted={state == PreventiveServiceOrderState.PRINTED} >
-                {id} <br/>
-                {new DateTime(String(nextExecution)).toLocaleString()}<br/>
-                {new DateTime(String(nextExecution)).toWeekOfYearString()}<br/>
-                {frequencyInWeeks}
-                <button onClick={() => handlePrint(id)}>Imprimir</button>
+                <div>
+                  <span>{tag.length > 15?tag.substring(0, 15).concat('...'):tag}</span>
+                  <span>ID: {id}</span>
+                </div>
+                <div>
+                  <div>Semana: <span>{new DateTime(String(nextExecution)).toWeekOfYearString()}</span></div>
+                  <div>Frequencia: <span>{frequencyInWeeks}</span></div>
+                  <div>Natureza: <span>{nature}</span></div>
+                  <div id='buttons'>
+                    <button onClick={() => handlePrint(id)}>Imprimir</button>
+                  </div>
+                </div>
               </Card>
             ))}
           </section>
         </CardsContainer>
         <CardsContainer>
           <section>
-            {printedServiceOrders.data?.map(({id, concluded, preventiveServiceOrder, weekCode}) => (
-              <Card isPrinted={true} >
-                Code: {id.toString().padStart(5, '0')} <br/>
-                <button onClick={() => handlePrint(id)} >Imprimir</button>
-                {
-                  !concluded&&
-                  <button onClick={() => handleExecute(preventiveServiceOrder.id)} >Executar</button>
-                }
+            {printedServiceOrders.data?.map(({
+              id, concluded, weekCode,
+              preventiveServiceOrder:{ machine:{tag}, nature, frequencyInWeeks, ...prevSO },
+              serviceOrder
+            }) => (
+              <Card isPrinted={true} isConcluded={concluded} >
+                <div>
+                  <span>{tag.length > 14?tag.substring(0, 14).concat('...'):tag}</span>
+                  <span>{id.toString().padStart(5, '0')}</span>
+                </div>
+                <div>
+                  <div>Semana: <span>{weekCode}</span></div>
+                  <div>Natureza: <span>{nature}</span></div>
+                  {concluded&&<div>Data: <span>{new DateTime(String(serviceOrder?.date)).toLocaleDateString()}</span></div>}
+                  <div id='buttons'>
+                    {!concluded&&<button onClick={() => handleExecute(id)} >Executar</button>}
+                    <button onClick={() => handlePrint(prevSO.id)} >Imprimir</button>
+                  </div>
+                </div>
               </Card>
             ))}
           </section>
