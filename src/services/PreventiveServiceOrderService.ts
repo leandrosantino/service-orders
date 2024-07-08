@@ -55,6 +55,11 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
             },
           },
         },
+        order: {
+          concluded: {
+            direction: 'ASC'
+          }
+        },
         relations: {
           preventiveServiceOrder: {
             machine: true

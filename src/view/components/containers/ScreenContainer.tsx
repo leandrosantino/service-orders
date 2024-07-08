@@ -11,6 +11,11 @@ export const ScreenContainer = styled.div`
   gap: .8rem;
   padding: 1.2rem;
 
+  &>h1{
+    font-size: 2.8rem;
+  }
+
+
   h2, h3{
     width: 100%;
   }
