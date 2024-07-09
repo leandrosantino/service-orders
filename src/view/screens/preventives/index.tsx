@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { ScreenContainer } from "@/view/components/containers/ScreenContainer";
 import { DateTime } from "@/utils/DateTime";
 import { api } from "@/view/query";
-import { Card, CardsContainer, Content, ListTitle } from "./styles";
+import { Content, ListTitle } from "./styles";
 import { PreventiveServiceOrderState } from "@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrderState";
+import { Card, CardsContainer } from "@/view/components/Card";
 
 export function Preventives(){
 
@@ -61,16 +62,17 @@ export function Preventives(){
         <CardsContainer>
           <section>
             {plannedServiceOrders.data?.map(({id, state, nextExecution, frequencyInWeeks, machine:{tag}, nature }) => (
-              <Card isPrinted={state == PreventiveServiceOrderState.PRINTED} >
+              <Card key={id} isPrinted={state == PreventiveServiceOrderState.PRINTED} onClick={() => console.log('Teste')} >
                 <div>
-                  <span>{tag.length > 15?tag.substring(0, 15).concat('...'):tag}</span>
                   <span>ID {id}</span>
+                  <span>{tag.length > 15?tag.substring(0, 15).concat('...'):tag}</span>
                 </div>
                 <div>
+                  <div>Natureza: <span>{nature}</span></div>
                   <div>Semana: <span>{new DateTime(String(nextExecution)).toWeekOfYearString()}</span></div>
                   <div>Frequencia: <span>{frequencyInWeeks} sem</span></div>
-                  <div>Natureza: <span>{nature}</span></div>
-                  <button onClick={() => handlePrint(id)}>Imprimir</button>
+                  <div>Status: <span id='status' >Planejada</span></div>
+                  {/* <button onClick={() => handlePrint(id)}>Imprimir</button> */}
                 </div>
               </Card>
             ))}
@@ -83,19 +85,22 @@ export function Preventives(){
               preventiveServiceOrder:{ machine:{tag}, nature, frequencyInWeeks, ...prevSO },
               serviceOrder
             }) => (
-              <Card isPrinted={true} isConcluded={concluded} >
-                <div>
-                  <span>{tag.length > 14?tag.substring(0, 14).concat('...'):tag}</span>
+              <Card key={id} isPrinted={true} isConcluded={concluded} >
+                <div onClick={() => console.log('Teste')}>
                   <span>ID {prevSO.id}</span>
+                  <span>{tag.length > 14?tag.substring(0, 14).concat('...'):tag}</span>
                 </div>
-                <div>
+                <div onClick={() => console.log('Teste')} >
                   <div>Código: <span>{id.toString().padStart(5, '0')}</span></div>
                   <div>Semana: <span>{weekCode}</span></div>
                   <div>Natureza: <span>{nature}</span></div>
                   {concluded&&<div>Data: <span>{new DateTime(String(serviceOrder?.date)).toLocaleDateString()}</span></div>}
-                  <button onClick={() => handlePrint(prevSO.id)} >Imprimir</button>
-                  {!concluded&&<button id='btnExecute' onClick={() => handleExecute(id)} >Fechar OS</button>}
+                  <div>Status: <span id='status' >{concluded?'Concluída':'Impressa'}</span></div>
+                  {/* <button onClick={() => handlePrint(prevSO.id)} >Imprimir</button> */}
                 </div>
+                {!concluded&&<div>
+                  <button id='btnExecute' onClick={() => handleExecute(id)} >Fechar OS</button>
+                </div>}
               </Card>
             ))}
           </section>
