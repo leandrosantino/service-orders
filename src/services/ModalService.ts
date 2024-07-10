@@ -1,4 +1,7 @@
 import { BrowserWindow } from "electron";
+import fs from 'fs'
+import path from "path";
+import ejs from 'ejs'
 
 export class ModalService {
 
@@ -18,11 +21,27 @@ export class ModalService {
       maximizable: false,
       minimizable: false,
       webPreferences:{
-        devTools: true
+        devTools: true,
+        preload: path.join(__dirname, 'preload.js'),
       }
     });
 
-    modalWindow.loadURL('data:text/html;charset=utf-8,<h1>Leandro</h1>');
+    const file = fs.readFileSync('serviceOrder.ejs').toString()
+
+    const html = ejs.render(file, {data: {
+      machine: {tag: 'M21'},
+      weekCode: '2024-W21',
+      nature: {name: 'Elétrica'},
+      actions: []
+    } })
+
+    const htmlFilePath = path.join(__dirname, 'serviceOrder.html')
+
+    fs.writeFileSync(htmlFilePath, html, {encoding: 'utf-8'})
+
+    console.log(path.extname(__dirname))
+
+    modalWindow.loadURL(`file:${htmlFilePath}`);
     modalWindow.setMenuBarVisibility(false)
 
     modalWindow.once('ready-to-show', async () => {

@@ -4,7 +4,8 @@ import { ipcRenderer } from "electron"
 
 const preloadMethods = {
   invoke: invokeMethods,
-  ipc: ipcRenderer.invoke
+  ipc: ipcRenderer.invoke,
+  ipcSend: ipcRenderer.send
 }
 
 export type PreloadMethods = typeof preloadMethods
