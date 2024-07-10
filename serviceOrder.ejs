@@ -330,12 +330,10 @@
     <script>
         const pdfName = "<%-data.id%>_<%-data.weekCode.replace('W', 'S')%>_<%-data.machine.tag%>-<%-data.nature.name%>"
         function printPage() {
-            window.app.ipcSend('print')
-            window.app.ipc('printServiceOrder', '<%-data.id%>')
+            window.app.ipc('printServiceOrder', Number('<%-data.id%>'))
         }
         function printPageToPDF() {
-            window.app.ipcSend('printToPdf', pdfName)
-            window.app.ipc('printServiceOrder', '<%-data.id%>')
+            window.app.ipc('printServiceOrder', Number('<%-data.id%>'), pdfName, true)
         }
     </script>
 </body>

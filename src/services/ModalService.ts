@@ -10,15 +10,21 @@ export class ModalService {
     title: string,
     height: number,
     width: number,
-    templateFilePath: string
+    templateFilePath: string,
+    onClose: () => void
   }
 
   constructor(props: ModalService['props']){
     this.props = props
   }
 
-  show<T>(data?: T){
-    let modalWindow = new BrowserWindow({
+  show<T>(data: T){
+
+    if(currentModalWindow !== null){
+      return null
+    }
+
+    currentModalWindow = new BrowserWindow({
       title: this.props.title,
       height: this.props.height,
       width: this.props.width,
@@ -39,18 +45,20 @@ export class ModalService {
 
     fs.writeFileSync(this.htmlFilePath, html, {encoding: 'utf-8'})
 
-    modalWindow.loadURL(`file:${this.htmlFilePath}`);
-    modalWindow.setMenuBarVisibility(false)
+    currentModalWindow.loadURL(`file:${this.htmlFilePath}`);
+    currentModalWindow.setMenuBarVisibility(false)
 
-    modalWindow.once('ready-to-show', async () => {
-      modalWindow?.show()
+    currentModalWindow.once('ready-to-show', async () => {
+      currentModalWindow?.show()
     });
 
-    modalWindow.on("closed", () => {
-      modalWindow = null;
+    currentModalWindow.on("closed", () => {
+      mainWindow.focus()
+      currentModalWindow = null
+      this.props.onClose()
     });
 
-    return modalWindow
+    return currentModalWindow
   }
 
 }

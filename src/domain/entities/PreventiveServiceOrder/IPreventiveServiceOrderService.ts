@@ -20,7 +20,7 @@ export type ExecuteServiceOrdersRequestDTO = {
 export interface IPreventiveServiceOrderService {
   getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PreventiveServiceOrder>[]>
   getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PrintedPreventiveServiceOrder>[]>
-  printServiceOrder(plannedServiceOrderId: number): Promise< IResponseEntity<void> >
+  printServiceOrder(plannedServiceOrderId: number, filename: string, toPdf: boolean): Promise< IResponseEntity<void> >
   executeServiceOrders(printedServiceOrderId: number, data: ExecuteServiceOrdersRequestDTO): Promise< IResponseEntity<void> >
-  showServiceOrderDetails(printedServiceOrderId: number) : void
+  showServiceOrderDetails(printedServiceOrderId: number) : Promise<void>
 }

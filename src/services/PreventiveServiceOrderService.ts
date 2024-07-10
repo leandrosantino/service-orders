@@ -10,30 +10,40 @@ import { ResponseEntity } from "@/infra/ResponseEntity";
 
 import { preventiveServiceOrderRepository, printedPreventiveServiceOrderRepository, serviceOrderRepository, workerRepository } from "@/infra/repositories";
 import { DateTime } from "@/utils/DateTime";
-import { IpcChannel, IpcMutation, IpcQuery } from "@/utils/decorators";
+import { Autowired, IpcChannel, IpcMutation, IpcQuery } from "@/utils/decorators";
 import { Between } from "typeorm";
 import { ModalService } from "./ModalService";
+import { PrintService } from "./PrintService";
 
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
 
+  @Autowired(PrintService)
+  printService: PrintService
 
   @IpcChannel()
-  showServiceOrderDetails(plannedServiceOrderId: number): void {
-    const modalService = new ModalService({
-      title: 'Ordem de Serviço Preventiva',
-      templateFilePath: 'serviceOrder.ejs',
-      width: 900,
-      height: 700
-    })
+  async showServiceOrderDetails(plannedServiceOrderId: number): Promise<void> {
+    return await new Promise((resolve, reject) => {
+      try{
+        const modalService = new ModalService({
+          title: 'Ordem de Serviço Preventiva',
+          templateFilePath: 'serviceOrder.ejs',
+          width: 900,
+          height: 700,
+          onClose: () => resolve()
+        });
 
-    modalService.show({
-      id: plannedServiceOrderId,
-      machine: {tag: 'M21'},
-      weekCode: '2024-W21',
-      nature: {name: 'Elétrica'},
-      actions: []
-    })
+        modalService.show({
+          id: plannedServiceOrderId,
+          machine: {tag: 'M21'},
+          weekCode: '2024-W21',
+          nature: {name: 'Elétrica'},
+          actions: []
+        })
 
+      }catch (err){
+        reject((err as Error).message)
+      }
+    })
   }
 
   @IpcQuery()
@@ -117,10 +127,13 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
   }
 
 
-  @IpcMutation()
-  async printServiceOrder(plannedServiceOrderId: number): Promise<IResponseEntity<void>> {
+  @IpcChannel()
+  async printServiceOrder(plannedServiceOrderId: number, filename: string, toPdf: boolean): Promise<IResponseEntity<void>> {
     const response = new ResponseEntity<void>()
     try {
+      if(toPdf) await this.printService.printToPdf(currentModalWindow, filename)
+      if(!toPdf) await this.printService.print(currentModalWindow)
+
       const plannedServiceOrder = await preventiveServiceOrderRepository.findOne({
         where: {
           id: plannedServiceOrderId

@@ -17,15 +17,7 @@ export function Preventives(){
     weekCode: week
   })
 
-
-  const printServiceOrder = api.preventiveServiceOrderService.printServiceOrder.mutation()
   const executeServiceOrder = api.preventiveServiceOrderService.executeServiceOrders.mutation()
-
-  async function handlePrint(id: number){
-    await printServiceOrder.mutateAsync({plannedServiceOrderId: id})
-    await plannedServiceOrders.refetch()
-    await printedServiceOrders.refetch()
-  }
 
   async function handleExecute(id: number){
     await executeServiceOrder.mutateAsync({
@@ -41,7 +33,10 @@ export function Preventives(){
   }
 
   function handleDetails(id: number){
-    window.app.ipc('showServiceOrderDetails', id)
+    window.app.ipc('showServiceOrderDetails', id).then(async () => {
+      await plannedServiceOrders.refetch()
+      await printedServiceOrders.refetch()
+    })
   }
 
   return (
@@ -49,12 +44,10 @@ export function Preventives(){
 
       <h1>Preventivas</h1>
 
-
       <header>
         <label htmlFor="week">Semana: </label>
         <input type="week" id='week' onChange={(e) => setWeek(e.target.value)} value={week}/>
       </header>
-
 
       <Content>
         <ListTitle>
@@ -76,7 +69,6 @@ export function Preventives(){
                   <div>Semana: <span>{new DateTime(String(nextExecution)).toWeekOfYearString()}</span></div>
                   <div>Frequencia: <span>{frequencyInWeeks} sem</span></div>
                   <div>Status: <span id='status' >Planejada</span></div>
-                  {/* <button onClick={() => handlePrint(id)}>Imprimir</button> */}
                 </div>
               </Card>
             ))}
@@ -100,7 +92,6 @@ export function Preventives(){
                   <div>Natureza: <span>{nature}</span></div>
                   {concluded&&<div>Data: <span>{new DateTime(String(serviceOrder?.date)).toLocaleDateString()}</span></div>}
                   <div>Status: <span id='status' >{concluded?'Concluída':'Impressa'}</span></div>
-                  {/* <button onClick={() => handlePrint(prevSO.id)} >Imprimir</button> */}
                 </div>
                 {!concluded&&<div>
                   <button id='btnExecute' onClick={() => handleExecute(id)} >Fechar OS</button>

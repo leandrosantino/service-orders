@@ -2,10 +2,11 @@ import { contextBridge } from 'electron';
 import { invokeMethods } from '@/infra/ipcInvoke'
 import { ipcRenderer } from "electron"
 
+
 const preloadMethods = {
   invoke: invokeMethods,
   ipc: ipcRenderer.invoke,
-  ipcSend: ipcRenderer.send
+  on: ipcRenderer.on
 }
 
 export type PreloadMethods = typeof preloadMethods

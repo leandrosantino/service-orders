@@ -13,8 +13,8 @@ import { DateTransformer } from './transformers/DateTransformer';
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
-
 const createWindow = () => {
+  (globalThis as any).currentModalWindow = null;
   (globalThis as any).mainWindow = new BrowserWindow({
     title: 'Ordens de Serviço',
     minHeight: 750,
@@ -48,7 +48,7 @@ const createWindow = () => {
 
   mainWindow.once('ready-to-show', async () => {
       await database.initialize()
-      servicesFactory(mainWindow)
+      servicesFactory()
       mainWindow?.show()
       mainWindow?.maximize()
   });
