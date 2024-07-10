@@ -16,15 +16,25 @@ import { ModalService } from "./ModalService";
 
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
 
-  constructor(private readonly modalService: ModalService){}
 
   @IpcChannel()
-  showServiceOrderDetails(): void {
+  showServiceOrderDetails(plannedServiceOrderId: number): void {
+    const modalService = new ModalService({
+      title: 'Ordem de Serviço Preventiva',
+      templateFilePath: 'serviceOrder.ejs',
+      width: 900,
+      height: 700
+    })
 
-
+    modalService.show({
+      id: plannedServiceOrderId,
+      machine: {tag: 'M21'},
+      weekCode: '2024-W21',
+      nature: {name: 'Elétrica'},
+      actions: []
+    })
 
   }
-
 
   @IpcQuery()
   async getPlannedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PreventiveServiceOrder>[]> {

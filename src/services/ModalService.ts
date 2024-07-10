@@ -5,19 +5,27 @@ import ejs from 'ejs'
 
 export class ModalService {
 
-  mainWindow: BrowserWindow
-
-  constructor(window: BrowserWindow){
-    this.mainWindow = window
+  htmlFilePath = path.join(__dirname, 'modal.html')
+  props: {
+    title: string,
+    height: number,
+    width: number,
+    templateFilePath: string
   }
 
-  show(){
+  constructor(props: ModalService['props']){
+    this.props = props
+  }
+
+  show<T>(data?: T){
     let modalWindow = new BrowserWindow({
-      title: 'Ordens de Serviço',
-      minHeight: 700,
-      minWidth: 900,
+      title: this.props.title,
+      height: this.props.height,
+      width: this.props.width,
+      minHeight: this.props.height,
+      minWidth: this.props.width,
       show: false,
-      parent: this.mainWindow,
+      parent: mainWindow,
       maximizable: false,
       minimizable: false,
       webPreferences:{
@@ -26,22 +34,12 @@ export class ModalService {
       }
     });
 
-    const file = fs.readFileSync('serviceOrder.ejs').toString()
+    const file = fs.readFileSync(this.props.templateFilePath).toString()
+    const html = ejs.render(file, {data})
 
-    const html = ejs.render(file, {data: {
-      machine: {tag: 'M21'},
-      weekCode: '2024-W21',
-      nature: {name: 'Elétrica'},
-      actions: []
-    } })
+    fs.writeFileSync(this.htmlFilePath, html, {encoding: 'utf-8'})
 
-    const htmlFilePath = path.join(__dirname, 'serviceOrder.html')
-
-    fs.writeFileSync(htmlFilePath, html, {encoding: 'utf-8'})
-
-    console.log(path.extname(__dirname))
-
-    modalWindow.loadURL(`file:${htmlFilePath}`);
+    modalWindow.loadURL(`file:${this.htmlFilePath}`);
     modalWindow.setMenuBarVisibility(false)
 
     modalWindow.once('ready-to-show', async () => {

@@ -8,6 +8,7 @@ export function Autowired(Constructor: {new (...args: unknown[]): object }){
 }
 
 function defineIpcHandle(target: object, key: string, descriptor: PropertyDescriptor){
+  console.log(target)
   if (!ipcMain) return;
   ipcMain.handle(key, async (_, ...args)=>{
     return await descriptor.value.apply(target, args)

@@ -9,12 +9,13 @@ import { PrintedPreventiveServiceOrder } from './domain/entities/PrintedPreventi
 import { ServiceOrder } from './domain/entities/ServiceOrder/ServiceOrder';
 import { DateTransformer } from './transformers/DateTransformer';
 
+
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
 const createWindow = () => {
-  const mainWindow = new BrowserWindow({
+  (globalThis as any).mainWindow = new BrowserWindow({
     title: 'Ordens de Serviço',
     minHeight: 750,
     minWidth: 1400,
@@ -47,8 +48,7 @@ const createWindow = () => {
 
   mainWindow.once('ready-to-show', async () => {
       await database.initialize()
-      const s = servicesFactory(mainWindow)
-      s.modalService.show()
+      servicesFactory(mainWindow)
       mainWindow?.show()
       mainWindow?.maximize()
   });

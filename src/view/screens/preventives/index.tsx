@@ -40,6 +40,10 @@ export function Preventives(){
     await printedServiceOrders.refetch()
   }
 
+  function handleDetails(id: number){
+    window.app.ipc('showServiceOrderDetails', id)
+  }
+
   return (
     <ScreenContainer>
 
@@ -62,7 +66,7 @@ export function Preventives(){
         <CardsContainer>
           <section>
             {plannedServiceOrders.data?.map(({id, state, nextExecution, frequencyInWeeks, machine:{tag}, nature }) => (
-              <Card key={id} isPrinted={state == PreventiveServiceOrderState.PRINTED} onClick={() => console.log('Teste')} >
+              <Card key={id} isPrinted={state == PreventiveServiceOrderState.PRINTED} onClick={() => handleDetails(id)} >
                 <div>
                   <span>ID {id}</span>
                   <span>{tag.length > 15?tag.substring(0, 15).concat('...'):tag}</span>
@@ -86,11 +90,11 @@ export function Preventives(){
               serviceOrder
             }) => (
               <Card key={id} isPrinted={true} isConcluded={concluded} >
-                <div onClick={() => console.log('Teste')}>
+                <div onClick={() => handleDetails(prevSO.id)}>
                   <span>ID {prevSO.id}</span>
                   <span>{tag.length > 14?tag.substring(0, 14).concat('...'):tag}</span>
                 </div>
-                <div onClick={() => console.log('Teste')} >
+                <div onClick={() => handleDetails(prevSO.id)} >
                   <div>Código: <span>{id.toString().padStart(5, '0')}</span></div>
                   <div>Semana: <span>{weekCode}</span></div>
                   <div>Natureza: <span>{nature}</span></div>

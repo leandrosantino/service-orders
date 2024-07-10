@@ -6,16 +6,13 @@ import { ServiceOrderService } from "@/services/ServiceOrderService";
 import { UserService } from "@/services/UserService";
 import { BrowserWindow } from "electron";
 
-export function servicesFactory(mainWindow: BrowserWindow){
-
-  const modalService = new ModalService(mainWindow)
+export function servicesFactory(){
 
   return {
     userService: new UserService(),
     authService: new AuthService(),
     serviceOrderService: new ServiceOrderService(),
-    preventiveServiceOrderService: new PreventiveServiceOrderService(modalService),
-    printService: new PrintService(),
-    modalService
+    preventiveServiceOrderService: new PreventiveServiceOrderService(),
+    printService: new PrintService()
   }
 }
