@@ -12,8 +12,18 @@ import { preventiveServiceOrderRepository, printedPreventiveServiceOrderReposito
 import { DateTime } from "@/utils/DateTime";
 import { IpcChannel, IpcMutation, IpcQuery } from "@/utils/decorators";
 import { Between } from "typeorm";
+import { ModalService } from "./ModalService";
 
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
+
+  constructor(private readonly modalService: ModalService){}
+
+  @IpcChannel()
+  showServiceOrderDetails(): void {
+
+
+
+  }
 
 
   @IpcQuery()
@@ -201,6 +211,8 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
       return response.falure((e as Error).message)
     }
   }
+
+
 
 
 

@@ -14,6 +14,15 @@ function defineIpcHandle(target: object, key: string, descriptor: PropertyDescri
   })
 }
 
+export function IpcEvent (){
+  return (target: object, key: string, descriptor: PropertyDescriptor) => {
+    if (!ipcMain) return;
+    ipcMain.on(key, (ev, args) => {
+      descriptor.value.apply(target, [ev, ...args])
+    })
+  }
+}
+
 export function IpcChannel (){
   return defineIpcHandle
 }
