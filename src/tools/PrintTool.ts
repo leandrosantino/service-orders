@@ -1,15 +1,13 @@
-import { IPrintService } from "@/domain/interfaces/IPrintService";
-import { Dialog } from "@/utils/Dialog";
-import { IpcEvent } from "@/utils/decorators";
+import { DialogTool } from "@/tools/DialogTools";
 import { BrowserWindow } from "electron";
 import path from 'path'
 import fs from 'fs'
 
-export class PrintService implements IPrintService{
+export class PrintTool {
 
   async print (window: BrowserWindow) {
     return await new Promise<void>((resolve, reject) => {
-      const dialog = new Dialog(window)
+      const dialog = new DialogTool(window)
       window?.webContents.print({
           pageSize: 'A4',
           margins: {
@@ -31,7 +29,7 @@ export class PrintService implements IPrintService{
   };
 
   async printToPdf (window: BrowserWindow, fileName:string) {
-    const dialog = new Dialog(window)
+    const dialog = new DialogTool(window)
     const pdfpath = dialog.openFile('Escolha a pasta para salvar o PDF', 'Salvar Ordem de Serviço Preventiva')
     if (pdfpath) {
       try{

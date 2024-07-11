@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 
-export class EncryptionService {
+export class EncryptionTool {
   private algorithm = 'sha512'
 
   generate(loginPass: string): string {

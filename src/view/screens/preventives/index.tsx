@@ -82,11 +82,11 @@ export function Preventives(){
               serviceOrder
             }) => (
               <Card key={id} isPrinted={true} isConcluded={concluded} >
-                <div onClick={() => handleDetails(prevSO.id)}>
+                <div onClick={() => handleDetails(id)}>
                   <span>ID {prevSO.id}</span>
                   <span>{tag.length > 14?tag.substring(0, 14).concat('...'):tag}</span>
                 </div>
-                <div onClick={() => handleDetails(prevSO.id)} >
+                <div onClick={() => handleDetails(id)} >
                   <div>Código: <span>{id.toString().padStart(5, '0')}</span></div>
                   <div>Semana: <span>{weekCode}</span></div>
                   <div>Natureza: <span>{nature}</span></div>

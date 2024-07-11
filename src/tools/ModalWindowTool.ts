@@ -3,7 +3,7 @@ import fs from 'fs'
 import path from "path";
 import ejs from 'ejs'
 
-export class ModalService {
+export class ModalWindowTool {
 
   htmlFilePath = path.join(__dirname, 'modal.html')
   props: {
@@ -14,7 +14,7 @@ export class ModalService {
     onClose: () => void
   }
 
-  constructor(props: ModalService['props']){
+  constructor(props: ModalWindowTool['props']){
     this.props = props
   }
 

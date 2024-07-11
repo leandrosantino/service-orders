@@ -1,6 +1,6 @@
 import { Autowired, IpcChannel, IpcQuery } from "@/utils/decorators";
 
-import { EncryptionService } from "@/services/EncryptionService";
+import { EncryptionTool } from "@/tools/EncryptionTool";
 import { User } from "@/domain/entities/User/User";
 
 import { IUserAuthRequestDTO } from "@/domain/entities/User/dto/IUserAuthDTO";
@@ -12,8 +12,8 @@ import { ResponseEntity } from "@/infra/ResponseEntity";
 
 export class AuthService implements IUserAuthService{
 
-  @Autowired(EncryptionService)
-  encryptionService: EncryptionService
+  @Autowired(EncryptionTool)
+  encryptionService: EncryptionTool
 
   @IpcQuery()
   async auth({password, register} : IUserAuthRequestDTO): Promise<IResponseEntity<IUserResponseDTO>>{

@@ -1,17 +1,17 @@
 import { IUserResponseDTO} from "@/domain/entities/User/dto/IUserDTO";
 import { IUserService } from "@/domain/entities/User/IUserService";
-import { IpcChannel , Autowired, IpcQuery, IpcMutation } from "@/utils/decorators";
+import { Autowired, IpcQuery, IpcMutation } from "@/utils/decorators";
 import { User } from "@/domain/entities/User/User";
 import { database } from "@/infra/database";
-import { EncryptionService } from "./EncryptionService";
+import { EncryptionTool } from "@/tools/EncryptionTool";
 import { Worker } from "@/domain/entities/Worker/Worker";
 import { userRepository } from "@/infra/repositories";
 
 
 export class UserService implements IUserService{
 
-  @Autowired(EncryptionService)
-  encryptionService: EncryptionService
+  @Autowired(EncryptionTool)
+  encryptionTool: EncryptionTool
 
   @IpcQuery()
   async getAllUsers(): Promise<IUserResponseDTO[]>{
@@ -31,7 +31,7 @@ export class UserService implements IUserService{
 
   @IpcMutation()
   async create(user: User): Promise<User> {
-    const encryptedPassword = this.encryptionService.generate(user.password)
+    const encryptedPassword = this.encryptionTool.generate(user.password)
     user.setPassword(encryptedPassword)
     return await database.manager.save(user)
   }

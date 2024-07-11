@@ -12,19 +12,19 @@ import { preventiveServiceOrderRepository, printedPreventiveServiceOrderReposito
 import { DateTime } from "@/utils/DateTime";
 import { Autowired, IpcChannel, IpcMutation, IpcQuery } from "@/utils/decorators";
 import { Between } from "typeorm";
-import { ModalService } from "./ModalService";
-import { PrintService } from "./PrintService";
+import { ModalWindowTool } from "@/tools/ModalWindowTool";
+import { PrintTool } from "@/tools/PrintTool";
 
 export class PreventiveServiceOrderService implements IPreventiveServiceOrderService {
 
-  @Autowired(PrintService)
-  printService: PrintService
+  @Autowired(PrintTool)
+  printService: PrintTool
 
   @IpcChannel()
-  async showServiceOrderDetails(plannedServiceOrderId: number): Promise<void> {
-    return await new Promise((resolve, reject) => {
+  async showServiceOrderDetails(id: number): Promise<void> {
+    return await new Promise(async (resolve, reject) => {
       try{
-        const modalService = new ModalService({
+        const modalService = new ModalWindowTool({
           title: 'Ordem de Serviço Preventiva',
           templateFilePath: 'serviceOrder.ejs',
           width: 900,
@@ -32,13 +32,46 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
           onClose: () => resolve()
         });
 
-        modalService.show({
-          id: plannedServiceOrderId,
-          machine: {tag: 'M21'},
-          weekCode: '2024-W21',
-          nature: {name: 'Elétrica'},
-          actions: []
+        const plannedServiceOrder = await preventiveServiceOrderRepository.findOne({
+          where: {id},
+          relations:{
+            machine: true,
+            preventiveActions: true,
+          }
         })
+
+        let data
+
+        if(plannedServiceOrder){
+          const printedId = await printedPreventiveServiceOrderRepository.maximum('id')
+          data = {
+            id: plannedServiceOrder.id,
+            code: (printedId + 1).toString(),
+            weekCode: plannedServiceOrder.nextExecution.toWeekOfYearString(),
+            machine: {tag: plannedServiceOrder.machine.tag},
+            nature: {name: plannedServiceOrder.nature},
+            actions: plannedServiceOrder.preventiveActions
+          }
+        }
+
+        if(!plannedServiceOrder){
+          const printedServiceOrder = await printedPreventiveServiceOrderRepository.findOne({
+            where: {id},
+            relations: {
+              preventiveServiceOrder:{machine: true}
+            }
+          })
+          data = {
+            id: printedServiceOrder.preventiveServiceOrder.id,
+            code: printedServiceOrder.id.toString(),
+            weekCode: printedServiceOrder.weekCode,
+            machine: {tag: printedServiceOrder.preventiveServiceOrder.machine.tag},
+            nature: {name: printedServiceOrder.preventiveServiceOrder.nature},
+            actions: printedServiceOrder.preventiveActions
+          }
+        }
+
+        modalService.show(data)
 
       }catch (err){
         reject((err as Error).message)
@@ -88,6 +121,9 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         order: {
           concluded: {
             direction: 'ASC'
+          },
+          id: {
+            direction: 'DESC'
           }
         },
         relations: {

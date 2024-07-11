@@ -1,6 +1,6 @@
 import { BrowserWindow, dialog } from 'electron'
 
-export class Dialog {
+export class DialogTool {
   window: BrowserWindow
 
   constructor(window: BrowserWindow) {
