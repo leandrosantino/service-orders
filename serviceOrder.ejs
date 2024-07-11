@@ -114,6 +114,8 @@
 
         .infoCase {
             margin-top: 10px;
+            height: 40px;
+            display: flex;
         }
 
         .info {
@@ -122,16 +124,18 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            border-bottom: 1px solid black;
+            border: 1px solid black;
         }
 
-        .info div {
+        .info div:last-child {
             width: 100%;
-            padding: 3px;
+            text-align: end;
+            padding: 4px;
         }
 
         .info .label {
-            width: 30%;
+            width: 100%;
+            padding: 4px;
             font-weight: bold;
         }
 
@@ -140,7 +144,7 @@
         }
 
         .formCase {
-            margin-top: 20px;
+            /* margin-top: 20px; */
             display: flex;
             flex-direction: row;
             width: 100%;
@@ -199,6 +203,7 @@
             width: 100%;
             display: flex;
             flex-direction: row;
+            min-height: 60px;
         }
 
         .tableCase .tableRow div {
@@ -235,22 +240,34 @@
             <div class="info">
                 <div class="label">Máquina:</div>
                 <div>
-                    <%- data.machine.tag %>
+                    <%- data.machine %>
                 </div>
             </div>
             <div class="info">
                 <div class="label">Semana:</div>
                 <div>
-                    <%- data.weekCode.split('-W')[1] %>
+                    <%- data.weekCode.split('-W')[1] %>, <%- data.weekCode.split('-W')[0] %>
                 </div>
             </div>
             <div class="info">
+                <div class="label">Data:</div>
+                <div>
+                    <%- data.date %>
+                </div>
+            </div>
+            <div class="info">
+                <div class="label">Truno:</div>
+                <div>
+
+                </div>
+            </div>
+            <!-- <div class="info">
                 <div class="label">Ano:</div>
                 <div>
                     <%- data.weekCode.split('-W')[0] %>
                 </div>
-            </div>
-            <%if(data.duration){%>
+            </div> -->
+            <!-- <%if(data.duration){%>
                 <div class="info">
                     <div class="label">Tempo:</div>
                     <div>
@@ -258,71 +275,73 @@
                     </div>
                 </div>
 
-                <%}%>
+                <%}%> -->
         </div>
 
         <div class="formCase">
             <div class="formBlock">
                 <div class="formInput">
-                    <div class="label">Data:</div>
-                    <div class="value"></div>
-                </div>
-                <div class="formInput">
-                    <div class="label">Hora de Início:</div>
-                    <div class="value"></div>
-                </div>
-                <div class="formInput">
-                    <div class="label">Hora Final:</div>
-                    <div class="value"></div>
-                </div>
-            </div>
-            <div class="formBlock">
-                <div class="formInput">
                     <div class="label">Especialidade:</div>
                     <div class="value">
-                        <%- data.nature.name %>
+                        <%- data.nature %>
                     </div>
                 </div>
                 <div class="formInput">
                     <div class="label">Manutencistas:</div>
+                    <div class="value">
+                        <%- data.responsibles %>
+                    </div>
+                </div>
+            </div>
+            <div class="formBlock">
+                <!-- <div class="formInput">
+                    <div class="label">Data:</div>
+                    <div class="value"><%- data.date %></div>
+                </div> -->
+                <div class="formInput">
+                    <div class="label">Hora de Início:</div>
+                    <div class="value"></div>
+                <!-- </div>
+                <div class="formInput"> -->
+                    <div class="label">Hora Final:</div>
                     <div class="value"></div>
                 </div>
                 <div class="formInput">
-                    <div class="label">Surpevisor de Manutenção:</div>
-                    <div class="value"></div>
+                    <div class="label">Duração:</div>
+                    <div class="value"><%- data.duration %></div>
                 </div>
             </div>
+
         </div>
 
         <div class="tableCase">
             <div class="tableHead">
                 <div style="width: 5%; justify-content: center;">Cod.</div>
                 <div style="width: 5%; justify-content: center;">?</div>
-                <div style="width: 35%;">Descrição</div>
-                <div style="width: 20%;">Execução</div>
-                <div style="width: 35%;">Observações</div>
+                <div style="width: 45%;">Descrição</div>
+                <div style="width: 45%;">Execução</div>
+                <!-- <div style="width: 35%;">Observações</div> -->
             </div>
 
             <% (data.actions?data.actions:data.actionsTaken).map((value)=>{
                 const item = value.action?value.action:value
-                %>
+            %>
                 <div class="tableRow">
                     <div style="width: 5%; justify-content: center;">
                         <%- item.id %>
                     </div>
                     <div style="width: 5%; justify-content: center;">[<span style="width: 10px;"></span>]</div>
-                    <div style="width: 35%;">
+                    <div style="width: 45%;">
                         <%- item.description %>
                     </div>
-                    <div style="width: 20%;">
+                    <div style="width: 45%;">
                         <%- item.excution %>
                     </div>
-                    <div style="width: 35%;">
-                        <%- 'obs:_______________________________ __________________________________ __________________________________'
-                            %>
-                    </div>
+                    <!-- <div style="width: 25%; align-items: start;">
+                        <%- 'obs:'%>
+                    </div> -->
                 </div>
-                <%}) %>
+            <%}) %>
         </div>
 
     </div>

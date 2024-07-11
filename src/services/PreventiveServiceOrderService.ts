@@ -21,7 +21,7 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
   printService: PrintTool
 
   @IpcChannel()
-  async showServiceOrderDetails(id: number): Promise<void> {
+  async showServiceOrderDetails(id: number, isPrinted: boolean): Promise<void> {
     return await new Promise(async (resolve, reject) => {
       try{
         const modalService = new ModalWindowTool({
@@ -32,42 +32,51 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
           onClose: () => resolve()
         });
 
-        const plannedServiceOrder = await preventiveServiceOrderRepository.findOne({
-          where: {id},
-          relations:{
-            machine: true,
-            preventiveActions: true,
-          }
-        })
-
         let data
 
-        if(plannedServiceOrder){
+        if(!isPrinted){
+          const plannedServiceOrder = await preventiveServiceOrderRepository.findOne({
+            where: {id},
+            relations:{
+              machine: true,
+              preventiveActions: true,
+            }
+          })
           const printedId = await printedPreventiveServiceOrderRepository.maximum('id')
+
           data = {
             id: plannedServiceOrder.id,
             code: (printedId + 1).toString(),
             weekCode: plannedServiceOrder.nextExecution.toWeekOfYearString(),
-            machine: {tag: plannedServiceOrder.machine.tag},
-            nature: {name: plannedServiceOrder.nature},
+            machine: plannedServiceOrder.machine.tag,
+            nature:  plannedServiceOrder.nature,
             actions: plannedServiceOrder.preventiveActions
           }
         }
 
-        if(!plannedServiceOrder){
+        if(isPrinted){
           const printedServiceOrder = await printedPreventiveServiceOrderRepository.findOne({
             where: {id},
             relations: {
-              preventiveServiceOrder:{machine: true}
+              preventiveServiceOrder:{machine: true},
+              serviceOrder: {
+                responsibles:{
+                  userData: true
+                }
+              }
             }
           })
+          console.log(printedServiceOrder)
           data = {
             id: printedServiceOrder.preventiveServiceOrder.id,
             code: printedServiceOrder.id.toString(),
             weekCode: printedServiceOrder.weekCode,
-            machine: {tag: printedServiceOrder.preventiveServiceOrder.machine.tag},
-            nature: {name: printedServiceOrder.preventiveServiceOrder.nature},
-            actions: printedServiceOrder.preventiveActions
+            machine: printedServiceOrder.preventiveServiceOrder.machine.tag,
+            nature: printedServiceOrder.preventiveServiceOrder.nature,
+            actions: printedServiceOrder.preventiveActions,
+            date: printedServiceOrder.serviceOrder?.date.toLocaleDateString(),
+            duration: printedServiceOrder.serviceOrder?.durationInMinutes.toString().concat(' min'),
+            responsibles: printedServiceOrder.serviceOrder?.responsibles.map( r => r.userData.firstName).join(', ')
           }
         }
 

@@ -22,5 +22,5 @@ export interface IPreventiveServiceOrderService {
   getPrintedServiceOrders(filters?: PreventiveServiceOrderFilters): Promise<Properties<PrintedPreventiveServiceOrder>[]>
   printServiceOrder(plannedServiceOrderId: number, filename: string, toPdf: boolean): Promise< IResponseEntity<void> >
   executeServiceOrders(printedServiceOrderId: number, data: ExecuteServiceOrdersRequestDTO): Promise< IResponseEntity<void> >
-  showServiceOrderDetails(printedServiceOrderId: number) : Promise<void>
+  showServiceOrderDetails(id: number, isPrinted: boolean) : Promise<void>
 }
