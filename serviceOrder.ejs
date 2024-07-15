@@ -130,17 +130,18 @@
         .info div:last-child {
             width: 100%;
             text-align: end;
-            padding: 4px;
+            padding: 0 4px;
         }
 
         .info .label {
-            width: 100%;
-            padding: 4px;
+            width: fit-content;
             font-weight: bold;
+            padding: 0 4px;
         }
 
         .label {
             font-weight: bold;
+            font-size: 10pt;
         }
 
         .formCase {
@@ -237,25 +238,25 @@
         </div>
 
         <div class="infoCase">
-            <div class="info">
-                <div class="label">Máquina:</div>
-                <div>
+            <div class="info" style="width: 35%;">
+                <div class="label" >Máquina:</div>
+                <div style="font-size: 16px;" >
                     <%- data.machine %>
                 </div>
             </div>
-            <div class="info">
+            <div class="info" style="width: 20%;">
                 <div class="label">Semana:</div>
                 <div>
                     <%- data.weekCode.split('-W')[1] %>, <%- data.weekCode.split('-W')[0] %>
                 </div>
             </div>
-            <div class="info">
+            <div class="info" style="width: 30%;">
                 <div class="label">Data:</div>
                 <div>
                     <%- data.date %>
                 </div>
             </div>
-            <div class="info">
+            <div class="info" style="width: 15%;">
                 <div class="label">Truno:</div>
                 <div>
 
@@ -312,6 +313,13 @@
                 </div>
             </div>
 
+        </div>
+        <div class="formCase" style="margin-top: 20px;">
+            <div class="formBlock" style="width: 100%;">
+                <div class="formInput" style="width: 100%; height: 100px; align-items: start;">
+                    <div class="label">Observações:</div>
+                </div>
+            </div>
         </div>
 
         <div class="tableCase">
