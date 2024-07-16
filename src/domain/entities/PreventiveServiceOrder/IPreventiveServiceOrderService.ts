@@ -4,6 +4,7 @@ import { Specialty } from "../Worker/Specialty";
 import { PrintedPreventiveServiceOrder } from "../PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { DateTime } from "@/utils/DateTime";
 import { Properties } from "@/domain/interfaces/Properties";
+import { Turn } from "../ServiceOrder/Turn";
 
 export type PreventiveServiceOrderFilters = {
   weekCode?: string
@@ -15,6 +16,8 @@ export type ExecuteServiceOrdersRequestDTO = {
   date: DateTime
   responsibles: Array<number>
   durationInMinutes: number
+  turn: Turn
+  comments: string
 }
 
 export interface IPreventiveServiceOrderService {

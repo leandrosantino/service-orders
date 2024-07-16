@@ -258,9 +258,7 @@
             </div>
             <div class="info" style="width: 15%;">
                 <div class="label">Truno:</div>
-                <div>
-
-                </div>
+                <div><%- data.turn %></div>
             </div>
             <!-- <div class="info">
                 <div class="label">Ano:</div>
@@ -301,11 +299,11 @@
                 </div> -->
                 <div class="formInput">
                     <div class="label">Hora de Início:</div>
-                    <div class="value"></div>
+                    <div class="value"><%- data.startHours %></div>
                 <!-- </div>
                 <div class="formInput"> -->
                     <div class="label">Hora Final:</div>
-                    <div class="value"></div>
+                    <div class="value"><%- data.finishHours %></div>
                 </div>
                 <div class="formInput">
                     <div class="label">Duração:</div>
@@ -317,7 +315,8 @@
         <div class="formCase" style="margin-top: 20px;">
             <div class="formBlock" style="width: 100%;">
                 <div class="formInput" style="width: 100%; height: 100px; align-items: start;">
-                    <div class="label">Observações:</div>
+                    <div class="label">Observações: </div>
+                    <div><%- data.comments %></div>
                 </div>
             </div>
         </div>

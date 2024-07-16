@@ -5,6 +5,7 @@ import { api } from "@/view/query";
 import { Content, ListTitle } from "./styles";
 import { PreventiveServiceOrderState } from "@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrderState";
 import { Card, CardsContainer } from "@/view/components/Card";
+import { Turn } from "@/domain/entities/ServiceOrder/Turn";
 
 export function Preventives(){
 
@@ -25,6 +26,8 @@ export function Preventives(){
       data: {
         date: new DateTime(),
         durationInMinutes: 15,
+        comments: 'O item 1245 não foi realizado por falta de componentes',
+        turn: Turn.T1,
         responsibles: [1, 2]
       }
     })

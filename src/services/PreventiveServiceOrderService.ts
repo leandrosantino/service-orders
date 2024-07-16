@@ -75,6 +75,11 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
             nature: printedServiceOrder.preventiveServiceOrder.nature,
             actions: printedServiceOrder.preventiveActions,
             date: printedServiceOrder.serviceOrder?.date.toLocaleDateString(),
+            startHours: printedServiceOrder.serviceOrder?.date.toFormatedTime(),
+            finishHours: printedServiceOrder.serviceOrder?.date
+              .plusMinutes(printedServiceOrder.serviceOrder?.durationInMinutes).toFormatedTime(),
+            turn: printedServiceOrder.serviceOrder?.turn,
+            comments: printedServiceOrder.serviceOrder?.comments,
             duration: printedServiceOrder.serviceOrder?.durationInMinutes.toString().concat(' min'),
             responsibles: printedServiceOrder.serviceOrder?.responsibles.map( r => r.userData.firstName).join(', ')
           }
@@ -264,6 +269,8 @@ export class PreventiveServiceOrderService implements IPreventiveServiceOrderSer
         .setMachine(preventiveServiceOrder.machine)
         .setResponsibles(responsibles)
         .setPreventiveServiceOrder(printedServiceOrder)
+        .setComments(data.comments)
+        .setTurn(data.turn)
 
       await serviceOrderRepository.save(serviceOrder)
 

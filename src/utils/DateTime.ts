@@ -43,6 +43,11 @@ export class DateTime extends Date {
     return this
   }
 
+  plusMinutes(minutes: number){
+    this.setMinutes(this.getMinutes() + minutes)
+    return this
+  }
+
   minusDay(days: number) {
     this.setDate(this.getDate() - days)
     return this
@@ -68,6 +73,12 @@ export class DateTime extends Date {
 
   toDateNumber(){
     return this.valueOf()
+  }
+
+  toFormatedTime(){
+    let str = this.toLocaleTimeString()
+    str = str.split(':').slice(0,2).join(':')
+    return str
   }
 
   fromDateNumber(dateNumber: number){

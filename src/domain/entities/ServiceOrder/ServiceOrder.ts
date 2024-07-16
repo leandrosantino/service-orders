@@ -7,6 +7,7 @@ import { Cause } from "../Cause/Cause";
 import { PrintedPreventiveServiceOrder } from "../PrintedPreventiveServiceOrder/PrintedPreventiveServiceOrder";
 import { DateTime } from "@/utils/DateTime";
 import { DateTransformer } from "@/transformers/DateTransformer";
+import { Turn } from '@/domain/entities/ServiceOrder/Turn'
 
 @Entity({name: 'service_order'})
 export class ServiceOrder {
@@ -40,6 +41,12 @@ export class ServiceOrder {
 
   @Column('nchar', {nullable: true, name: 'specialty'})
   specialty?: Specialty
+
+  @Column('nchar', {nullable: true, name: 'turn'})
+  turn: Turn
+
+  @Column('text', {nullable: true, name: 'comments'})
+  comments?: string
 
   @ManyToOne(() => Machine, (machine) => machine.serviceOrders)
   @JoinColumn({name: 'machineId'})
@@ -111,6 +118,15 @@ export class ServiceOrder {
   }
   setCause(value: Cause){
     this.cause = value
+    return this
+  }
+
+  setTurn(value: Turn){
+    this.turn = value
+    return this
+  }
+  setComments(value: string){
+    this.comments = value
     return this
   }
 
