@@ -32,7 +32,7 @@ export class Worker {
 
     public static getWorkerSpecialtyValues() {
         const specialtys = ObjectUtils.listNoNumberProperties(Specialty)
-        return specialtys
+        return specialtys.map(key => [key, (Specialty as any)[key]])
     }
 
 }

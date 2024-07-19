@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const CardsContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 240px);
+  height: calc(100vh - 260px);
   overflow-x: auto;
 
   &>section {
@@ -10,6 +10,7 @@ export const CardsContainer = styled.div`
     padding: .8rem;
     display: grid;
     grid-template-columns: 50fr 50fr;
+    padding-top: 2rem;
     gap: 1.8rem;
   }
 

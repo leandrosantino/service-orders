@@ -2,20 +2,28 @@ import React, { useState } from "react";
 import { ScreenContainer } from "@/view/components/containers/ScreenContainer";
 import { DateTime } from "@/utils/DateTime";
 import { api } from "@/view/query";
-import { Content, ListTitle } from "./styles";
+import { Content, FiltersMenu, ListTitle } from "./styles";
 import { PreventiveServiceOrderState } from "@/domain/entities/PreventiveServiceOrder/PreventiveServiceOrderState";
 import { Card, CardsContainer } from "@/view/components/Card";
 import { Turn } from "@/domain/entities/ServiceOrder/Turn";
+import { Worker } from "@/domain/entities/Worker/Worker";
+import { Specialty } from "@/domain/entities/Worker/Specialty";
 
 export function Preventives(){
 
-  const [week, setWeek] = useState('2024-W26')
+  const [week, setWeek] = useState(new DateTime().toWeekOfYearString())
+  const [machine, setMachine] = useState('')
+  const [nature, setNature] = useState('')
 
   const plannedServiceOrders = api.preventiveServiceOrderService.getPlannedServiceOrders.query({
-    weekCode: week == ''?undefined: week
+    weekCode: week == ''?undefined: week,
+    machineId: machine == ''?undefined:Number(machine),
+    nature: (nature == ''?undefined:nature) as Specialty
   })
   const printedServiceOrders = api.preventiveServiceOrderService.getPrintedServiceOrders.query({
-    weekCode: week
+    weekCode: week,
+    machineId: machine == ''?undefined:Number(machine),
+    nature: (nature == ''?undefined:nature) as Specialty
   })
 
   const executeServiceOrder = api.preventiveServiceOrderService.executeServiceOrders.mutation()
@@ -47,10 +55,24 @@ export function Preventives(){
 
       <h1>Preventivas</h1>
 
-      <header>
-        <label htmlFor="week">Semana: </label>
-        <input type="week" id='week' onChange={(e) => setWeek(e.target.value)} value={week}/>
-      </header>
+      <FiltersMenu>
+        <span>Filtros: </span>
+        <div>
+          <input type="week" onChange={(e) => setWeek(e.target.value)} value={week}/>
+          <select value={machine} onChange={e => setMachine(e.target.value)}>
+            <option value="" selected > ------------------ </option>
+            <option value="1">M01</option>
+            <option value="2">M02</option>
+            <option value="3">M03</option>
+            <option value="4">M04</option>
+          </select>
+          <select value={nature} onChange={e => setNature(e.target.value)}>
+            <option value="" selected > ------------------ </option>
+            <option value={Specialty.ELECTRICAL} selected > {Specialty.ELECTRICAL} </option>
+            <option value={Specialty.MECHANICS} selected > {Specialty.MECHANICS} </option>
+          </select>
+        </div>
+      </FiltersMenu>
 
       <Content>
         <ListTitle>
