@@ -8,12 +8,14 @@ import { Card, CardsContainer } from "@/view/components/Card";
 import { Turn } from "@/domain/entities/ServiceOrder/Turn";
 import { Worker } from "@/domain/entities/Worker/Worker";
 import { Specialty } from "@/domain/entities/Worker/Specialty";
+import { useDialog } from "@/view/hooks/useDialog";
 
 export function Preventives(){
 
   const [week, setWeek] = useState(new DateTime().toWeekOfYearString())
   const [machine, setMachine] = useState('')
   const [nature, setNature] = useState('')
+  const dialog = useDialog()
 
   const plannedServiceOrders = api.preventiveServiceOrderService.getPlannedServiceOrders.query({
     weekCode: week == ''?undefined: week,
@@ -29,18 +31,26 @@ export function Preventives(){
   const executeServiceOrder = api.preventiveServiceOrderService.executeServiceOrders.mutation()
 
   async function handleExecute(id: number){
-    await executeServiceOrder.mutateAsync({
-      printedServiceOrderId: id,
-      data: {
-        date: new DateTime(),
-        durationInMinutes: 15,
-        comments: 'O item 1245 não foi realizado por falta de componentes',
-        turn: Turn.T1,
-        responsibles: [1, 2]
+    // await executeServiceOrder.mutateAsync({
+    //   printedServiceOrderId: id,
+    //   data: {
+    //     date: new DateTime(),
+    //     durationInMinutes: 15,
+    //     comments: 'O item 1245 não foi realizado por falta de componentes',
+    //     turn: Turn.T1,
+    //     responsibles: [1, 2]
+    //   }
+    // })
+    // await plannedServiceOrders.refetch()
+    // await printedServiceOrders.refetch()
+
+    dialog.custom({
+      Child(props) {
+        return (<div>Leadnro</div>)
       }
     })
-    await plannedServiceOrders.refetch()
-    await printedServiceOrders.refetch()
+
+
   }
 
   function handleDetails(id: number, isPrinted?: boolean){

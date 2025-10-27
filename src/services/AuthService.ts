@@ -10,13 +10,13 @@ import { IUserAuthService } from "@/domain/entities/User/IUserAuthService";
 import { userRepository } from "@/infra/repositories";
 import { ResponseEntity } from "@/infra/ResponseEntity";
 
-export class AuthService implements IUserAuthService{
+export class AuthService implements IUserAuthService {
 
   @Autowired(EncryptionTool)
   encryptionService: EncryptionTool
 
   @IpcQuery()
-  async auth({password, register} : IUserAuthRequestDTO): Promise<IResponseEntity<IUserResponseDTO>>{
+  async auth({ password, register }: IUserAuthRequestDTO): Promise<IResponseEntity<IUserResponseDTO>> {
     let user: User | null = null
 
     const response = new ResponseEntity<User>()
@@ -25,11 +25,11 @@ export class AuthService implements IUserAuthService{
       register
     })
 
-    if(!user){
+    if (!user) {
       return response.falure('registration not found')
     }
 
-    if(!this.encryptionService.verify(password, user.password)){
+    if (!this.encryptionService.verify(password, user.password)) {
       return response.falure('invalid password')
     }
 

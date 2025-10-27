@@ -7,17 +7,17 @@ import { machineRepository, serviceOrderRepository } from "@/infra/repositories"
 import { ResponseEntity } from "@/infra/ResponseEntity";
 import { IpcChannel, IpcMutation } from "@/utils/decorators";
 
-export class ServiceOrderService implements IServiceOrderService{
+export class ServiceOrderService implements IServiceOrderService {
 
   @IpcMutation()
-  async createServiceOrder({data, machineId}: ICreateServiceOrderRequestDTO): Promise<IResponseEntity<Properties<ServiceOrder>>> {
+  async createServiceOrder({ data, machineId }: ICreateServiceOrderRequestDTO): Promise<IResponseEntity<Properties<ServiceOrder>>> {
     const response = new ResponseEntity<ServiceOrder>()
 
     const machine = machineRepository.findOneBy({
       id: machineId
     })
 
-    if(machine === null){
+    if (machine === null) {
       return response.falure('machine id not found')
     }
 

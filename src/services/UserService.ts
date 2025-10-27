@@ -1,6 +1,6 @@
-import { IUserResponseDTO} from "@/domain/entities/User/dto/IUserDTO";
+import { IUserResponseDTO } from "@/domain/entities/User/dto/IUserDTO";
 import { IUserService } from "@/domain/entities/User/IUserService";
-import { Autowired, IpcQuery, IpcMutation } from "@/utils/decorators";
+import { Autowired, IpcQuery, IpcMutation, IpcChannel } from "@/utils/decorators";
 import { User } from "@/domain/entities/User/User";
 import { database } from "@/infra/database";
 import { EncryptionTool } from "@/tools/EncryptionTool";
@@ -8,23 +8,23 @@ import { Worker } from "@/domain/entities/Worker/Worker";
 import { userRepository } from "@/infra/repositories";
 
 
-export class UserService implements IUserService{
+export class UserService implements IUserService {
 
   @Autowired(EncryptionTool)
   encryptionTool: EncryptionTool
 
   @IpcQuery()
-  async getAllUsers(): Promise<IUserResponseDTO[]>{
+  async getAllUsers(): Promise<IUserResponseDTO[]> {
     const users = await userRepository.find()
     return users
   }
 
   @IpcQuery()
   async getUserById(id: number): Promise<IUserResponseDTO> {
-    try{
-      const user = await userRepository.findOneBy({id})
+    try {
+      const user = await userRepository.findOneBy({ id })
       return user
-    }catch{
+    } catch {
       return null
     }
   }
